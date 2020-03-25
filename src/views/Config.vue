@@ -25,11 +25,8 @@
                       <a href="#"><li class="spot"></li></a>
                       <a href="#"><li class="spot"></li></a>
                       <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
+                      
+                     
                     </ul>
                     <ul class="spot-list spot-list-vertical p-0 my-1 mx-0">
                       <a href="#"><li class="spot"></li></a>
@@ -37,11 +34,7 @@
                       <a href="#"><li class="spot"></li></a>
                       <a href="#"><li class="spot"></li></a>
                       <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
-                      <a href="#"><li class="spot"></li></a>
+                      
                     </ul>
                   </div>
                 </div>
