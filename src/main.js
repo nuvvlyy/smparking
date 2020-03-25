@@ -21,6 +21,10 @@ import "bootstrap";
 import './assets/app.scss'
 import 'popper.js'
 
+import BootstrapVue from 'bootstrap-vue'
+Vue.use(BootstrapVue)
+
+
 fb.auth().onAuthStateChanged(function (user) {
   if (!app) {
     new Vue({

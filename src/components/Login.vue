@@ -12,7 +12,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-body">
-            <ul class="nav nav-fill nav-pills mb-3" id="pills-tab" role="tablist">
+            <!-- <ul class="nav nav-fill nav-pills mb-3" id="pills-tab" role="tablist">
               <li class="nav-item">
                 <a
                   class="nav-link active"
@@ -24,7 +24,7 @@
                   aria-selected="true"
                 >Login</a>
               </li>         
-            </ul>
+            </ul> -->
 
             <div class="tab-content" id="pills-tabContent">
               <div
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="form-group">
-                  <button class="btn btn-primary" @click="login">Login</button>
+                  <button class="btn btn-primary w-100" @click="login">Login</button>
                 </div>
               </div>              
             </div>
