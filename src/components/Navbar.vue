@@ -21,17 +21,31 @@
             <a href="#" class="nav-link">Edit</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">Setting</a>
+            <!-- <a href="#" class="nav-link" @click="setting">Setting</a> -->
+          <a
+            class="nav-link"
+            type="submit"
+            data-toggle="modal"
+            data-target="#initParking"
+            @click="$bvModal.show('initParkingg')"
+          >Setting</a>
           </li>
         </ul>
       </div>
     </nav>
+    
   </div>
 </template>
 <script>
 export default {
   name: "Navbar",
-  methods: {}
+  methods: {
+    // setting(){
+    //   // this.$mount 
+    //   console.log('work')
+    //   this.$bvModal.show('initParking')
+    // }
+  }
 };
 </script>
 <style lang="scss">

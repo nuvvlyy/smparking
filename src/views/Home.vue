@@ -15,6 +15,11 @@
       </div>
       <div class="col">
         <router-link to="/config" tag="button" class="btn btn-danger m-2">To Config</router-link>
+        <button class="btn btn-primary" @click="test">test</button>
+        <button class="btn btn-dark">test</button>
+         <b-button variant="success">Button</b-button>       
+
+
       </div>
     </div>
 
@@ -26,7 +31,10 @@
 import Login from "@/components/Login.vue";
 export default {
   name: "Home",
-  components: { Login }
+  components: { Login },
+  methods:{
+
+  }
 };
 </script>
 <style lang="scss">
@@ -37,7 +45,8 @@ export default {
 .title {
   font-size: 10em;
 }
-.home{
+.home {
   height: 100vh;
 }
+
 </style>

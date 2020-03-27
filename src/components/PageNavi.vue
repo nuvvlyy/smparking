@@ -23,7 +23,5 @@ export default {
 };
 </script>
 <style lang="scss">
-b-paginationP {
-  color: red;
-}
+
 </style>
