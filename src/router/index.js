@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Config from '../views/Config.vue'
+import ServerSide from '../views/ServerSide.vue'
 
 Vue.use(VueRouter);
 
@@ -21,9 +22,15 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path:'/config',
-    name:'config',
-    component:Config
+    path: '/config',
+    name: 'config',
+    component: Config,
+    children: [{
+      path: '/config',
+      name: 'config',
+      component: ServerSide,
+    }
+    ]
   }
 ];
 

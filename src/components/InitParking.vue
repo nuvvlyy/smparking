@@ -2,13 +2,13 @@
   <div class="initParking">
     <!-- <b-button v-b-modal.initParking>Open Modal</b-button> -->
 
-    <div class="mt-3">
+    <!-- <div class="mt-3">
       Submitted Names:
       <div v-if="submittedNames.length === 0">--</div>
       <ul v-else class="mb-0 pl-3">
         <li v-for="name in submittedNames" :key="name">{{ name }}</li>
       </ul>
-    </div>
+    </div> -->
 
     <b-modal
       id="initParkingg"

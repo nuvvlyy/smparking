@@ -1,12 +1,17 @@
 <template>
   <div class="page-number">
     <p class="text-background text-floor">Floor</p>
-    <p class="text-background text-number">1</p>
+    <p class="text-background text-number">{{floor}}</p>
   </div>
 </template>
 <script>
 export default {
-  name: "pageNumber"
+  name: "pageNumber",
+  data() {
+    return {
+      floor: 1
+    };
+  }
 };
 </script>
 <style lang="scss">
@@ -15,16 +20,15 @@ export default {
   position: fixed;
   font-weight: 400;
   opacity: 50%;
-
 }
 .text-floor {
   font-size: 8rem;
-  left: 30rem;
-  top: 20%;
+  top: 6vh;
+  right: 4vw;
 }
 .text-number {
   font-size: 20rem;
-  left: 50rem;
-  top: 5%;
+  top: 6vh;
+  right: 4vw;
 }
 </style>

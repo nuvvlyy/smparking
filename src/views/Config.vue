@@ -8,12 +8,26 @@
 
         <div class="page-content p-4 p-md-5 pt-5">
           <Navbar />
-          <page-number></page-number>
+
           <div class="bg-light">
             <h1 class="display-2">Config</h1>
-
+            <page-number></page-number>
             <main class="page-content pt-2">
               <router-view></router-view>
+              <div>
+                <nav aria-label="Page navigation example">
+                  <div class="pagination overflow-auto justify-content-center">
+                    <div>
+                      <b-pagination
+                        v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                        first-number
+                      ></b-pagination>
+                    </div>
+                  </div>
+                </nav>
+              </div>
             </main>
 
             <!-- <div class="row">
@@ -45,32 +59,13 @@
               </div>
             </div>-->
 
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-2" v-for="(i,index) in zone" :key="index">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th colspan="2">Zone{{index+1}}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(i,index) in perZone" :key="index">
-                        <td>spot</td>
-                        <td>spot</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
             <!-- <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" first-number></b-pagination> -->
           </div>
         </div>
       </div>
     </div>
-    <PageNavi />
+
+    <!-- <PageNavi /> -->
 
     <initParking></initParking>
   </div>
@@ -92,11 +87,18 @@ export default {
   },
   data() {
     return {
-      zone: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      perZone: [1, 2, 3, 4, 5, 6, 7, 8],
-      slot: 4
+      rows: 100,
+      perPage: 1,
+      currentPage: 4
     };
   },
+  // data() {
+  //   return {
+  //     zone: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  //     perZone: [1, 2, 3, 4, 5, 6, 7, 8],
+  //     slot: 4
+  //   };
+  // },
   // data() {
   //   return {
   //     rows: 100,
@@ -107,24 +109,4 @@ export default {
   methods: {}
 };
 </script>
-<style lang="scss">
-.spot-list {
-  list-style-type: none;
-  margin: 0;
-  float: left;
-  position: relative;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
 
-.spot-list li {
-  float: right;
-  width: 0.5em;
-  height: 1em;
-  margin: 0.1em;
-  background-color: rgb(163, 163, 163);
-}
-// .spot-list-vertical {
-//   transform: rotate(-90deg);
-// }
-</style>

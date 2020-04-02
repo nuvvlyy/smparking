@@ -16,45 +16,29 @@
           <li class="active">
             <h5 class="h6">Adjust per Zone</h5>
 
-            <form class="form-row my-4 justify-content-center">
-              <div class="form-group">
+            <form ref="form" class="form-row my-4 justify-content-center">
+              <b-form-group label="Zone">
                 <input type="text" class="form-control" placeholder="Zone" />
-              </div>
-              <div class="form-group col-md-5">
-                <input type="text" class="form-control" placeholder="Width" />
-              </div>
-              <span class="h6 align-self-center mx-1 pb-2">
+              </b-form-group>
+
+              <b-form-group label="height" class="form-group col-md-5">
+                <input type="text" class="form-control" placeholder="Height" />
+              </b-form-group>
+              <span class="h6 align-self-center mx-1 pt-4">
                 <i class="fa fa-times" aria-hidden="true"></i>
               </span>
-              <div class="form-group col-md-5">
-                <input type="text" class="form-control" placeholder="Height" />
-              </div>
+              <b-form-group label="widht" class="form-group col-md-5">
+                <input type="text" class="form-control" placeholder="Width" v-model="selected" />
+              </b-form-group>
 
               <fieldset class="form-group">
                 <div class="row">
                   <legend class="col-form-label col-sm-2 pt-0 mx-2">Side</legend>
                   <div class="col-sm-9">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="gridRadios"
-                        id="gridRadios1"
-                        value="option1"
-                        checked
-                      />
-                      <label class="form-check-label" for="gridRadios1">One Side</label>
-                    </div>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="radio"
-                        name="gridRadios"
-                        id="gridRadios2"
-                        value="option2"
-                      />
-                      <label class="form-check-label" for="gridRadios2">Two Side</label>
-                    </div>
+                    <b-form-group label>
+                      <b-form-radio v-model="selected" name="some-radios" value="1">1 Side</b-form-radio>
+                      <b-form-radio v-model="selected" name="some-radios" value="2">2 Side</b-form-radio>
+                    </b-form-group>
                   </div>
                 </div>
               </fieldset>
@@ -64,10 +48,10 @@
           </li>
 
           <li>
-            <a href="#">Portfolio</a>
+            <a href="#"><i class="fas fa-grip-horizontal mx-1"></i>Grid Views</a>
           </li>
           <li>
-            <a href="#">Contact</a>
+            <a href="#"><i class="fas fa-list-ul mx-1"></i>List Views</a>
           </li>
         </ul>
 
@@ -93,6 +77,11 @@
 <script>
 export default {
   name: "Sidebar",
+  data() {
+    return {
+      selected: ""
+    };
+  },
   methods: {
     closeMenu() {
       if ($) {
@@ -110,6 +99,10 @@ export default {
           $("#sidebar").toggleClass("active");
         });
       }
+    },
+    mounted() {
+      $("#width").val(this.selected);
+      console.log("work");
     }
   }
 };
@@ -118,5 +111,6 @@ export default {
 @import "./src/assets/sidebar.scss";
 #sidebar {
   min-height: 100vh;
+  
 }
 </style>

@@ -3,7 +3,6 @@
     <nav aria-label="Page navigation example">
       <div class="pagination overflow-auto justify-content-center">
         <div>
-          <!-- <h6>Goto first button number</h6> -->
           <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" first-number></b-pagination>
         </div>
       </div>
@@ -23,5 +22,4 @@ export default {
 };
 </script>
 <style lang="scss">
-
 </style>
