@@ -1,7 +1,7 @@
 <template>
   <div class="page-number">
     <p class="text-background text-floor">Floor</p>
-    <p class="text-background text-number">{{floor}}</p>
+    <p class="text-background text-number mt-3">{{this.$store.getters.current}}</p>
   </div>
 </template>
 <script>
@@ -9,9 +9,11 @@ export default {
   name: "pageNumber",
   data() {
     return {
-      floor: 1
+      //floor: this.$store.getters.current,
+      //testState: this.$store.state.test
     };
-  }
+  },
+
 };
 </script>
 <style lang="scss">

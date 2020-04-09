@@ -23,6 +23,22 @@
           <li>ss</li>
         </ul>
       </div>-->
+      <div class="row">
+        <div class="col" v-for="i in 50" :key="i">
+          <table class="table">
+            <thead align="center">
+              <tr>
+                <th colspan="2">FFF</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="i in 3" :key="i" class="spot-list">
+                <td v-for="i in 2" :key="i"  ></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -58,9 +74,7 @@ export default {
       console.log(this.floor);
     }
   },
-  created() {
-    
-  }
+  created() {}
 };
 </script>
 <style lang="scss">
@@ -84,9 +98,11 @@ export default {
   margin-right: 0.2em;
   margin-left: 0.2em;
   background-color: rgb(163, 163, 163);
-  display: inline-block;
+
+  display:block;
 }
 // .spot-list-vertical {
 //   transform: rotate(-90deg);
 //}
+
 </style>

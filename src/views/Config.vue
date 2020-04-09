@@ -15,18 +15,22 @@
             <main class="page-content pt-2">
               <router-view></router-view>
               <div>
-                <nav aria-label="Page navigation example">
-                  <div class="pagination overflow-auto justify-content-center">
-                    <div>
-                      <b-pagination
-                        v-model="currentPage"
-                        :total-rows="rows"
-                        :per-page="perPage"
-                        first-number
-                      ></b-pagination>
+                <section>
+                  <nav aria-label="Page navigation example">
+                    <div class="pagination overflow-auto justify-content-center">
+                      <div>
+                        <b-pagination-nav
+                          pills
+                          v-model="currentPage"
+                          :link-gen="linkGen"
+                          :number-of-pages="rows"
+                          use-router
+                        ></b-pagination-nav>
+                      </div>
+                      <p class="mx-3">Current Page: {{ currentPage }}</p>
                     </div>
-                  </div>
-                </nav>
+                  </nav>
+                </section>
               </div>
             </main>
 
@@ -89,7 +93,7 @@ export default {
     return {
       rows: 100,
       perPage: 1,
-      currentPage: 4
+      currentPage: this.$store.state.floor
     };
   },
   // data() {
@@ -106,7 +110,17 @@ export default {
   //     currentPage: 4
   //   };
   // }
-  methods: {}
+  methods: {
+    linkGen(pageNum) {
+     
+      return pageNum === 1 ? "?" : `?page=${pageNum}`;
+    },
+    changefloor() {}
+  },
+  updated() { 
+    this.$store.commit("changeFloor", this.currentPage);
+    //console.log('update Config')
+  }
 };
 </script>
 
