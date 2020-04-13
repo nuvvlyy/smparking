@@ -15,11 +15,7 @@
       </div>
       <div class="col">
         <router-link to="/config" tag="button" class="btn btn-danger m-2">To Config</router-link>
-        <button class="btn btn-primary" @click="test">test</button>
-        <button class="btn btn-dark">test</button>
-         <b-button variant="success">Button</b-button>       
-
-
+        <button class="btn btn-primary" @click="resetDB">Reset Database</button>
       </div>
     </div>
 
@@ -29,11 +25,16 @@
 
 <script>
 import Login from "@/components/Login.vue";
+import { db } from "../firebase";
 export default {
   name: "Home",
   components: { Login },
-  methods:{
 
+  methods: {
+    resetDB() {
+      db.collection("floors").delete();
+      console.log("reset");
+    }
   }
 };
 </script>
@@ -48,5 +49,4 @@ export default {
 .home {
   height: 100vh;
 }
-
 </style>

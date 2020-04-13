@@ -110,7 +110,7 @@ export default {
 <style lang="scss">
 @import "./src/assets/sidebar.scss";
 #sidebar {
-  min-height: 100vh;
+  min-height: 100%;
   
 }
 </style>

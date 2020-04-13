@@ -113,7 +113,7 @@ export default {
   methods: {
     linkGen(pageNum) {
      
-      return pageNum === 1 ? "?" : `?page=${pageNum}`;
+      return pageNum === 1 ? "?" : `?floor=${pageNum}`;
     },
     changefloor() {}
   },
@@ -123,4 +123,8 @@ export default {
   }
 };
 </script>
-
+<style lang="scss">
+  .config{
+    z-index: -1;
+  }
+</style>

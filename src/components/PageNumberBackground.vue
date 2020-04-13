@@ -12,8 +12,7 @@ export default {
       //floor: this.$store.getters.current,
       //testState: this.$store.state.test
     };
-  },
-
+  }
 };
 </script>
 <style lang="scss">
@@ -22,6 +21,7 @@ export default {
   position: fixed;
   font-weight: 400;
   opacity: 50%;
+  z-index: 0;
 }
 .text-floor {
   font-size: 8rem;
@@ -32,5 +32,15 @@ export default {
   font-size: 20rem;
   top: 6vh;
   right: 4vw;
+}
+.text-background:hover {
+  cursor: default;
+  -webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+text-decoration: none;
 }
 </style>

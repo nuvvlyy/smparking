@@ -50,5 +50,7 @@ export default {
 </script>
 <style lang="scss">
 @import "./src/assets/navbar.scss";
-
+.navbar{
+  z-index: 1;
+}
 </style>

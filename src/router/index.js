@@ -29,7 +29,11 @@ const routes = [
       path: '/config',
       name: 'config',
       component: ServerSide,
-    }
+    },
+    // {
+    //   part: 'config', query: { floor: 'id' },
+    //   component: ServerSide
+    // },
     ]
   }
 ];

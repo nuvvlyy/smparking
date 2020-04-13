@@ -23,21 +23,29 @@
           <li>ss</li>
         </ul>
       </div>-->
-      <div class="row">
-        <div class="col" v-for="i in 50" :key="i">
-          <table class="table">
-            <thead align="center">
-              <tr>
-                <th colspan="2">FFF</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="i in 3" :key="i" class="spot-list">
-                <td v-for="i in 2" :key="i"  ></td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="border border-primary p-5">
+        <div class="box m-2"></div>
+        <div class="row border border-danger">
+          <div class="col" v-for="i in 50" :key="i">
+            <table class="table">
+              <thead align="center">
+                <tr>
+                  <th colspan="2" >FFF</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="i in 3" :key="i">
+                  <td v-for="i in 2" :key="i" >{{i}} <div class="box" alt="ppp"  ></div> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
+
+      <div class="my-5">
+        <button @click="counterTest" class="btn btn-danger" name="5">counterTest</button>
+        <p class="mt-2" ref="text">counter {{counter}}</p>
       </div>
     </div>
   </div>
@@ -47,6 +55,7 @@ import { db } from "../firebase";
 export default {
   data() {
     return {
+      counter: 0,
       floors: [],
       floor: {
         height: null,
@@ -72,9 +81,25 @@ export default {
         }
       });
       console.log(this.floor);
+    },
+    counterTest() {
+      this.counter++;
+      // console.log(this.$refs.text.baseURI);
+      // console.log(this.$route.params.id)
+
+      // fetch("http://localhost:8080/config").then(res =>
+      //   console.log(res)
+      // );
+      //console.log('url')
+      window.onload = () => {
+        changeURL("rrrr");
+        console.log("url", this.attributes.name.values);
+      };
+    },
+    changeURL(data) {
+      location.hash = data;
     }
-  },
-  created() {}
+  }
 };
 </script>
 <style lang="scss">
@@ -99,10 +124,18 @@ export default {
   margin-left: 0.2em;
   background-color: rgb(163, 163, 163);
 
-  display:block;
+  display: block;
 }
 // .spot-list-vertical {
 //   transform: rotate(-90deg);
 //}
-
+.box {
+  width: 30px;
+  height: 30    px;
+  background: gray;
+  
+}
+.box a:hover{
+  cursor: pointer;
+}
 </style>

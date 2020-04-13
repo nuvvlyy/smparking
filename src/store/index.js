@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-let currentFloor = 1;
+let currentFloor = window.localStorage.getItem('floor');
 let test = 5
 
 export default new Vuex.Store({
@@ -14,6 +14,10 @@ export default new Vuex.Store({
     changeFloor(state, floor) {
       state.floor = floor
       //console.log('function changeFloor')
+      this.commit('saveData');
+    },
+    saveData(state){
+      window.localStorage.setItem("floor",JSON.stringify(state.floor));
     }
   }, getters: {
     current: state => {
