@@ -30,12 +30,14 @@
             <table class="table">
               <thead align="center">
                 <tr>
-                  <th colspan="2" >FFF</th>
+                  <th colspan="2">FFF</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="i in 3" :key="i">
-                  <td v-for="i in 2" :key="i" >{{i}} <div class="box" alt="ppp"  ></div> </td>
+                  <td v-for="i in 2" :key="i">
+                    <div class="rectangle empty" @click="infoSpot(i)"></div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -55,6 +57,7 @@ import { db } from "../firebase";
 export default {
   data() {
     return {
+      currentFloor:this.$store.state.floor,
       counter: 0,
       floors: [],
       floor: {
@@ -72,12 +75,14 @@ export default {
   methods: {
     test() {
       this.floors.forEach(floor => {
-        if (floor[".key"] == 1) {
+        if (floor[".key"] == this.currentFloor) {
           this.floor = {
             height: parseInt(floor.height),
             width: parseInt(floor.width),
             zone: parseInt(floor.zone)
           };
+        }else{
+          console.log('Floor not found')
         }
       });
       console.log(this.floor);
@@ -98,7 +103,10 @@ export default {
     },
     changeURL(data) {
       location.hash = data;
-    }
+    },
+    infoSpot(i){
+      console.log('id'+i)
+    },
   }
 };
 </script>
@@ -131,11 +139,44 @@ export default {
 //}
 .box {
   width: 30px;
-  height: 30    px;
+  height: 30px;
   background: gray;
-  
 }
-.box a:hover{
+.rectangle {
+  width: 30px;
+  height: 20px;
+  background: rgb(200,200,200);
   cursor: pointer;
+}
+// .box a:hover{
+//   cursor: pointer;
+// }
+.yellow-striped {
+	background-color:var(--mat-yellow);
+	background-image: repeating-linear-gradient(45deg, #FFFFFF, #FFFFFF 4px, rgba(1, 1, 1, 0) 4px, rgba(1, 1, 1, 0) 8px);
+	box-shadow: inset 0 0 0 4px #FFC107;
+}
+.handicap{
+  background-color: var(--mat-blue);
+}
+.empty{
+  background-color: var(--mat-green);
+}
+.full{
+background-color: var(--mat-red);
+}
+
+:root {
+	--mat-green: #4CAF50;
+	--mat-dark-green: #388E3C;
+	--mat-teal: #009688;
+	--mat-cyan: #00BCD4;
+	--mat-white: #F5F5F5;
+	--mat-light-gray: #E0E0E0;
+	--mat-dark-teal: #00796B;
+	--mat-blue: #2196F3;
+	--mat-red: #f44336;
+	--mat-yellow: #FFC107;
+	--mat-dark-yellow: #F57C00;
 }
 </style>
