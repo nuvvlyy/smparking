@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="mt-5">
     <nav aria-label="Page navigation example">
-      <div class="pagination overflow-auto justify-content-center">
+      <div class="pagination overflow-auto justify-content-center ">
         <div>
           <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" first-number></b-pagination>
         </div>

@@ -10,7 +10,7 @@
           <Navbar />
 
           <div class="bg-light">
-            <h1 class="display-2">Config</h1>
+            <!-- <h1 class="display-2">Config</h1> -->
             <page-number></page-number>
             <main class="page-content pt-2">
               <router-view></router-view>

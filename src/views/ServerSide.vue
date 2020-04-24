@@ -17,7 +17,9 @@
           </table>
         </div>
       </div>
+      <div class="display-1 " v-if="notFound == true">Floor not found</div>
       <button class="btn btn-info my-5" @click="test">test</button>
+      <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
       <!-- <div class="mt-5">
         <ul v-for="i in floor.zone" :key="i">
           <li>ss</li>
@@ -26,7 +28,7 @@
       <div class="border border-primary p-5">
         <div class="box m-2"></div>
         <div class="row border border-danger">
-          <div class="col" v-for="i in 50" :key="i">
+          <div class="col" v-for="i in 5" :key="i">
             <table class="table">
               <thead align="center">
                 <tr>
@@ -46,9 +48,10 @@
       </div>
 
       <div class="my-5">
-        <button @click="counterTest" class="btn btn-danger" name="5">counterTest</button>
-        <p class="mt-2" ref="text">counter {{counter}}</p>
+        <!-- <button @click="counterTest" class="btn btn-danger" name="5">counterTest</button>
+        <p class="mt-2" ref="text">counter {{counter}}</p> -->
       </div>
+
     </div>
   </div>
 </template>
@@ -57,13 +60,14 @@ import { db } from "../firebase";
 export default {
   data() {
     return {
-      currentFloor:this.$store.state.floor,
+      currentFloor: null,
       counter: 0,
       floors: [],
       floor: {
         height: null,
         width: null,
-        zone: null
+        zone: null,
+        notFound: null
       }
     };
   },
@@ -73,20 +77,41 @@ export default {
     };
   },
   methods: {
-    test() {
-      this.floors.forEach(floor => {
-        if (floor[".key"] == this.currentFloor) {
-          this.floor = {
-            height: parseInt(floor.height),
-            width: parseInt(floor.width),
-            zone: parseInt(floor.zone)
-          };
-        }else{
-          console.log('Floor not found')
-        }
-      });
-      console.log(this.floor);
+    readData(){
+      
     },
+    test2() {
+      let found = this.floors.find(
+        floor => floor[".key"] == this.$store.state.floor
+      );
+      if (found) {
+        console.log("found =>", found);
+        return{
+        floor : {
+          height: parseInt(found.height),
+          width: parseInt(found.width),
+          zone: parseInt(found.zone)}
+        };
+        console.log("floor =>", this.floor);
+      } else {
+        this.notFound = true
+        console.log("Not Found Floor Data");
+      }
+    },
+    // test() {
+    //   console.log("floors", this.floors);
+    //   this.floors.forEach(floor => {
+    //     if (floor[".key"] == this.$store.state.floor) {
+    //       this.floor = {
+    //         height: parseInt(floor.height),
+    //         width: parseInt(floor.width),
+    //         zone: parseInt(floor.zone)
+    //       };
+    //     } else {
+    //       this.notFound = true;
+    //     }
+    //   });
+    // },
     counterTest() {
       this.counter++;
       // console.log(this.$refs.text.baseURI);
@@ -96,17 +121,20 @@ export default {
       //   console.log(res)
       // );
       //console.log('url')
-      window.onload = () => {
-        changeURL("rrrr");
-        console.log("url", this.attributes.name.values);
-      };
+      // window.onload = () => {
+      //   changeURL("rrrr");
+      //   console.log("url", this.attributes.name.values);
+      // };
     },
     changeURL(data) {
       location.hash = data;
     },
-    infoSpot(i){
-      console.log('id'+i)
+    infoSpot(i) {
+      console.log("id" + i);
     },
+    updated() {
+      this.floor = this.$store.state.floor;
+    }
   }
 };
 </script>
@@ -145,38 +173,44 @@ export default {
 .rectangle {
   width: 30px;
   height: 20px;
-  background: rgb(200,200,200);
+  background: rgb(200, 200, 200);
   cursor: pointer;
 }
 // .box a:hover{
 //   cursor: pointer;
 // }
 .yellow-striped {
-	background-color:var(--mat-yellow);
-	background-image: repeating-linear-gradient(45deg, #FFFFFF, #FFFFFF 4px, rgba(1, 1, 1, 0) 4px, rgba(1, 1, 1, 0) 8px);
-	box-shadow: inset 0 0 0 4px #FFC107;
+  background-color: var(--mat-yellow);
+  background-image: repeating-linear-gradient(
+    45deg,
+    #ffffff,
+    #ffffff 4px,
+    rgba(1, 1, 1, 0) 4px,
+    rgba(1, 1, 1, 0) 8px
+  );
+  box-shadow: inset 0 0 0 4px #ffc107;
 }
-.handicap{
+.handicap {
   background-color: var(--mat-blue);
 }
-.empty{
+.empty {
   background-color: var(--mat-green);
 }
-.full{
-background-color: var(--mat-red);
+.full {
+  background-color: var(--mat-red);
 }
 
 :root {
-	--mat-green: #4CAF50;
-	--mat-dark-green: #388E3C;
-	--mat-teal: #009688;
-	--mat-cyan: #00BCD4;
-	--mat-white: #F5F5F5;
-	--mat-light-gray: #E0E0E0;
-	--mat-dark-teal: #00796B;
-	--mat-blue: #2196F3;
-	--mat-red: #f44336;
-	--mat-yellow: #FFC107;
-	--mat-dark-yellow: #F57C00;
+  --mat-green: #4caf50;
+  --mat-dark-green: #388e3c;
+  --mat-teal: #009688;
+  --mat-cyan: #00bcd4;
+  --mat-white: #f5f5f5;
+  --mat-light-gray: #e0e0e0;
+  --mat-dark-teal: #00796b;
+  --mat-blue: #2196f3;
+  --mat-red: #f44336;
+  --mat-yellow: #ffc107;
+  --mat-dark-yellow: #f57c00;
 }
 </style>
