@@ -28,7 +28,7 @@
               invalid-feedback="Floor is required"
               class="mb-2 mr-sm-2 mb-sm-0"
             >
-              <b-form-input id="name-input" v-model="floor" :state="floorState" required></b-form-input>
+              <b-form-input id="name-input" v-model.number="floor" :state="floorState" required></b-form-input>
             </b-form-group>
           </b-col>
           <b-col cols="6">
@@ -39,7 +39,7 @@
               invalid-feedback="Zone is required"
               class="mb-2 mr-sm-2 mb-sm-0"
             >
-              <b-form-input id="name-input" v-model="zone" :state="zoneState" required></b-form-input>
+              <b-form-input id="name-input" v-model.number="zone" :state="zoneState" required></b-form-input>
             </b-form-group>
           </b-col>
           <b-col cols="6">
@@ -50,7 +50,7 @@
               invalid-feedback="Height is required"
               class="mb-2 mr-sm-2 mb-sm-0 mt-2"
             >
-              <b-form-input id="name-input" v-model="zoneHeight" :state=" zoneHeightState" required></b-form-input>
+              <b-form-input id="name-input" v-model.number="zoneHeight" :state=" zoneHeightState" required></b-form-input>
             </b-form-group>
           </b-col>
           <b-col cols="6">
@@ -80,6 +80,7 @@
                 <strong>{{total}}</strong>
                 Slots
               </h5>
+           
             </div>
           </b-col>
         </b-row>
@@ -122,11 +123,18 @@ export default {
       floors: db.collection("floors")
     };
   },
+  computed: {
+    total: function(e) {
+      let floor = this.floors;
+      let zone = this.zone;
+      let zoneHeight = this.zoneHeight;
+      let width = this.selected;
+      total = floor * zone * zoneHeight * width;
+      //console.log("total ", this.total + " Slots");
+      return total;
+    }
+  },
   methods: {
-    createParking() {
-      let calSlots = this.floor * this.zone * this.zoneHeight * this.zoneWidth;
-      console.log("total ", calSlots);
-    },
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity();
       this.floorState = valid;
@@ -165,11 +173,11 @@ export default {
       console.log("zone", this.zone);
       console.log("zoneHeight", this.zoneHeight);
       console.log("zoneWidth", this.selected);
-      this.total = this.floor * this.zone * this.zoneHeight * this.selected;
-      console.log("total ", this.total + " Slots");
 
       let num = parseInt(this.floor);
       // var batch = db.batch();
+
+      this.total = this.floor *this.zone * this.zoneHeight * this.selected
 
       let dataFloor = {
         height: this.zoneHeight,
@@ -191,8 +199,6 @@ export default {
               .collection("zoneDetail")
               .doc("zone" + (zone + 1).toString())
               .set(dataTest);
-
-
           }
         }
       }
