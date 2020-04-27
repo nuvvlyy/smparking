@@ -4,11 +4,12 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 let currentFloor = window.localStorage.getItem('floor');
-let test = 5
+let zoneSelect = window.localStorage.getItem('zoneSelect');
 
 export default new Vuex.Store({
   state: {
-    floor: currentFloor
+    floor: currentFloor,
+    zoneSelect : zoneSelect
   },
   mutations: {
     changeFloor(state, floor) {

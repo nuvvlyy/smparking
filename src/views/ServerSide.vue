@@ -1,4 +1,5 @@
 <template>
+
   <div class="page-wrapper d-flex align-items-stretch">
     <div class="container-fluid">
       <div class="row">
@@ -17,7 +18,7 @@
           </table>
         </div>
       </div>
-      <div class="display-1 " v-if="notFound == true">Floor not found</div>
+      <div class="display-1" v-if="notFound == true">Floor not found</div>
       <button class="btn btn-info my-5" @click="test">test</button>
       <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
       <!-- <div class="mt-5">
@@ -26,13 +27,13 @@
         </ul>
       </div>-->
       <div class="border border-primary p-5">
-        <div class="box m-2"></div>
+        <div class="row" ><div v-for="i in 4" :key="i" class="box m-2 yellow-striped"></div></div>
         <div class="row border border-danger">
           <div class="col" v-for="i in 5" :key="i">
             <table class="table">
               <thead align="center">
                 <tr>
-                  <th colspan="2">FFF</th>
+                  <th colspan="2" @click="zoneSelect(i)">zone{{i}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -47,11 +48,7 @@
         </div>
       </div>
 
-      <div class="my-5">
-        <!-- <button @click="counterTest" class="btn btn-danger" name="5">counterTest</button>
-        <p class="mt-2" ref="text">counter {{counter}}</p> -->
-      </div>
-
+      <div class="my-5">- --></div>
     </div>
   </div>
 </template>
@@ -67,7 +64,7 @@ export default {
         height: null,
         width: null,
         zone: null,
-        notFound: null
+ 
       }
     };
   },
@@ -77,41 +74,41 @@ export default {
     };
   },
   methods: {
-    readData(){
-      
-    },
+    readData() {},
     test2() {
       let found = this.floors.find(
         floor => floor[".key"] == this.$store.state.floor
       );
       if (found) {
         console.log("found =>", found);
-        return{
-        floor : {
-          height: parseInt(found.height),
-          width: parseInt(found.width),
-          zone: parseInt(found.zone)}
+        return {
+          floor: {
+            height: parseInt(found.height),
+            width: parseInt(found.width),
+            zone: parseInt(found.zone)
+          }
         };
         console.log("floor =>", this.floor);
       } else {
-        this.notFound = true
+        this.notFound = true;
         console.log("Not Found Floor Data");
       }
     },
-    // test() {
-    //   console.log("floors", this.floors);
-    //   this.floors.forEach(floor => {
-    //     if (floor[".key"] == this.$store.state.floor) {
-    //       this.floor = {
-    //         height: parseInt(floor.height),
-    //         width: parseInt(floor.width),
-    //         zone: parseInt(floor.zone)
-    //       };
-    //     } else {
-    //       this.notFound = true;
-    //     }
-    //   });
-    // },
+    test() {
+      console.log("floors", this.floors);
+      this.floors.forEach(floor => {
+        if (floor[".key"] == this.$store.state.floor) {
+          this.floor = {
+            height: parseInt(floor.height),
+            width: parseInt(floor.width),
+            zone: parseInt(floor.zone)
+          };
+        }
+      });
+    },
+    zoneSelect(zone) {
+      console.log(zone);
+    },
     counterTest() {
       this.counter++;
       // console.log(this.$refs.text.baseURI);
@@ -179,6 +176,9 @@ export default {
 // .box a:hover{
 //   cursor: pointer;
 // }
+th {
+  cursor: pointer;
+}
 .yellow-striped {
   background-color: var(--mat-yellow);
   background-image: repeating-linear-gradient(
@@ -213,4 +213,5 @@ export default {
   --mat-yellow: #ffc107;
   --mat-dark-yellow: #f57c00;
 }
+
 </style>

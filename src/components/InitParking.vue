@@ -19,71 +19,122 @@
       @ok="handleOk"
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
-        <b-row>
-          <b-col cols="6">
-            <b-form-group
-              :state="floorState"
-              label="Number of Floor"
-              label-for="name-input"
-              invalid-feedback="Floor is required"
-              class="mb-2 mr-sm-2 mb-sm-0"
-            >
-              <b-form-input id="name-input" v-model.number="floor" :state="floorState" required></b-form-input>
-            </b-form-group>
-          </b-col>
-          <b-col cols="6">
-            <b-form-group
-              :state="zoneState"
-              label="Number of Zone"
-              label-for="name-input"
-              invalid-feedback="Zone is required"
-              class="mb-2 mr-sm-2 mb-sm-0"
-            >
-              <b-form-input id="name-input" v-model.number="zone" :state="zoneState" required></b-form-input>
-            </b-form-group>
-          </b-col>
-          <b-col cols="6">
-            <b-form-group
-              :state=" zoneHeightState"
-              label="Height"
-              label-for="name-input"
-              invalid-feedback="Height is required"
-              class="mb-2 mr-sm-2 mb-sm-0 mt-2"
-            >
-              <b-form-input id="name-input" v-model.number="zoneHeight" :state=" zoneHeightState" required></b-form-input>
-            </b-form-group>
-          </b-col>
-          <b-col cols="6">
-            <b-form-group class="mb-2 mr-sm-2 mb-sm-0 mt-2" label="Width">
-              <b-form-radio-group
-                label="mro"
-                v-model="selected"
-                :state="widthZoneState"
-                :options="options"
-                class="my-1"
-                value-field="item"
-                text-field="name"
-                disabled-field="notEnabled"
-              ></b-form-radio-group>
-              <div class="mt-1 ml-3">
-                Side:
-                <strong>{{ selected }}</strong>
-              </div>
-            </b-form-group>
-          </b-col>
+        <b-form-group
+          label-cols-lg="1"
+          label="SMparking"
+          label-size="lg"
+          label-class="font-weight-bold pt-0"
+          class="mb-0"
+        >
+          <b-form-group
+            label-cols-sm="4"
+            label="Floor:"
+            label-align-sm="right"
+            label-for="selectFloor"
+          >
+            <b-form-select
+              v-model="selectedFloor"
+              :state="widthZoneState"
+              :options="optionsFloor"
+              value-field="item"
+              text-field="name"
+              disabled-field="notEnabled"
+            ></b-form-select>
+            <b-form-input
+              v-if="selectedFloor == '2' "
+              id="selectFloor"
+              v-model="customfloor"
+              :state="customFloorState"
+              class="mt-2"
+              placeholder="Ex. 1-5, 8, 11-13"
+              required
+            ></b-form-input>
+          </b-form-group>
 
-          <b-col cols="12">
-            <hr />
-            <div class="text-center">
-              <h5>
-                Total:
-                <strong>{{total}}</strong>
-                Slots
-              </h5>
-           
+          <b-form-group
+            label-cols-sm="4"
+            label="Number of floor:"
+            label-align-sm="right"
+            :state="floorState"
+            label-for="numberFloor"
+            invalid-feedback="Floor is required"
+          >
+            <b-form-input
+              id="numberFloor"
+              v-model="floor"
+              :state="floorState"
+              type="number"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label-cols-sm="4"
+            label="Number of zone:"
+            label-align-sm="right"
+            label-for="numberZone"
+            :state="zoneState"
+            invalid-feedback="Zone is required"
+          >
+            <b-form-input id="numberZone" v-model="zone" :state="zoneState" type="number" required></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label-cols-sm="4"
+            label="Zone height:"
+            label-align-sm="right"
+            :state=" zoneHeightState"
+            label-for="numberZoneHeight"
+            invalid-feedback="Height is required"
+          >
+            <b-form-input
+              id="numberZoneHeight"
+              v-model.number="zoneHeight"
+              :state=" zoneHeightState"
+              type="number"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            label-cols-sm="4"
+            label="Width:"
+            label-align-sm="right"
+            label-for="zoneWidth"
+          >
+            <b-form-radio-group
+              id="zoneWidth"
+              v-model="selected"
+              :state="widthZoneState"
+              :options="options"
+              value-field="item"
+              text-field="name"
+              disabled-field="notEnabled"
+              class="mt-2"
+            ></b-form-radio-group>
+            <div class="mt-1 ml-3">
+              Side:
+              <strong>{{ selected }}</strong>
             </div>
-          </b-col>
-        </b-row>
+          </b-form-group>
+
+          <b-form-group
+            label-cols-sm="4"
+            label="Total Slots:"
+            label-size="lg"
+            label-class="font-weight-bold pt-0 text-primary"
+            label-align-sm="right"
+            label-for="totalSlots"
+          >
+            <b-form-input
+              v-model="total"
+              disabled="true"
+              id="totalSlots"
+              class="text-center"
+              size="lg"
+            ></b-form-input>
+          </b-form-group>
+        </b-form-group>
       </form>
     </b-modal>
   </div>
@@ -102,19 +153,26 @@ export default {
         { item: "1", name: "1 Side" },
         { item: "2", name: "2 Side" }
       ],
+      selectedFloor: "1",
+      optionsFloor: [
+        { item: "1", name: "All" },
+        { item: "2", name: "Custom adjective" }
+      ],
       name: "",
       nameState: null,
       submittedNames: [],
 
+      customfloor: null,
+      customFloorState: null,
       floor: null,
-      zone: null,
-      zoneHeight: null,
-      zoneWidth: null,
       floorState: null,
+      zone: null,
       zoneState: null,
+      zoneHeight: null,
       zoneHeightState: null,
-      widthZoneState: null,
-      total: null,
+      zoneWidth: null,
+      zoneWidthState: null,
+      //total: null,
       totalState: null
     };
   },
@@ -124,13 +182,14 @@ export default {
     };
   },
   computed: {
-    total: function(e) {
-      let floor = this.floors;
-      let zone = this.zone;
-      let zoneHeight = this.zoneHeight;
-      let width = this.selected;
-      total = floor * zone * zoneHeight * width;
+    total: function() {
+      // let floor = this.floor;
+      // let zone = this.zone;
+      // let zoneHeight = this.zoneHeight;
+      // let width = this.selected;
+      // total = floor * zone * zoneHeight * width;
       //console.log("total ", this.total + " Slots");
+      let total = this.floor * this.zone * this.zoneHeight * this.selected;
       return total;
     }
   },
@@ -146,6 +205,8 @@ export default {
       this.name = "";
       this.nameState = null;
 
+      this.selectedFloor = "1";
+      this.selected = "2";
       this.floor = "";
       this.zone = "";
       this.zoneHeight = "";
@@ -177,7 +238,7 @@ export default {
       let num = parseInt(this.floor);
       // var batch = db.batch();
 
-      this.total = this.floor *this.zone * this.zoneHeight * this.selected
+      this.total = this.floor * this.zone * this.zoneHeight * this.selected;
 
       let dataFloor = {
         height: this.zoneHeight,
@@ -185,20 +246,31 @@ export default {
         zone: this.zone,
         timeStramp: Date.now()
       };
-      let dataTest = { Test: "test" };
-      for (let index = 0; index < num; index++) {
+      let dataTest = { id1: "handicap" };
+      let idStatus = { status: "active" };
+      for (let floor = 0; floor < num; floor++) {
         let setFloors = db
           .collection("floors")
-          .doc((index + 1).toString())
+          .doc((floor + 1).toString())
           .set(dataFloor);
         if (parseInt(this.zone) != 0) {
           for (let zone = 0; zone < parseInt(this.zone); zone++) {
             let setZoneDetail = db
               .collection("floors")
-              .doc((index + 1).toString())
+              .doc((floor + 1).toString())
               .collection("zoneDetail")
               .doc("zone" + (zone + 1).toString())
               .set(dataTest);
+            for (let slot = 0;slot < parseInt(this.zoneHeight * this.selected);slot++) {
+              let setSlotDetail = db
+                .collection("floors")
+                .doc((floor + 1).toString())
+                .collection("zoneDetail")
+                .doc("zone" + (zone + 1).toString())
+                .collection("SlotDetail")
+                .doc("id" + (slot + 1).toString())
+                .set(idStatus);
+            }
           }
         }
       }

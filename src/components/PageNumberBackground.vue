@@ -1,6 +1,6 @@
 <template>
   <div class="page-number">
-    <p class="text-background text-floor">Floor</p>
+    <p class="text-background text-floor">Level</p>
     <p class="text-background text-number mt-3">{{this.$store.getters.current}}</p>
   </div>
 </template>

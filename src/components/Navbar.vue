@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <i class="fas fa-globe-asia mr-2"></i>
+      <i class="fas fa-car mr-2"></i>
       <a class="navbar-brand" href="#">
         <!-- <img
           src="/docs/4.0/assets/brand/bootstrap-solid.svg"

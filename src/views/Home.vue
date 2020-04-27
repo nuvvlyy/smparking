@@ -1,5 +1,6 @@
 <template>
-  <div class="home container bg-white">
+  <div class="home container bg-white ">
+   
     <!-- <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />-->
     <div class="row h-100 d-inline-flex p-2">
@@ -29,6 +30,7 @@ import { db } from "../firebase";
 export default {
   name: "Home",
   components: { Login },
+
 
   methods: {
     resetDB() {
@@ -82,6 +84,7 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
 .home {
   font-family: "Raleway", sans-serif;
+
 }
 .title {
   font-size: 10em;
@@ -89,4 +92,7 @@ export default {
 .home {
   height: 100vh;
 }
+
+
+
 </style>
