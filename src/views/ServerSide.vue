@@ -21,6 +21,17 @@
       <div class="display-1" v-if="notFound == true">Floor not found</div>
       <button class="btn btn-info my-5" @click="test">test</button>
       <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
+
+<div class="border m-4">
+<div class="btn btn-primary m-2">primary</div>
+<div class="btn btn-secondary m-2">secondary</div>
+<div class="btn btn-success m-2">success</div>
+<div class="btn btn-info m-2">info</div>
+<div class="btn btn-warning m-2">warning</div>
+<div class="btn btn-danger m-2">danger</div>
+
+</div>
+
       <!-- <div class="mt-5">
         <ul v-for="i in floor.zone" :key="i">
           <li>ss</li>
@@ -29,7 +40,7 @@
       <div class="border border-primary p-5">
         <div class="row" ><div v-for="i in 4" :key="i" class="box m-2 yellow-striped"></div></div>
         <div class="row border border-danger">
-          <div class="col" v-for="i in 5" :key="i">
+          <div class="col" v-for="i in 20" :key="i">
             <table class="table">
               <thead align="center">
                 <tr>
@@ -39,7 +50,7 @@
               <tbody>
                 <tr v-for="i in 3" :key="i">
                   <td v-for="i in 2" :key="i">
-                    <div class="rectangle empty" @click="infoSpot(i)"></div>
+                    <div class="rectangle handicap" @click="infoSpot(i)"></div>
                   </td>
                 </tr>
               </tbody>
@@ -47,8 +58,6 @@
           </div>
         </div>
       </div>
-
-      <div class="my-5">- --></div>
     </div>
   </div>
 </template>
@@ -188,7 +197,7 @@ th {
     rgba(1, 1, 1, 0) 4px,
     rgba(1, 1, 1, 0) 8px
   );
-  box-shadow: inset 0 0 0 4px #ffc107;
+  box-shadow: inset 0 0 0 4px #ffb74d;
 }
 .handicap {
   background-color: var(--mat-blue);
@@ -208,9 +217,9 @@ th {
   --mat-white: #f5f5f5;
   --mat-light-gray: #e0e0e0;
   --mat-dark-teal: #00796b;
-  --mat-blue: #2196f3;
+  --mat-blue: #0086c3;
   --mat-red: #f44336;
-  --mat-yellow: #ffc107;
+  --mat-yellow: #ffb74d;
   --mat-dark-yellow: #f57c00;
 }
 

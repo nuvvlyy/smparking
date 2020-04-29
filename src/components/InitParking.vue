@@ -41,7 +41,7 @@
               disabled-field="notEnabled"
             ></b-form-select>
             <b-form-input
-              v-if="selectedFloor == '2' "
+              v-if="selectedFloor == '2'"
               id="selectFloor"
               v-model="customfloor"
               :state="customFloorState"
@@ -65,6 +65,7 @@
               :state="floorState"
               type="number"
               required
+              placeholder="Max: 100"
             ></b-form-input>
           </b-form-group>
 
@@ -76,22 +77,30 @@
             :state="zoneState"
             invalid-feedback="Zone is required"
           >
-            <b-form-input id="numberZone" v-model="zone" :state="zoneState" type="number" required></b-form-input>
+            <b-form-input
+              id="numberZone"
+              v-model="zone"
+              :state="zoneState"
+              type="number"
+              placeholder="Max: 100"
+              required
+            ></b-form-input>
           </b-form-group>
 
           <b-form-group
             label-cols-sm="4"
             label="Zone height:"
             label-align-sm="right"
-            :state=" zoneHeightState"
+            :state="zoneHeightState"
             label-for="numberZoneHeight"
             invalid-feedback="Height is required"
           >
             <b-form-input
               id="numberZoneHeight"
               v-model.number="zoneHeight"
-              :state=" zoneHeightState"
+              :state="zoneHeightState"
               type="number"
+              placeholder="Max: 100"
               required
             ></b-form-input>
           </b-form-group>
@@ -207,9 +216,9 @@ export default {
 
       this.selectedFloor = "1";
       this.selected = "2";
-      this.floor = "";
-      this.zone = "";
-      this.zoneHeight = "";
+      this.floor = null;
+      this.zone = null;
+      this.zoneHeight = null;
       this.floorState = null;
       this.zoneState = null;
       this.zoneHeightState = null;
@@ -248,6 +257,23 @@ export default {
       };
       let dataTest = { id1: "handicap" };
       let idStatus = { status: "active" };
+
+      let jsonData =[{'floors':{'.key':'1','height':'5','zone':'5','whidth':'2','timeStramp':1588069179984},'zoneDetail':[{'.key':'zone1','id1':'handicap'},{'.key':'zone2'}]}  //{'zoneDetail':{klsd:ifjs}}
+      ,{'.key':'2','height':'5','zone':'5','whidth':'2','timeStramp':1588069179984}]
+
+      let ex ={"lambeosaurus": {"dimensions": {"height" : 2.1,"length" : 12.5,"weight": 5000 }}}
+      console.log(jsonData);
+      console.log('ex =>',ex)
+      console.log('Floors[]',this.floors)
+
+      // for (let floor = 0; floor < num; floor++) {
+      //   let setFloors = db
+      //     .collection("floors")
+      //     .doc((floor + 1).toString())
+      //     .set(jsonData);
+      // }
+
+/** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
       for (let floor = 0; floor < num; floor++) {
         let setFloors = db
           .collection("floors")
@@ -261,7 +287,11 @@ export default {
               .collection("zoneDetail")
               .doc("zone" + (zone + 1).toString())
               .set(dataTest);
-            for (let slot = 0;slot < parseInt(this.zoneHeight * this.selected);slot++) {
+            for (
+              let slot = 0;
+              slot < parseInt(this.zoneHeight * this.selected);
+              slot++
+            ) {
               let setSlotDetail = db
                 .collection("floors")
                 .doc((floor + 1).toString())
@@ -274,6 +304,36 @@ export default {
           }
         }
       }
+
+
+
+
+
+
+    // Get a new write batch
+let batch = db.batch();
+
+// Set the value of 'NYC'
+let nycRef = db.collection('cities').doc('NYC');
+batch.set(nycRef, {name: 'New York City'});
+
+// // Update the population of 'SF'
+// let sfRef = db.collection('cities').doc('SF');
+// batch.update(sfRef, {population: 1000000});
+
+// // Delete the city 'LA'
+// let laRef = db.collection('cities').doc('LA');
+// batch.delete(laRef);
+
+// Commit the batch
+return batch.commit().then(function () {
+  // ...
+});
+
+
+
+
+
 
       //let setDoc = db.collection('floors').doc('1').collection('zoneDetail').doc('zone3').set(dataFloor)
       // Hide the modal manually

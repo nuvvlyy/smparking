@@ -3,9 +3,11 @@
    
     <!-- <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />-->
+
+    
     <div class="row h-100 d-inline-flex p-2">
       <div class="col-sm-12 my-auto">
-        <img src="/png/bg1.png" class="img-fluid" alt="ตั้งใจทำงานอีสัส" width="500px" />
+        <img src="/png/wantedTheme.jpg" class="img-fluid" alt="wantedTheme" width="500px" />
         <h1 class="title">Login</h1>
         <a
           class="btn btn-warning btn-login m-2"

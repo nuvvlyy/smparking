@@ -28,7 +28,7 @@
             data-toggle="modal"
             data-target="#initParking"
             @click="$bvModal.show('initParkingg')"
-          >Setting</a>
+          >Gennerate</a>
           </li>
         </ul>
       </div>

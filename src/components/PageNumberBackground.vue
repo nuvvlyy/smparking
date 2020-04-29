@@ -17,7 +17,7 @@ export default {
 </script>
 <style lang="scss">
 .text-background {
-  color: rgb(199, 199, 199);
+  color: #bad1d0;
   position: fixed;
   font-weight: 400;
   opacity: 50%;

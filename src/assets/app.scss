@@ -1,5 +1,11 @@
 @import "~bootstrap/scss/bootstrap";
 @import '~bootstrap-vue/src/index.scss';
+ 
+
+$danger:#af4448;
+$info:#81b9bf;
+$warning:#ffb74d;
+$success:#94af76;
 
 body{
     margin-top: auto;
@@ -15,5 +21,46 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #6649b8;
+  background: #82ada9;
+}
+
+.btn{
+	&.btn-danger{
+		background: $danger;
+		border-color: $danger;
+		&:hover, &:focus{
+			background: $danger !important;
+			border-color: $danger !important;
+		}
+	}
+}
+.btn{
+	&.btn-info{
+		background: $info;
+		border-color: $info;
+		&:hover, &:focus{
+			background: $info !important;
+			border-color: $info !important;
+		}
+	}
+}
+.btn{
+	&.btn-warning{
+		background: $warning;
+		border-color: $warning;
+		&:hover, &:focus{
+			background: $warning !important;
+			border-color: $warning !important;
+		}
+	}
+}
+.btn{
+	&.btn-success{
+		background: $success;
+		border-color: $success;
+		&:hover, &:focus{
+			background: $success !important;
+			border-color: $success !important;
+		}
+	}
 }

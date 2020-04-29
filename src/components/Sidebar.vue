@@ -43,7 +43,7 @@
                 </div>
               </fieldset>
 
-              <button type="submit" class="btn btn-warning d-blockmr-0 ml-auto">Apply Change</button>
+              <button type="submit" class="btn btn-secondary d-blockmr-0 ml-auto">Apply Change</button>
             </form>
           </li>
 
