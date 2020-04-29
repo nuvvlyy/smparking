@@ -2,7 +2,7 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <i class="fas fa-car mr-2"></i>
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="/">
         <!-- <img
           src="/docs/4.0/assets/brand/bootstrap-solid.svg"
           width="30"
@@ -23,8 +23,9 @@
           <li class="nav-item">
             <!-- <a href="#" class="nav-link" @click="setting">Setting</a> -->
           <a
-            class="nav-link"
-            type="submit"
+            class="nav-link btn btn-success mx-3"
+            style="color:white;"
+            type="button"
             data-toggle="modal"
             data-target="#initParking"
             @click="$bvModal.show('initParkingg')"

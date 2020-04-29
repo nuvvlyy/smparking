@@ -13,7 +13,7 @@
     <b-modal
       id="initParkingg"
       ref="modal"
-      title="Initialize Parking"
+      title="Gennerate Parking"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
@@ -23,7 +23,7 @@
           label-cols-lg="1"
           label="SMparking"
           label-size="lg"
-          label-class="font-weight-bold pt-0"
+          label-class="font-weight-bold pt-1 logo-primary h1"
           class="mb-0"
         >
           <b-form-group
@@ -64,6 +64,8 @@
               v-model="floor"
               :state="floorState"
               type="number"
+              min="0"
+              max="100"
               required
               placeholder="Max: 100"
             ></b-form-input>
@@ -82,6 +84,8 @@
               v-model="zone"
               :state="zoneState"
               type="number"
+              min="0"
+              max="100"
               placeholder="Max: 100"
               required
             ></b-form-input>
@@ -100,6 +104,8 @@
               v-model.number="zoneHeight"
               :state="zoneHeightState"
               type="number"
+              min="0"
+              max="100"
               placeholder="Max: 100"
               required
             ></b-form-input>
@@ -131,7 +137,7 @@
             label-cols-sm="4"
             label="Total Slots:"
             label-size="lg"
-            label-class="font-weight-bold pt-0 text-primary"
+            label-class="font-weight-bold pt-1 text-total"
             label-align-sm="right"
             label-for="totalSlots"
           >
@@ -258,13 +264,37 @@ export default {
       let dataTest = { id1: "handicap" };
       let idStatus = { status: "active" };
 
-      let jsonData =[{'floors':{'.key':'1','height':'5','zone':'5','whidth':'2','timeStramp':1588069179984},'zoneDetail':[{'.key':'zone1','id1':'handicap'},{'.key':'zone2'}]}  //{'zoneDetail':{klsd:ifjs}}
-      ,{'.key':'2','height':'5','zone':'5','whidth':'2','timeStramp':1588069179984}]
+      let jsonData = [
+        {
+          floors: {
+            ".key": "1",
+            height: "5",
+            zone: "5",
+            whidth: "2",
+            timeStramp: 1588069179984
+          },
+          zoneDetail: [
+            { ".key": "zone1", id1: "handicap" },
+            { ".key": "zone2" }
+          ]
+        }, //{'zoneDetail':{klsd:ifjs}}
+        {
+          ".key": "2",
+          height: "5",
+          zone: "5",
+          whidth: "2",
+          timeStramp: 1588069179984
+        }
+      ];
 
-      let ex ={"lambeosaurus": {"dimensions": {"height" : 2.1,"length" : 12.5,"weight": 5000 }}}
+      let ex = {
+        lambeosaurus: {
+          dimensions: { height: 2.1, length: 12.5, weight: 5000 }
+        }
+      };
       console.log(jsonData);
-      console.log('ex =>',ex)
-      console.log('Floors[]',this.floors)
+      console.log("ex =>", ex);
+      console.log("Floors[]", this.floors);
 
       // for (let floor = 0; floor < num; floor++) {
       //   let setFloors = db
@@ -273,7 +303,9 @@ export default {
       //     .set(jsonData);
       // }
 
-/** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
+      let az = ["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"];
+
+      /** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
       for (let floor = 0; floor < num; floor++) {
         let setFloors = db
           .collection("floors")
@@ -296,7 +328,7 @@ export default {
                 .collection("floors")
                 .doc((floor + 1).toString())
                 .collection("zoneDetail")
-                .doc("zone" + (zone + 1).toString())
+                .doc((floor + 1).toString() /*char*/+ "-" + (zone + 1).toString())
                 .collection("SlotDetail")
                 .doc("id" + (slot + 1).toString())
                 .set(idStatus);
@@ -305,35 +337,25 @@ export default {
         }
       }
 
+      // Get a new write batch
+      let batch = db.batch();
 
+      // Set the value of 'NYC'
+      let nycRef = db.collection("cities").doc("NYC");
+      batch.set(nycRef, { name: "New York City" });
 
+      // // Update the population of 'SF'
+      // let sfRef = db.collection('cities').doc('SF');
+      // batch.update(sfRef, {population: 1000000});
 
+      // // Delete the city 'LA'
+      // let laRef = db.collection('cities').doc('LA');
+      // batch.delete(laRef);
 
-
-    // Get a new write batch
-let batch = db.batch();
-
-// Set the value of 'NYC'
-let nycRef = db.collection('cities').doc('NYC');
-batch.set(nycRef, {name: 'New York City'});
-
-// // Update the population of 'SF'
-// let sfRef = db.collection('cities').doc('SF');
-// batch.update(sfRef, {population: 1000000});
-
-// // Delete the city 'LA'
-// let laRef = db.collection('cities').doc('LA');
-// batch.delete(laRef);
-
-// Commit the batch
-return batch.commit().then(function () {
-  // ...
-});
-
-
-
-
-
+      // Commit the batch
+      return batch.commit().then(function() {
+        // ...
+      });
 
       //let setDoc = db.collection('floors').doc('1').collection('zoneDetail').doc('zone3').set(dataFloor)
       // Hide the modal manually
@@ -344,3 +366,11 @@ return batch.commit().then(function () {
   }
 };
 </script>
+<style lang="scss">
+.text-total {
+  color: #81b9bf;
+}
+.logo-primary {
+  color: #aebfbe;
+}
+</style>
