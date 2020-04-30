@@ -16,9 +16,9 @@
               <router-view></router-view>
               <div>
                 <section>
-                  <nav aria-label="Page navigation example">
+                  <nav aria-label="Page navigation ">
                     <div class="pagination overflow-auto justify-content-center">
-                      <div class="row">
+                      <div class>
                         <b-pagination-nav
                           pills
                           v-model="currentPage"
@@ -26,11 +26,26 @@
                           :number-of-pages="rows"
                           use-router
                         ></b-pagination-nav>
-                        <b-form-input pills v-model="text" placeholder="Enter your name"></b-form-input>
-                        <b-button pill variant="info">GO</b-button>
                       </div>
-
-                      <p class="mx-3">Current Page: {{ currentPage }}</p>
+                      <div>
+                        <b-form inline class="mx-2">
+                          <b-row>
+                            <b-col sm="2">
+                              <b-form-input
+                                id="goFloor"
+                                v-model="goFloor"
+                                class="mb-2 mr-sm-2 mb-sm-0 text-center"
+                                type="number"
+                                min="1"
+                                max="100"
+                                :placeholder="[[currentPage]]"
+                              ></b-form-input>
+                            </b-col>
+                          </b-row>
+                          <b-button type="submit" pill variant="info">Go</b-button>
+                        </b-form>
+                      </div>
+                      <!-- <p class="mx-3">Current Page: {{ currentPage }}</p> -->
                     </div>
                   </nav>
                 </section>
@@ -122,7 +137,8 @@ export default {
   updated() {
     this.$store.commit("changeFloor", this.currentPage);
     //console.log('update Config')
-  }
+  },
+  onSubmit(e) {}
 };
 </script>
 <style lang="scss">

@@ -82,12 +82,12 @@
             </div>
           </div>
           <div>
-            <!-- <router-link
+            <router-link
               to="/config"
               tag="button"
               title="Config"
               class="btn btn-info btn-lg m-2"
-            >To Config</router-link> -->
+            >To Config</router-link>
           </div>
         </div>
       </div>
