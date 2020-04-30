@@ -3,14 +3,9 @@
     <nav aria-label="Page navigation example">
       <div class="pagination overflow-auto justify-content-center">
         <div>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            first-number
-            variant
-          ></b-pagination>
+          <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage" first-number></b-pagination>
         </div>
+
       </div>
     </nav>
   </div>
@@ -29,34 +24,7 @@ export default {
 </script>
 <style lang="scss">
 $pageNaviColor: #81b9bf;
-// .pagination > li > a {
-//   background-color: white;
-//   color: $pageNaviColor;
-// }
 
-// .pagination > li > a:focus,
-// .pagination > li > a:hover,
-// .pagination > li > span:focus,
-// .pagination > li > span:hover {
-//   color: $pageNaviColor;
-//   background-color: #eee;
-//   border-color: #ddd;
-// }
-
-// .pagination > .active > a {
-//   color: white;
-//   background-color: $pageNaviColor;
-//   border: solid 1px $pageNaviColor;
-// }
-
-// .pagination > .active > a:hover {
-//   background-color: $pageNaviColor;
-//   border: solid 1px $pageNaviColor;
-// }
-
-// .pagination > li > a, .pagination > li > span{
-//      color:black !Important;
-// }
 .pagination > .active > a {
   color: white;
   background-color: $pageNaviColor !important;

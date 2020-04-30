@@ -1,6 +1,5 @@
 <template>
-
-  <div class="page-wrapper d-flex align-items-stretch">
+  <div class="page-wrapper d-flex align-items-stretch h-100">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-1" v-for="(i,index) in floor.zone" :key="index">
@@ -18,29 +17,33 @@
           </table>
         </div>
       </div>
-      <div class="display-1" v-if="notFound == true">Floor not found</div>
+
+      <!-- <div class="display-1" v-if="notFound == true">Floor not found</div>
       <button class="btn btn-info my-5" @click="test">test</button>
       <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
 
-<div class="border m-4">
-<div class="btn btn-primary m-2">primary</div>
-<div class="btn btn-secondary m-2">secondary</div>
-<div class="btn btn-success m-2">success</div>
-<div class="btn btn-info m-2">info</div>
-<div class="btn btn-warning m-2">warning</div>
-<div class="btn btn-danger m-2">danger</div>
-
-</div>
+      <div class="border m-4">
+        <div class="btn btn-primary m-2">primary</div>
+        <div class="btn btn-secondary m-2">secondary</div>
+        <div class="btn btn-success m-2">success</div>
+        <div class="btn btn-info m-2">info</div>
+        <div class="btn btn-warning m-2">warning</div>
+        <div class="btn btn-danger m-2">danger</div>
+      </div> -->
 
       <!-- <div class="mt-5">
         <ul v-for="i in floor.zone" :key="i">
           <li>ss</li>
         </ul>
       </div>-->
-      <div class="border border-primary p-5">
-        <div class="row" ><div v-for="i in 4" :key="i" class="box m-2 yellow-striped"></div></div>
+
+      <!-- border border-primary p-5 -->
+      <div class="parking"> 
+        <div class="row">
+          <div v-for="i in 4" :key="i" class="box m-2 yellow-striped"></div>
+        </div>
         <div class="row border border-danger">
-          <div class="col" v-for="i in 20" :key="i">
+          <div class="col" v-for="i in 10" :key="i">
             <table class="table">
               <thead align="center">
                 <tr>
@@ -50,13 +53,14 @@
               <tbody>
                 <tr v-for="i in 3" :key="i">
                   <td v-for="i in 2" :key="i">
-                    <div class="rectangle handicap" @click="infoSpot(i)"></div>
+                    <div class="rectangle empty" @click="infoSpot(i)"></div>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+        
       </div>
     </div>
   </div>
@@ -72,8 +76,7 @@ export default {
       floor: {
         height: null,
         width: null,
-        zone: null,
- 
+        zone: null
       }
     };
   },
@@ -179,7 +182,7 @@ export default {
 .rectangle {
   width: 30px;
   height: 20px;
-  background: rgb(200, 200, 200);
+  background:#c2c2c2;
   cursor: pointer;
 }
 // .box a:hover{
@@ -210,17 +213,20 @@ th {
 }
 
 :root {
-  --mat-green: #4caf50;
-  --mat-dark-green: #388e3c;
+  --mat-green: #c8e6c9;
+  --mat-dark-green: #97b498;
   --mat-teal: #009688;
   --mat-cyan: #00bcd4;
   --mat-white: #f5f5f5;
   --mat-light-gray: #e0e0e0;
   --mat-dark-teal: #00796b;
-  --mat-blue: #0086c3;
+  --mat-blue: #5d99c6;
   --mat-red: #f44336;
   --mat-yellow: #ffb74d;
   --mat-dark-yellow: #f57c00;
 }
-
+.parking{
+min-width: 100%;
+min-height: 100%;
+}
 </style>

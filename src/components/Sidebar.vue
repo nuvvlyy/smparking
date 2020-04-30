@@ -55,7 +55,7 @@
           </li>
         </ul>
 
-        <div class="mb-5">
+        <!-- <div class="mb-5">
           <h3 class="h6">Subscribe for newsletter</h3>
           <form action="#" class="colorlib-subscribe-form">
             <div class="form-group d-flex">
@@ -65,7 +65,7 @@
               <input type="text" class="form-control" placeholder="Enter Email Address" />
             </div>
           </form>
-        </div>
+        </div> -->
 
         <div class="footer">
           <p>SM PARKING</p>

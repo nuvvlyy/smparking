@@ -19,7 +19,7 @@
           <div class="row justify-content-md-center">
             <div class="col-4">
               <b-card
-              header="1st Floor"
+              
                 title="1st Floor"
                 img-alt="Image"
                 tag="article"
@@ -82,12 +82,12 @@
             </div>
           </div>
           <div>
-            <router-link
+            <!-- <router-link
               to="/config"
               tag="button"
               title="Config"
               class="btn btn-info btn-lg m-2"
-            >To Config</router-link>
+            >To Config</router-link> -->
           </div>
         </div>
       </div>

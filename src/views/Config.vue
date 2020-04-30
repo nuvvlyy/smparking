@@ -18,7 +18,7 @@
                 <section>
                   <nav aria-label="Page navigation example">
                     <div class="pagination overflow-auto justify-content-center">
-                      <div>
+                      <div class="row">
                         <b-pagination-nav
                           pills
                           v-model="currentPage"
@@ -26,7 +26,10 @@
                           :number-of-pages="rows"
                           use-router
                         ></b-pagination-nav>
+                        <b-form-input pills v-model="text" placeholder="Enter your name"></b-form-input>
+                        <b-button pill variant="info">GO</b-button>
                       </div>
+
                       <p class="mx-3">Current Page: {{ currentPage }}</p>
                     </div>
                   </nav>
@@ -112,19 +115,20 @@ export default {
   // }
   methods: {
     linkGen(pageNum) {
-     
       return pageNum === 1 ? "?" : `?floor=${pageNum}`;
     },
     changefloor() {}
   },
-  updated() { 
+  updated() {
     this.$store.commit("changeFloor", this.currentPage);
     //console.log('update Config')
   }
 };
 </script>
 <style lang="scss">
-  .config{
-    z-index: -1;
-  }
+.config {
+  z-index: -1;
+  min-height: 100%;
+  min-width: 100%;
+}
 </style>
