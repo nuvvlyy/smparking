@@ -45,7 +45,7 @@
               <tr>
                 <th :colspan="2" @click="zoneSelect(i)">
                   <div class="d-inline-flex align-items-center my-auto">
-                    <span>zone{{index+1}}</span>
+                    <span @click="zoneSelect(index)">zone{{index+1}}</span>
                     <div class="box ml-2 yellow-striped"></div>
                   </div>
                 </th>
@@ -134,7 +134,10 @@ export default {
         });
     },
     zoneSelect(zone) {
-      console.log(zone);
+      let tranZone = zone['.key']
+      let zonee = db.collection('floors').doc('1').collection('zoneDetail').doc(tranZone)
+      let getZone = zonee.get().then(doc => { console.log(doc.data())})
+      console.log(tranZone);
     },
     counterTest() {
       this.counter++;
