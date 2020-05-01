@@ -166,12 +166,12 @@ export default {
       selected: "2",
       options: [
         { item: "1", name: "1 Side" },
-        { item: "2", name: "2 Side" }
+        { item: "2", name: "2 Side" },
       ],
       selectedFloor: "1",
       optionsFloor: [
         { item: "1", name: "All" },
-        { item: "2", name: "Custom adjective" }
+        { item: "2", name: "Custom adjective" },
       ],
       name: "",
       nameState: null,
@@ -188,25 +188,19 @@ export default {
       zoneWidth: null,
       zoneWidthState: null,
       //total: null,
-      totalState: null
+      totalState: null,
     };
   },
   firestore() {
     return {
-      floors: db.collection("floors")
+      floors: db.collection("floors"),
     };
   },
   computed: {
     total: function() {
-      // let floor = this.floor;
-      // let zone = this.zone;
-      // let zoneHeight = this.zoneHeight;
-      // let width = this.selected;
-      // total = floor * zone * zoneHeight * width;
-      //console.log("total ", this.total + " Slots");
       let total = this.floor * this.zone * this.zoneHeight * this.selected;
       return total;
-    }
+    },
   },
   methods: {
     checkFormValidity() {
@@ -237,7 +231,37 @@ export default {
       this.handleSubmit();
     },
     toFirebase() {},
+    resetCollection() {
+      // let citiesRef = db.collection("floors");
+      // let allCities = citiesRef
+      //   .get()
+      //   .then(snapshot => {
+      //     snapshot.forEach(doc => {
+      //       if (!doc.exists) {
+      //         console.log("No such document!");
+      //       } else {
+      //         console.log("Document data:", doc.id, "=>", doc.data());
+      //       }
+      //     });
+      //   })
+      //   .catch(err => {
+      //     console.log("Error getting documents", err);
+      //   });
+
+      /* Delete Collection */
+      db.collection("floors")
+        .get()
+        .then((res) => {
+          res.forEach((element) => {
+            element.ref.delete();
+          });
+        })
+        .catch((err) => {
+          console.log("Error getting documents", err);
+        });
+    },
     handleSubmit() {
+      this.resetCollection();
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return;
@@ -245,10 +269,10 @@ export default {
       // Push the name to submitted names
       ////this.submittedNames.push(this.name);
       this.submittedNames.push(this.floor);
-      console.log("floor", this.floor);
-      console.log("zone", this.zone);
-      console.log("zoneHeight", this.zoneHeight);
-      console.log("zoneWidth", this.selected);
+      // console.log("floor", this.floor);
+      // console.log("zone", this.zone);
+      // console.log("zoneHeight", this.zoneHeight);
+      // console.log("zoneWidth", this.selected);
 
       let num = parseInt(this.floor);
       // var batch = db.batch();
@@ -259,42 +283,42 @@ export default {
         height: this.zoneHeight,
         width: this.selected,
         zone: this.zone,
-        timeStramp: Date.now()
+        timeStramp: Date.now(),
       };
       let dataTest = { id1: "handicap" };
       let idStatus = { status: "active" };
 
-      let jsonData = [
-        {
-          floors: {
-            ".key": "1",
-            height: "5",
-            zone: "5",
-            whidth: "2",
-            timeStramp: 1588069179984
-          },
-          zoneDetail: [
-            { ".key": "zone1", id1: "handicap" },
-            { ".key": "zone2" }
-          ]
-        }, //{'zoneDetail':{klsd:ifjs}}
-        {
-          ".key": "2",
-          height: "5",
-          zone: "5",
-          whidth: "2",
-          timeStramp: 1588069179984
-        }
-      ];
+      // let jsonData = [
+      //   {
+      //     floors: {
+      //       ".key": "1",
+      //       height: "5",
+      //       zone: "5",
+      //       whidth: "2",
+      //       timeStramp: 1588069179984
+      //     },
+      //     zoneDetail: [
+      //       { ".key": "zone1", id1: "handicap" },
+      //       { ".key": "zone2" }
+      //     ]
+      //   }, //{'zoneDetail':{klsd:ifjs}}
+      //   {
+      //     ".key": "2",
+      //     height: "5",
+      //     zone: "5",
+      //     whidth: "2",
+      //     timeStramp: 1588069179984
+      //   }
+      // ];
 
-      let ex = {
-        lambeosaurus: {
-          dimensions: { height: 2.1, length: 12.5, weight: 5000 }
-        }
-      };
-      console.log(jsonData);
-      console.log("ex =>", ex);
-      console.log("Floors[]", this.floors);
+      // let ex = {
+      //   lambeosaurus: {
+      //     dimensions: { height: 2.1, length: 12.5, weight: 5000 }
+      //   }
+      // };
+      // console.log(jsonData);
+      // console.log("ex =>", ex);
+      // console.log("Floors[]", this.floors);
 
       // for (let floor = 0; floor < num; floor++) {
       //   let setFloors = db
@@ -317,21 +341,20 @@ export default {
               .collection("floors")
               .doc((floor + 1).toString())
               .collection("zoneDetail")
-              .doc("zone" + (zone + 1).toString())
+              .doc("zone" + az.charAt(zone))
               .set(dataTest);
-            for (
-              let slot = 0;
-              slot < parseInt(this.zoneHeight * this.selected);
-              slot++
-            ) {
+            for ( let slot = 0; slot < parseInt(this.zoneHeight * this.selected);slot++) {
               let setSlotDetail = db
                 .collection("floors")
                 .doc((floor + 1).toString())
                 .collection("zoneDetail")
-                .doc("zone" + (zone + 1).toString())
+                .doc("zone" + az.charAt(zone))
                 .collection("SlotDetail")
                 .doc(
-                  (floor + 1).toString() + az.charAt(zone) + "-" + (slot + 1).toString()
+                  (floor + 1).toString() +
+                    az.charAt(zone) +
+                    "-" +
+                    (slot + 1).toString()
                 )
                 .set(idStatus);
             }
@@ -339,33 +362,34 @@ export default {
         }
       }
 
-      // Get a new write batch
-      let batch = db.batch();
+      /*                 */
+      // // Get a new write batch
+      // let batch = db.batch();
 
-      // Set the value of 'NYC'
-      let nycRef = db.collection("cities").doc("NYC");
-      batch.set(nycRef, { name: "New York City" });
+      // // Set the value of 'NYC'
+      // let nycRef = db.collection("cities").doc("NYC");
+      // batch.set(nycRef, { name: "New York City" });
 
-      // // Update the population of 'SF'
-      // let sfRef = db.collection('cities').doc('SF');
-      // batch.update(sfRef, {population: 1000000});
+      // // // Update the population of 'SF'
+      // // let sfRef = db.collection('cities').doc('SF');
+      // // batch.update(sfRef, {population: 1000000});
 
-      // // Delete the city 'LA'
-      // let laRef = db.collection('cities').doc('LA');
-      // batch.delete(laRef);
+      // // // Delete the city 'LA'
+      // // let laRef = db.collection('cities').doc('LA');
+      // // batch.delete(laRef);
 
-      // Commit the batch
-      return batch.commit().then(function() {
-        // ...
-      });
+      // // Commit the batch
+      // return batch.commit().then(function() {
+      //   // ...
+      // });
 
       //let setDoc = db.collection('floors').doc('1').collection('zoneDetail').doc('zone3').set(dataFloor)
       // Hide the modal manually
       this.$nextTick(() => {
         this.$bvModal.hide("initParking");
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">

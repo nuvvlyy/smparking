@@ -19,7 +19,6 @@
           <div class="row justify-content-md-center">
             <div class="col-4">
               <b-card
-              
                 title="1st Floor"
                 img-alt="Image"
                 tag="article"
@@ -88,6 +87,7 @@
               title="Config"
               class="btn btn-info btn-lg m-2"
             >To Config</router-link>
+            <button class="btn btn-danger btn-lg" @click="resetDB('floors')">Reset DB</button>
           </div>
         </div>
       </div>
@@ -106,48 +106,14 @@ export default {
 
   methods: {
     resetDB() {
-      function deleteCollection(db, collectionPath, batchSize) {
-        let collectionRef = db.collection(collectionPath);
-        let query = collectionRef.orderBy("floors").limit(batchSize);
-
-        return new Promise((resolve, reject) => {
-          deleteQueryBatch(db, query, resolve, reject);
+      console.log("reset");
+      db.collection("floors")
+        .get()
+        .then(res => {
+          res.forEach(element => {
+            element.ref.delete();
+          });
         });
-      }
-
-      function deleteQueryBatch(db, query, resolve, reject) {
-        query
-          .get()
-          .then(snapshot => {
-            // When there are no documents left, we are done
-            if (snapshot.size === 0) {
-              return 0;
-            }
-
-            // Delete documents in a batch
-            let batch = db.batch();
-            snapshot.docs.forEach(doc => {
-              batch.delete(doc.ref);
-            });
-
-            return batch.commit().then(() => {
-              return snapshot.size;
-            });
-          })
-          .then(numDeleted => {
-            if (numDeleted === 0) {
-              resolve();
-              return;
-            }
-
-            // Recurse on the next process tick, to avoid
-            // exploding the stack.
-            process.nextTick(() => {
-              deleteQueryBatch(db, query, resolve, reject);
-            });
-          })
-          .catch(reject);
-      }
     }
   }
 };

@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div class="display-1" v-if="notFound == true">Floor not found</div>
+      <!-- <div class="display-1" v-if="notFound == true">Floor not found</div> -->
       <button class="btn btn-info my-5" @click="test">test</button>
       <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
 
@@ -40,21 +40,22 @@
       <!-- border border-primary p-5 -->
       <div class="parking">
         <div class="row border border-danger">
-          <div class="col-3" v-for="i in 10" :key="i">
-            <table class="table ">
-             
-                <tr>
-                 <th :colspan="2" @click="zoneSelect(i)" > <div class="d-inline-flex align-items-center my-auto">   <span > zone{{i}} </span>  <div class="box ml-2 yellow-striped"></div></div></th>
-                
-                </tr>
-              <tbody >
-                <tr v-for="j in 3" :key="j"  >
+          <div class="col-3" v-for="(i,index) in zones" :key="index">
+            <table class="table">
+              <tr>
+                <th :colspan="2" @click="zoneSelect(i)">
+                  <div class="d-inline-flex align-items-center my-auto">
+                    <span>zone{{index+1}}</span>
+                    <div class="box ml-2 yellow-striped"></div>
+                  </div>
+                </th>
+              </tr>
+              <tbody>
+                <tr v-for="j in 3" :key="j">
                   <td v-for="i in 2" :key="i" align="center" valign="center">
                     <div class="rectangle empty" :title="'id' +[[i]]" @click="infoSpot(i)"></div>
                   </td>
-                  
                 </tr>
-
               </tbody>
             </table>
           </div>
@@ -71,6 +72,7 @@ export default {
       currentFloor: null,
       counter: 0,
       floors: [],
+      zones: [],
       floor: {
         height: null,
         width: null,
@@ -80,7 +82,8 @@ export default {
   },
   firestore() {
     return {
-      floors: db.collection("floors")
+      floors: db.collection("floors"),
+      zones: db.collection("floors").doc("1").collection('zoneDetail')
     };
   },
   methods: {
@@ -106,6 +109,7 @@ export default {
     },
     test() {
       console.log("floors", this.floors);
+      console.log("zones", this.zones);
       this.floors.forEach(floor => {
         if (floor[".key"] == this.$store.state.floor) {
           this.floor = {
@@ -115,6 +119,19 @@ export default {
           };
         }
       });
+      let cityRef = db.collection("floors").doc("1");
+      let getDoc = cityRef
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log("No such document!");
+          } else {
+            console.log("Document data:", doc.data());
+          }
+        })
+        .catch(err => {
+          console.log("Error getting document", err);
+        });
     },
     zoneSelect(zone) {
       console.log(zone);
@@ -196,7 +213,7 @@ td div {
 th {
   cursor: pointer;
 }
-td{
+td {
   margin: 0;
 }
 .yellow-striped {
@@ -237,7 +254,7 @@ td{
   min-width: 100%;
   min-height: 100%;
 }
-.nobr{
+.nobr {
   white-space: nowrap;
 }
 </style>
