@@ -39,23 +39,22 @@
 
       <!-- border border-primary p-5 -->
       <div class="parking">
-        <div class="row">
-          <div v-for="i in 4" :key="i" class="box m-2 yellow-striped"></div>
-        </div>
         <div class="row border border-danger">
           <div class="col-3" v-for="i in 10" :key="i">
-            <table class="table">
-              <thead align="center">
+            <table class="table ">
+             
                 <tr>
-                  <th class="d-block" colspan="3" @click="zoneSelect(i)"> <div class="box ml-2 yellow-striped"></div> <span class="d-line"> zone{{i}} </span></th>
+                 <th :colspan="2" @click="zoneSelect(i)" > <div class="d-inline-flex align-items-center my-auto">   <span > zone{{i}} </span>  <div class="box ml-2 yellow-striped"></div></div></th>
+                
                 </tr>
-              </thead>
-              <tbody>
-                <tr v-for="i in 3" :key="i">
-                  <td v-for="i in 2" :key="i">
+              <tbody >
+                <tr v-for="j in 3" :key="j"  >
+                  <td v-for="i in 2" :key="i" align="center" valign="center">
                     <div class="rectangle empty" :title="'id' +[[i]]" @click="infoSpot(i)"></div>
                   </td>
+                  
                 </tr>
+
               </tbody>
             </table>
           </div>
@@ -147,6 +146,13 @@ export default {
 };
 </script>
 <style lang="scss">
+// td:nth-child(1){
+//   align-: center;
+// }
+td div {
+  text-align: center;
+  vertical-align: middle;
+}
 .spot-list {
   //list-style-type: none;
   //margin: 0 auto;
@@ -189,6 +195,9 @@ export default {
 // }
 th {
   cursor: pointer;
+}
+td{
+  margin: 0;
 }
 .yellow-striped {
   background-color: var(--mat-yellow);
