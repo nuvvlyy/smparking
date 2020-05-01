@@ -18,7 +18,7 @@
 
             <form ref="form" class="form-row my-4 justify-content-center">
               <b-form-group label="Zone">
-                <input type="text" class="form-control" placeholder="Zone" />
+                <input type="text" class="form-control text-center" placeholder="Zone" />
               </b-form-group>
 
               <b-form-group label="height" class="form-group col-md-5">
@@ -40,6 +40,14 @@
                       <b-form-radio v-model="selected" name="some-radios" value="2">2 Side</b-form-radio>
                     </b-form-group>
                   </div>
+                  <b-form-checkbox
+                    id="checkbox-1"
+                    v-model="checkEntrance"
+                    name="checkbox-1"
+                    value="accepted"
+                    class="form-group col-md"
+                    unchecked-value="not_accepted"
+                  >Mark Entrance</b-form-checkbox>
                 </div>
               </fieldset>
 
@@ -48,10 +56,14 @@
           </li>
 
           <li>
-            <a href="#"><i class="fas fa-grip-horizontal mx-1"></i>Grid Views</a>
+            <a href="#">
+              <i class="fas fa-grip-horizontal mx-1"></i>Grid Views
+            </a>
           </li>
           <li>
-            <a href="#"><i class="fas fa-list-ul mx-1"></i>List Views</a>
+            <a href="#">
+              <i class="fas fa-list-ul mx-1"></i>List Views
+            </a>
           </li>
         </ul>
 
@@ -65,7 +77,7 @@
               <input type="text" class="form-control" placeholder="Enter Email Address" />
             </div>
           </form>
-        </div> -->
+        </div>-->
 
         <div class="footer">
           <p>SM PARKING</p>
@@ -79,7 +91,8 @@ export default {
   name: "Sidebar",
   data() {
     return {
-      selected: ""
+      selected: "",
+      checkEntrance: ""
     };
   },
   methods: {
@@ -111,6 +124,5 @@ export default {
 @import "./src/assets/sidebar.scss";
 #sidebar {
   min-height: 100%;
-  
 }
 </style>

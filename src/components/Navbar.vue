@@ -18,7 +18,7 @@
             <a href="#" class="nav-link">User Name</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">Edit</a>
+            <a href="#" class="nav-link" title="Edit Current Floor">Edit</a>
           </li>
           <li class="nav-item">
             <!-- <a href="#" class="nav-link" @click="setting">Setting</a> -->
@@ -29,6 +29,7 @@
             data-toggle="modal"
             data-target="#initParking"
             @click="$bvModal.show('initParkingg')"
+            title="Gennerate Parking"
           >Gennerate</a>
           </li>
         </ul>

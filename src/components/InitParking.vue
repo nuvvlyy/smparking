@@ -303,7 +303,7 @@ export default {
       //     .set(jsonData);
       // }
 
-      let az = ["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"];
+      let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
       /** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
       for (let floor = 0; floor < num; floor++) {
@@ -328,9 +328,11 @@ export default {
                 .collection("floors")
                 .doc((floor + 1).toString())
                 .collection("zoneDetail")
-                .doc((floor + 1).toString() /*char*/+ "-" + (zone + 1).toString())
+                .doc("zone" + (zone + 1).toString())
                 .collection("SlotDetail")
-                .doc("id" + (slot + 1).toString())
+                .doc(
+                  (floor + 1).toString() + az.charAt(zone) + "-" + (slot + 1).toString()
+                )
                 .set(idStatus);
             }
           }

@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <!-- <div class="display-1" v-if="notFound == true">Floor not found</div>
+      <div class="display-1" v-if="notFound == true">Floor not found</div>
       <button class="btn btn-info my-5" @click="test">test</button>
       <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
 
@@ -29,7 +29,7 @@
         <div class="btn btn-info m-2">info</div>
         <div class="btn btn-warning m-2">warning</div>
         <div class="btn btn-danger m-2">danger</div>
-      </div> -->
+      </div>
 
       <!-- <div class="mt-5">
         <ul v-for="i in floor.zone" :key="i">
@@ -38,29 +38,28 @@
       </div>-->
 
       <!-- border border-primary p-5 -->
-      <div class="parking"> 
+      <div class="parking">
         <div class="row">
           <div v-for="i in 4" :key="i" class="box m-2 yellow-striped"></div>
         </div>
         <div class="row border border-danger">
-          <div class="col" v-for="i in 10" :key="i">
+          <div class="col-3" v-for="i in 10" :key="i">
             <table class="table">
               <thead align="center">
                 <tr>
-                  <th colspan="2" @click="zoneSelect(i)">zone{{i}}</th>
+                  <th class="d-block" colspan="3" @click="zoneSelect(i)"> <div class="box ml-2 yellow-striped"></div> <span class="d-line"> zone{{i}} </span></th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="i in 3" :key="i">
                   <td v-for="i in 2" :key="i">
-                    <div class="rectangle empty" @click="infoSpot(i)"></div>
+                    <div class="rectangle empty" :title="'id' +[[i]]" @click="infoSpot(i)"></div>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-        
       </div>
     </div>
   </div>
@@ -182,7 +181,7 @@ export default {
 .rectangle {
   width: 30px;
   height: 20px;
-  background:#c2c2c2;
+  background: #c2c2c2;
   cursor: pointer;
 }
 // .box a:hover{
@@ -225,8 +224,11 @@ th {
   --mat-yellow: #ffb74d;
   --mat-dark-yellow: #f57c00;
 }
-.parking{
-min-width: 100%;
-min-height: 100%;
+.parking {
+  min-width: 100%;
+  min-height: 100%;
+}
+.nobr{
+  white-space: nowrap;
 }
 </style>
