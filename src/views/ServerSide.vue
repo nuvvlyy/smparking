@@ -19,17 +19,30 @@
       </div>
 
       <!-- <div class="display-1" v-if="notFound == true">Floor not found</div> -->
+
+        <div>
+          <b-nav>
+            <b-nav-item disabled>Symbol Color:</b-nav-item>
+            <b-nav-item disabled>Empty<div class="rectangle empty"></div></b-nav-item>
+            <b-nav-item disabled>Full<div class="rectangle full"></div></b-nav-item>
+            <b-nav-item disabled>Lady<div class="rectangle lady"></div></b-nav-item>
+            <b-nav-item disabled>Handicap<div class="rectangle handicap"></div></b-nav-item>
+            <b-nav-item disabled>Entrance<div class="box yellow-striped"></div></b-nav-item>
+            
+          </b-nav>
+        </div>
+   
       <button class="btn btn-info my-5" @click="test">test</button>
       <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
 
-      <div class="border m-4">
+      <!-- <div class="border m-4">
         <div class="btn btn-primary m-2">primary</div>
         <div class="btn btn-secondary m-2">secondary</div>
         <div class="btn btn-success m-2">success</div>
         <div class="btn btn-info m-2">info</div>
         <div class="btn btn-warning m-2">warning</div>
         <div class="btn btn-danger m-2">danger</div>
-      </div>
+      </div>-->
 
       <!-- <div class="mt-5">
         <ul v-for="i in floor.zone" :key="i">
@@ -40,12 +53,12 @@
       <!-- border border-primary p-5 -->
       <div class="parking">
         <div class="row border border-danger">
-          <div class="col-3" v-for="(i,index) in zones" :key="index">
+          <div class="col-3" v-for="(i,zone) in zones" :key="zone">
             <table class="table">
               <tr>
                 <th :colspan="2" @click="zoneSelect(i)">
                   <div class="d-inline-flex align-items-center my-auto">
-                    <span @click="zoneSelect(index)">zone{{index+1}}</span>
+                    <span @click="zoneSelect(zone)">zone{{zone+1}}</span>
                     <div class="box ml-2 yellow-striped"></div>
                   </div>
                 </th>
@@ -53,7 +66,7 @@
               <tbody>
                 <tr v-for="j in 3" :key="j">
                   <td v-for="i in 2" :key="i" align="center" valign="center">
-                    <div class="rectangle empty" :title="'id' +[[i]]" @click="infoSpot(i)"></div>
+                    <div class="rectangle lady" :title="'id' +[[i]]" @click="infoSpot(i)"></div>
                   </td>
                 </tr>
               </tbody>
@@ -83,7 +96,10 @@ export default {
   firestore() {
     return {
       floors: db.collection("floors"),
-      zones: db.collection("floors").doc("1").collection('zoneDetail')
+      zones: db
+        .collection("floors")
+        .doc("1")
+        .collection("zoneDetail")
     };
   },
   methods: {
@@ -134,9 +150,15 @@ export default {
         });
     },
     zoneSelect(zone) {
-      let tranZone = zone['.key']
-      let zonee = db.collection('floors').doc('1').collection('zoneDetail').doc(tranZone)
-      let getZone = zonee.get().then(doc => { console.log(doc.data())})
+      let tranZone = zone[".key"];
+      let zonee = db
+        .collection("floors")
+        .doc("1")
+        .collection("zoneDetail")
+        .doc(tranZone);
+      let getZone = zonee.get().then(doc => {
+        console.log(doc.data());
+      });
       console.log(tranZone);
     },
     counterTest() {
@@ -239,6 +261,9 @@ td {
 .full {
   background-color: var(--mat-red);
 }
+.lady {
+  background-color: var(--mat-pink);
+}
 
 :root {
   --mat-green: #c8e6c9;
@@ -252,6 +277,7 @@ td {
   --mat-red: #f44336;
   --mat-yellow: #ffb74d;
   --mat-dark-yellow: #f57c00;
+  --mat-pink: #fce4ec;
 }
 .parking {
   min-width: 100%;

@@ -47,7 +47,7 @@
                     value="accepted"
                     class="form-group col-md"
                     unchecked-value="not_accepted"
-                  >Mark Entrance</b-form-checkbox>
+                  >Mark <strong>Entrance</strong> this zone</b-form-checkbox>
                 </div>
               </fieldset>
 
