@@ -18,7 +18,7 @@
 
             <form ref="form" class="form-row my-4 justify-content-center">
               <b-form-group label="Zone">
-                <input type="text" class="form-control text-center" placeholder="Zone" />
+                <input v-model="zoneChange" type="text" class="form-control text-center" placeholder="Zone" />
               </b-form-group>
 
               <b-form-group label="height" class="form-group col-md-5">
@@ -41,9 +41,9 @@
                     </b-form-group>
                   </div>
                   <b-form-checkbox
-                    id="checkbox-1"
+                    id="markEntrance"
                     v-model="checkEntrance"
-                    name="checkbox-1"
+                    name="markEntrance"
                     value="accepted"
                     class="form-group col-md"
                     unchecked-value="not_accepted"
@@ -52,7 +52,8 @@
               </fieldset>
 
               <button type="submit" class="btn btn-secondary d-blockmr-0 ml-auto">Apply Change</button>
-            </form>
+            
+            </form><button class="btn btn-danger" @click="test">Test</button>
           </li>
 
           <li>
@@ -91,11 +92,28 @@ export default {
   name: "Sidebar",
   data() {
     return {
+      zoneSelect:null,
       selected: "",
-      checkEntrance: ""
+      //checkEntrance: ""
     };
   },
+  computed:{
+    zoneChange(){
+      return this.zoneSelect = this.$store.state.zoneSelect['.key']
+    },
+    checkEntrance(){
+      if(this.$store.state.zoneSelect.entrance == true){
+        return 'accepted'
+      }
+      
+    }
+  },
   methods: {
+    test(){
+      // this.zoneSelect = this.$store.state.zoneSelect['.key']
+      // console.log(this.zoneSelect)
+      //console.log(this.$store.state.zoneSelect.entrance)
+    },
     closeMenu() {
       if ($) {
         ("use strict");
@@ -116,6 +134,7 @@ export default {
     mounted() {
       $("#width").val(this.selected);
       console.log("work");
+     
     }
   }
 };

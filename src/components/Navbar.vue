@@ -23,6 +23,18 @@
           <li class="nav-item">
             <!-- <a href="#" class="nav-link" @click="setting">Setting</a> -->
           <a
+            class="nav-link btn btn-info mx-3"
+            style="color:white;"
+            type="button"
+            data-toggle="modal"
+            data-target="#editFloor"
+            @click="$bvModal.show('editFloorr')"
+            title="Edit Current Floor"
+          >Edit</a>
+          </li>
+          <li class="nav-item">
+            <!-- <a href="#" class="nav-link" @click="setting">Setting</a> -->
+          <a
             class="nav-link btn btn-success mx-3"
             style="color:white;"
             type="button"

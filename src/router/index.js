@@ -34,6 +34,12 @@ const routes = [
     //   part: 'config', query: { floor: 'id' },
     //   component: ServerSide
     // },
+    {
+      path: "/floor/:id",
+      name: "P_Detail",
+      component: Config,
+      props: true
+    },
     ]
   }
 ];

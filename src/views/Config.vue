@@ -28,7 +28,7 @@
                         ></b-pagination-nav>
                       </div>
                       <div>
-                        <b-form inline class="mx-2">
+                        <b-form inline class="mx-2" >
                           <b-row>
                             <b-col sm="2">
                               <b-form-input
@@ -42,7 +42,7 @@
                               ></b-form-input>
                             </b-col>
                           </b-row>
-                          <b-button type="submit" pill variant="info">Go</b-button>
+                          <b-button type="submit" pill variant="info" >Go</b-button>
                         </b-form>
                       </div>
                       <!-- <p class="mx-3">Current Page: {{ currentPage }}</p> -->
@@ -90,6 +90,8 @@
     <!-- <PageNavi /> -->
 
     <initParking></initParking>
+    <editFloor></editFloor>
+    <slotModal></slotModal>
   </div>
 </template>
 <script>
@@ -97,6 +99,8 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import PageNavi from "@/components/PageNavi";
 import InitParking from "@/components/InitParking";
+import EditFloor from "@/components/EditFloor";
+import SlotModal from "@/components/SlotModal";
 
 import PageNumber from "@/components/PageNumberBackground.vue";
 export default {
@@ -105,13 +109,16 @@ export default {
     Sidebar,
     PageNavi,
     InitParking,
+    EditFloor,
+    SlotModal,
     PageNumber
   },
   data() {
     return {
       rows: 100,
       perPage: 1,
-      currentPage: this.$store.state.floor
+      currentPage: this.$store.state.floor,
+      goFloor:null
     };
   },
   // data() {
@@ -131,12 +138,15 @@ export default {
   methods: {
     linkGen(pageNum) {
       return pageNum === 1 ? "?" : `?floor=${pageNum}`;
+      //return pageNum === 1 ? "?" : `config/floor/${pageNum}`;
     },
     changefloor() {}
   },
   updated() {
     this.$store.commit("changeFloor", this.currentPage);
-    //console.log('update Config')
+    //alert('update Config',this.rows)
+    console.log(this.currentPage)
+    
   },
   onSubmit(e) {}
 };

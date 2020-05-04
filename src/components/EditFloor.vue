@@ -1,5 +1,5 @@
 <template>
-  <div class="slotModal">
+  <div class="editFloor">
     <!-- <b-button v-b-modal.initParking>Open Modal</b-button> -->
     <!-- 
     <div class="mt-3">
@@ -11,9 +11,9 @@
     </div>-->
 
     <b-modal
-      id="slotModall"
+      id="editFloorr"
       ref="modal"
-      title="Slot Setting"
+      :title="'Edit floor '+[[$store.state.floor]]"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
@@ -26,34 +26,11 @@
           label-class="font-weight-bold pt-1 logo-primary h1"
           class="mb-0"
         >
-          <b-form-group
-            label-cols-sm="4"
-            label="Floor:"
-            label-align-sm="right"
-            label-for="selectFloor"
-          >
-            <b-form-select
-              v-model="selectedFloor"
-              :state="widthZoneState"
-              :options="optionsFloor"
-              value-field="item"
-              text-field="name"
-              disabled-field="notEnabled"
-            ></b-form-select>
-            <b-form-input
-              v-if="selectedFloor == '2'"
-              id="selectFloor"
-              v-model="customfloor"
-              :state="customFloorState"
-              class="mt-2"
-              placeholder="Ex. 1-5, 8, 11-13"
-              required
-            ></b-form-input>
-          </b-form-group>
+    
 
           <b-form-group
             label-cols-sm="4"
-            label="Number of floor:"
+            label="Floor:"
             label-align-sm="right"
             :state="floorState"
             label-for="numberFloor"
@@ -64,10 +41,8 @@
               v-model="floor"
               :state="floorState"
               type="number"
-              min="0"
-              max="100"
+              disabled
               required
-              placeholder="Max: 100"
             ></b-form-input>
           </b-form-group>
 
@@ -120,7 +95,7 @@
             <b-form-radio-group
               id="zoneWidth"
               v-model="selected"
-              :state="widthZoneState"
+              :state="zoneWidthState"
               :options="options"
               value-field="item"
               text-field="name"
@@ -132,8 +107,7 @@
               <strong>{{ selected }}</strong>
             </div>
           </b-form-group>
-
-          <b-form-group
+             <b-form-group
             label-cols-sm="4"
             label="Total Slots:"
             label-size="lg"
@@ -143,7 +117,7 @@
           >
             <b-form-input
               v-model="total"
-              disabled="true"
+             :disabled="true"
               id="totalSlots"
               class="text-center"
               size="lg"
@@ -159,7 +133,7 @@
 import { db } from "../firebase";
 import { firestore } from "firebase";
 export default {
-  name: "slotModal",
+  name: "EditFloor",
   data() {
     return {
       floors: [],
@@ -168,18 +142,14 @@ export default {
         { item: "1", name: "1 Side" },
         { item: "2", name: "2 Side" }
       ],
-      selectedFloor: "1",
-      optionsFloor: [
-        { item: "1", name: "All" },
-        { item: "2", name: "Custom adjective" }
-      ],
+      selectedFloor: null,
       name: "",
       nameState: null,
       submittedNames: [],
 
       customfloor: null,
       customFloorState: null,
-      floor: null,
+      floor: this.$store.state.floor,
       floorState: null,
       zone: null,
       zoneState: null,
@@ -198,15 +168,13 @@ export default {
   },
   computed: {
     total: function() {
-      // let floor = this.floor;
-      // let zone = this.zone;
-      // let zoneHeight = this.zoneHeight;
-      // let width = this.selected;
-      // total = floor * zone * zoneHeight * width;
-      //console.log("total ", this.total + " Slots");
-      let total = this.floor * this.zone * this.zoneHeight * this.selected;
+      let total = this.zone * this.zoneHeight * this.selected;
       return total;
     }
+    // currentFloor:function(){
+    //   let now =this.$store.state.floor
+    //   return  now
+    // }
   },
   methods: {
     checkFormValidity() {
@@ -220,9 +188,9 @@ export default {
       this.name = "";
       this.nameState = null;
 
-      this.selectedFloor = "1";
+      this.selectedFloor = this.$store.state.floor;
       this.selected = "2";
-      this.floor = null;
+      this.floor= this.$store.state.floor;
       this.zone = null;
       this.zoneHeight = null;
       this.floorState = null;
@@ -237,7 +205,36 @@ export default {
       this.handleSubmit();
     },
     toFirebase() {},
+    resetCollection() {
+      // let citiesRef = db.collection("floors");
+      // let allCities = citiesRef
+      //   .get()
+      //   .then(snapshot => {
+      //     snapshot.forEach(doc => {
+      //       if (!doc.exists) {
+      //         console.log("No such document!");
+      //       } else {
+      //         console.log("Document data:", doc.id, "=>", doc.data());
+      //       }
+      //     });
+      //   })
+      //   .catch(err => {
+      //     console.log("Error getting documents", err);
+      //   });
+      /* Delete Collection */
+      // db.collection("floors")
+      //   .get()
+      //   .then(res => {
+      //     res.forEach(element => {
+      //       element.ref.delete();
+      //     });
+      //   })
+      //   .catch(err => {
+      //     console.log("Error getting documents", err);
+      //   });
+    },
     handleSubmit() {
+      this.resetCollection();
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return;
@@ -245,10 +242,10 @@ export default {
       // Push the name to submitted names
       ////this.submittedNames.push(this.name);
       this.submittedNames.push(this.floor);
-      console.log("floor", this.floor);
-      console.log("zone", this.zone);
-      console.log("zoneHeight", this.zoneHeight);
-      console.log("zoneWidth", this.selected);
+      // console.log("floor", this.floor);
+      // console.log("zone", this.zone);
+      // console.log("zoneHeight", this.zoneHeight);
+      // console.log("zoneWidth", this.selected);
 
       let num = parseInt(this.floor);
       // var batch = db.batch();
@@ -256,114 +253,83 @@ export default {
       this.total = this.floor * this.zone * this.zoneHeight * this.selected;
 
       let dataFloor = {
-        height: this.zoneHeight,
-        width: this.selected,
-        zone: this.zone,
+        height: this.zoneHeight.toString(),
+        width: this.selected.toString(),
+        zone: this.zone.toString(),
         timeStramp: Date.now()
       };
-      let dataTest = { id1: "handicap" };
+      let zoneData = { id1: "handicap", entrance: false };
       let idStatus = { status: "active" };
 
-      let jsonData = [
-        {
-          floors: {
-            ".key": "1",
-            height: "5",
-            zone: "5",
-            whidth: "2",
-            timeStramp: 1588069179984
-          },
-          zoneDetail: [
-            { ".key": "zone1", id1: "handicap" },
-            { ".key": "zone2" }
-          ]
-        }, //{'zoneDetail':{klsd:ifjs}}
-        {
-          ".key": "2",
-          height: "5",
-          zone: "5",
-          whidth: "2",
-          timeStramp: 1588069179984
-        }
-      ];
-
-      let ex = {
-        lambeosaurus: {
-          dimensions: { height: 2.1, length: 12.5, weight: 5000 }
-        }
-      };
-      console.log(jsonData);
-      console.log("ex =>", ex);
-      console.log("Floors[]", this.floors);
-
-      // for (let floor = 0; floor < num; floor++) {
-      //   let setFloors = db
-      //     .collection("floors")
-      //     .doc((floor + 1).toString())
-      //     .set(jsonData);
-      // }
-
-      let az = ["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"];
+      let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
       /** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
-      for (let floor = 0; floor < num; floor++) {
-        let setFloors = db
-          .collection("floors")
-          .doc((floor + 1).toString())
-          .set(dataFloor);
-        if (parseInt(this.zone) != 0) {
-          for (let zone = 0; zone < parseInt(this.zone); zone++) {
-            let setZoneDetail = db
+
+      let setFloors = db
+        .collection("floors")
+        .doc(this.store.state.floor.toString())
+        .set(dataFloor);
+      if (parseInt(this.zone) != 0) {
+        for (let zone = 0; zone < parseInt(this.zone); zone++) {
+          let setZoneDetail = db
+            .collection("floors")
+            .doc((floor + 1).toString())
+            .collection("zoneDetail")
+            .doc("zone" + az.charAt(zone))
+            .set(zoneData);
+          for (
+            let slot = 0;
+            slot < parseInt(this.zoneHeight * this.selected);
+            slot++
+          ) {
+            let setSlotDetail = db
               .collection("floors")
               .doc((floor + 1).toString())
               .collection("zoneDetail")
-              .doc("zone" + (zone + 1).toString())
-              .set(dataTest);
-            for (
-              let slot = 0;
-              slot < parseInt(this.zoneHeight * this.selected);
-              slot++
-            ) {
-              let setSlotDetail = db
-                .collection("floors")
-                .doc((floor + 1).toString())
-                .collection("zoneDetail")
-                .doc((floor + 1).toString() /*char*/+ "-" + (zone + 1).toString())
-                .collection("SlotDetail")
-                .doc("id" + (slot + 1).toString())
-                .set(idStatus);
-            }
+              .doc("zone" + az.charAt(zone))
+              .collection("slotDetail")
+              .doc(
+                (floor + 1).toString() +
+                  az.charAt(zone) +
+                  "-" +
+                  (slot + 1).toString()
+              )
+              .set(idStatus);
           }
         }
       }
 
-      // Get a new write batch
-      let batch = db.batch();
+      /*                 */
+      // // Get a new write batch
+      // let batch = db.batch();
 
-      // Set the value of 'NYC'
-      let nycRef = db.collection("cities").doc("NYC");
-      batch.set(nycRef, { name: "New York City" });
+      // // Set the value of 'NYC'
+      // let nycRef = db.collection("cities").doc("NYC");
+      // batch.set(nycRef, { name: "New York City" });
 
-      // // Update the population of 'SF'
-      // let sfRef = db.collection('cities').doc('SF');
-      // batch.update(sfRef, {population: 1000000});
+      // // // Update the population of 'SF'
+      // // let sfRef = db.collection('cities').doc('SF');
+      // // batch.update(sfRef, {population: 1000000});
 
-      // // Delete the city 'LA'
-      // let laRef = db.collection('cities').doc('LA');
-      // batch.delete(laRef);
+      // // // Delete the city 'LA'
+      // // let laRef = db.collection('cities').doc('LA');
+      // // batch.delete(laRef);
 
-      // Commit the batch
-      return batch.commit().then(function() {
-        // ...
-      });
+      // // Commit the batch
+      // return batch.commit().then(function() {
+      //   // ...
+      // });
 
       //let setDoc = db.collection('floors').doc('1').collection('zoneDetail').doc('zone3').set(dataFloor)
       // Hide the modal manually
       this.$nextTick(() => {
-        this.$bvModal.hide("slotModal");
+        this.$bvModal.hide("editFloor");
       });
     }
   }
+  // updated() {
+  //   currentFloor :this.$store.state.floor
+  // }
 };
 </script>
 <style lang="scss">

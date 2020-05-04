@@ -17,8 +17,14 @@ export default new Vuex.Store({
       //console.log('function changeFloor')
       this.commit('saveData');
     },
+    changeZone(state, zone) {
+      state.zoneSelect = zone
+      //console.log('function changeFloor')
+      this.commit('saveData');
+    },
     saveData(state){
       window.localStorage.setItem("floor",JSON.stringify(state.floor));
+      window.localStorage.setItem("zoneSelect",JSON.stringify(state.zoneSelect));
     }
   }, getters: {
     current: state => {

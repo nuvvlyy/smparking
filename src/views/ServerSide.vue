@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper d-flex align-items-stretch h-100">
     <div class="container-fluid">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-1" v-for="(i,index) in floor.zone" :key="index">
           <table class="table table-light">
             <thead>
@@ -16,22 +16,36 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </div>-->
 
       <!-- <div class="display-1" v-if="notFound == true">Floor not found</div> -->
 
-        <div>
-          <b-nav>
-            <b-nav-item disabled>Symbol Color:</b-nav-item>
-            <b-nav-item disabled>Empty<div class="rectangle empty"></div></b-nav-item>
-            <b-nav-item disabled>Full<div class="rectangle full"></div></b-nav-item>
-            <b-nav-item disabled>Lady<div class="rectangle lady"></div></b-nav-item>
-            <b-nav-item disabled>Handicap<div class="rectangle handicap"></div></b-nav-item>
-            <b-nav-item disabled>Entrance<div class="box yellow-striped"></div></b-nav-item>
-            
-          </b-nav>
-        </div>
-   
+      <div>
+        <b-nav>
+          <b-nav-item disabled>Symbol Color:</b-nav-item>
+          <b-nav-item disabled>
+            Empty
+            <div class="rectangle empty"></div>
+          </b-nav-item>
+          <b-nav-item disabled>
+            Full
+            <div class="rectangle full"></div>
+          </b-nav-item>
+          <b-nav-item disabled>
+            Lady
+            <div class="rectangle lady"></div>
+          </b-nav-item>
+          <b-nav-item disabled>
+            Handicap
+            <div class="rectangle handicap"></div>
+          </b-nav-item>
+          <b-nav-item disabled>
+            Entrance
+            <div class="box yellow-striped"></div>
+          </b-nav-item>
+        </b-nav>
+      </div>
+
       <button class="btn btn-info my-5" @click="test">test</button>
       <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
 
@@ -58,16 +72,33 @@
               <tr>
                 <th :colspan="2" @click="zoneSelect(i)">
                   <div class="d-inline-flex align-items-center my-auto">
-                    <span @click="zoneSelect(zone)">zone{{zone+1}}</span>
-                    <div class="box ml-2 yellow-striped"></div>
+                    <span @click="zoneSelect(i)">{{i['.key']}}</span>
+                    <div class="box ml-2 yellow-striped" v-if="i.entrance == true"></div>
                   </div>
                 </th>
               </tr>
               <tbody>
-                <tr v-for="j in 3" :key="j">
-                  <td v-for="i in 2" :key="i" align="center" valign="center">
-                    <div class="rectangle lady" :title="'id' +[[i]]" @click="infoSpot(i)"></div>
+                <!-- <tr v-for="(j,k) in slots" :key="k">
+                  <td v-for="(i,slot) in 2" :key="slot" align="center" valign="center">
+                    <div
+                      class="rectangle lady"
+                      :title="'id' +[[j]]"
+                      @click="infoSpot(i)"
+                    >{{j['.key']}}</div>
                   </td>
+                </tr>-->
+
+                <tr
+                  v-for="(current_array, parent_node_index) in arraySlot"
+                  :key="parent_node_index"
+                >
+                  <td
+                    v-for="(item,index) in current_array"
+                    :key="index"
+                    @click="infoSpot(item)"
+                    class="rectangle empty"
+                  >{{item['.key']}}</td>
+                  <!--{{(parent_node_index*2+index+1)}} is {{item}} -->
                 </tr>
               </tbody>
             </table>
@@ -82,10 +113,11 @@ import { db } from "../firebase";
 export default {
   data() {
     return {
-      currentFloor: null,
+      currentFloor: this.$store.state.floor,
       counter: 0,
       floors: [],
       zones: [],
+      slots: [],
       floor: {
         height: null,
         width: null,
@@ -98,9 +130,36 @@ export default {
       floors: db.collection("floors"),
       zones: db
         .collection("floors")
-        .doc("1")
+        .doc(this.$store.state.floor.toString())
+        .collection("zoneDetail"),
+
+      slots: db
+        .collection("floors")
+        .doc(this.$store.state.floor.toString())
         .collection("zoneDetail")
+        .doc("zoneA")
+        .collection("slotDetail")
     };
+  },
+  computed: {
+    FBSlots() {
+      let allSlot = this.zones;
+      let zone = [];
+      for (let i in allSlot) {
+        zone.push(allSlot[i][".key"]);
+      }
+
+      return zone;
+    },
+
+    arraySlot() {
+      let beforeChunkArray = this.slots;
+      let arrayChunked = [];
+      while (beforeChunkArray.length) {
+        arrayChunked.push(beforeChunkArray.splice(0, 2));
+      }
+      return arrayChunked;
+    }
   },
   methods: {
     readData() {},
@@ -124,8 +183,14 @@ export default {
       }
     },
     test() {
+      console.log("arraySlots", this.arraySlot);
+      //  for (let i in this.FBSlots) {
+
+      //  }
+      console.log("FBSlots", this.FBSlots);
       console.log("floors", this.floors);
       console.log("zones", this.zones);
+      console.log("stateFloor", this.$store.state.floor);
       this.floors.forEach(floor => {
         if (floor[".key"] == this.$store.state.floor) {
           this.floor = {
@@ -148,18 +213,21 @@ export default {
         .catch(err => {
           console.log("Error getting document", err);
         });
+      console.log("slots=>", this.slots);
     },
     zoneSelect(zone) {
-      let tranZone = zone[".key"];
-      let zonee = db
-        .collection("floors")
-        .doc("1")
-        .collection("zoneDetail")
-        .doc(tranZone);
-      let getZone = zonee.get().then(doc => {
-        console.log(doc.data());
-      });
-      console.log(tranZone);
+      // let tranZone = zone[".key"];
+      // let zonee = db
+      //   .collection("floors")
+      //   .doc((this.$store.state.floor).toString())
+      //   .collection("zoneDetail")
+      //   .doc(tranZone);
+      // let getZone = zonee.get().then(doc => {
+      //   console.log(doc.data());
+      // });
+      // console.log(tranZone);
+      console.log('zoneSelect',zone)
+      this.$store.commit("changeZone", zone);
     },
     counterTest() {
       this.counter++;
@@ -179,10 +247,13 @@ export default {
       location.hash = data;
     },
     infoSpot(i) {
-      console.log("id" + i);
+      console.log(i[".key"], Object.values(i));
     },
+
     updated() {
       this.floor = this.$store.state.floor;
+      // currentFloor: this.$store.state.floor
+      console.log(this.floor)
     }
   }
 };
@@ -230,6 +301,7 @@ td div {
   width: 30px;
   height: 20px;
   background: #c2c2c2;
+
   cursor: pointer;
 }
 // .box a:hover{

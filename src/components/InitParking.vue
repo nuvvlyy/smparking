@@ -11,7 +11,7 @@
     </div>-->
 
     <b-modal
-      id="initParkingg"
+      id="initParking"
       ref="modal"
       title="Gennerate Parking"
       @show="resetModal"
@@ -34,7 +34,7 @@
           >
             <b-form-select
               v-model="selectedFloor"
-              :state="widthZoneState"
+              :state="zoneWidthState"
               :options="optionsFloor"
               value-field="item"
               text-field="name"
@@ -120,7 +120,7 @@
             <b-form-radio-group
               id="zoneWidth"
               v-model="selected"
-              :state="widthZoneState"
+              :state="zoneWidthState"
               :options="options"
               value-field="item"
               text-field="name"
@@ -143,7 +143,7 @@
           >
             <b-form-input
               v-model="total"
-              disabled="true"
+             :disabled="true"
               id="totalSlots"
               class="text-center"
               size="lg"
@@ -280,12 +280,12 @@ export default {
       this.total = this.floor * this.zone * this.zoneHeight * this.selected;
 
       let dataFloor = {
-        height: this.zoneHeight,
-        width: this.selected,
-        zone: this.zone,
+        height: (this.zoneHeight).toString(),
+        width: (this.selected).toString(),
+        zone: (this.zone).toString(),
         timeStramp: Date.now(),
       };
-      let dataTest = { id1: "handicap" };
+      let zoneData = { id1: "handicap" ,entrance:false};
       let idStatus = { status: "active" };
 
       // let jsonData = [
@@ -342,14 +342,14 @@ export default {
               .doc((floor + 1).toString())
               .collection("zoneDetail")
               .doc("zone" + az.charAt(zone))
-              .set(dataTest);
+              .set(zoneData);
             for ( let slot = 0; slot < parseInt(this.zoneHeight * this.selected);slot++) {
               let setSlotDetail = db
                 .collection("floors")
                 .doc((floor + 1).toString())
                 .collection("zoneDetail")
                 .doc("zone" + az.charAt(zone))
-                .collection("SlotDetail")
+                .collection("slotDetail")
                 .doc(
                   (floor + 1).toString() +
                     az.charAt(zone) +
