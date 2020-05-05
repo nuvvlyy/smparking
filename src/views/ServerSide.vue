@@ -46,8 +46,8 @@
         </b-nav>
       </div>
 
-      <button class="btn btn-info my-5" @click="test">test</button>
-      <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
+      <!-- <button class="btn btn-info my-5" @click="test">test</button>
+      <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button> -->
 
       <!-- <div class="border m-4">
         <div class="btn btn-primary m-2">primary</div>

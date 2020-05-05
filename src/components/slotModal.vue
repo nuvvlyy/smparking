@@ -11,6 +11,7 @@
     </div>-->
 
     <b-modal
+      centered
       id="slotModall"
       ref="modal"
       title="Slot Setting"
@@ -328,7 +329,9 @@ export default {
                 .collection("floors")
                 .doc((floor + 1).toString())
                 .collection("zoneDetail")
-                .doc((floor + 1).toString() /*char*/+ "-" + (zone + 1).toString())
+                .doc(
+                  (floor + 1).toString() /*char*/ + "-" + (zone + 1).toString()
+                )
                 .collection("SlotDetail")
                 .doc("id" + (slot + 1).toString())
                 .set(idStatus);

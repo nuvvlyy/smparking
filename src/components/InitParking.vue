@@ -11,7 +11,7 @@
     </div>-->
 
     <b-modal
-      id="initParking"
+      id="initParkingg"
       ref="modal"
       title="Gennerate Parking"
       @show="resetModal"

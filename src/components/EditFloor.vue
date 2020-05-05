@@ -11,6 +11,7 @@
     </div>-->
 
     <b-modal
+    
       id="editFloorr"
       ref="modal"
       :title="'Edit floor '+[[$store.state.floor]]"
