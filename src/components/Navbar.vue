@@ -17,9 +17,7 @@
           <li class="nav-item">
             <a href="#" class="nav-link">User Name</a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link" title="Edit Current Floor">Edit</a>
-          </li>
+  
           <li class="nav-item">
             <!-- <a href="#" class="nav-link" @click="setting">Setting</a> -->
           <a

@@ -46,8 +46,8 @@
         </b-nav>
       </div>
 
-      <!-- <button class="btn btn-info my-5" @click="test">test</button>
-      <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button> -->
+      <button class="btn btn-info my-5" @click="test">test</button>
+      <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
 
       <!-- <div class="border m-4">
         <div class="btn btn-primary m-2">primary</div>
@@ -89,10 +89,10 @@
                 </tr>-->
 
                 <tr
-                  v-for="(current_array, parent_node_index) in arraySlot"
+                  v-for="(current_array, parent_node_index) in arraySlot(i)"
                   :key="parent_node_index"
                 >
-                  <td
+                  <td 
                     v-for="(item,index) in current_array"
                     :key="index"
                     @click="infoSpot(item)"
@@ -122,7 +122,9 @@ export default {
         height: null,
         width: null,
         zone: null
-      }
+      },
+      all_zones: [],
+      isShow : [],
     };
   },
   firestore() {
@@ -141,7 +143,41 @@ export default {
         .collection("slotDetail")
     };
   },
+  beforeCreate() {
+     this.arraySlot();
+  },
   computed: {
+    arraySlot() {
+      
+    return (zone) => {
+      this.isShow = false
+        console.log(zone)
+        let arrayzone =[]
+        let arrayChunked = []
+        db.collection("floors")
+          .doc(this.$store.state.floor.toString())
+          .collection("zoneDetail")
+          .doc(zone[".key"])
+          .collection("slotDetail")
+          .get()
+          .then(data => {
+            data.forEach(doc => {
+              console.log(doc.id)
+              arrayzone.push(doc.id);
+              if (arrayzone.length == 2) {
+                arrayChunked.push(arrayzone);
+                arrayzone = [];
+               
+              }
+            })
+            this.isShow = true
+            console.log(arrayChunked)
+            return arrayChunked;
+          })
+         
+        
+      }
+    },
     FBSlots() {
       let allSlot = this.zones;
       let zone = [];
@@ -150,19 +186,12 @@ export default {
       }
 
       return zone;
-    },
-
-    arraySlot() {
-      let beforeChunkArray = this.slots;
-      let arrayChunked = [];
-      while (beforeChunkArray.length) {
-        arrayChunked.push(beforeChunkArray.splice(0, 2));
-      }
-      return arrayChunked;
     }
+
   },
   methods: {
     readData() {},
+    
     test2() {
       let found = this.floors.find(
         floor => floor[".key"] == this.$store.state.floor
@@ -226,7 +255,7 @@ export default {
       //   console.log(doc.data());
       // });
       // console.log(tranZone);
-      console.log('zoneSelect',zone)
+      console.log("zoneSelect", zone);
       this.$store.commit("changeZone", zone);
     },
     counterTest() {
@@ -253,7 +282,7 @@ export default {
     updated() {
       this.floor = this.$store.state.floor;
       // currentFloor: this.$store.state.floor
-      console.log(this.floor)
+      console.log(this.floor);
     }
   }
 };

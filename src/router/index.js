@@ -4,6 +4,9 @@ import Home from "../views/Home.vue";
 import Config from '../views/Config.vue'
 import ServerSide from '../views/ServerSide.vue'
 
+// import { fb } from "..firebase";
+//require("firebase/auth");
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -25,21 +28,23 @@ const routes = [
     path: '/config',
     name: 'config',
     component: Config,
+    meta: { requiresAuth: true },
     children: [{
       path: '/config',
       name: 'config',
       component: ServerSide,
+
     },
     // {
     //   part: 'config', query: { floor: 'id' },
     //   component: ServerSide
     // },
-    {
-      path: "/floor/:id",
-      name: "P_Detail",
-      component: Config,
-      props: true
-    },
+    // {
+    //   path: "/floor/:id",
+    //   name: "P_Detail",
+    //   component: Config,
+    //   props: true
+    // },
     ]
   }
 ];
@@ -49,5 +54,18 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
+
+// router.beforeEach((to, from, next) => {
+//   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
+//   const currentUser = fb.auth().currentUser;
+
+//   if (requiresAuth && !currentUser) {
+//     next("/");
+//   } else if (requiresAuth && currentUser) {
+//     next();
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

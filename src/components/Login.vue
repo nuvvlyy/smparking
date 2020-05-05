@@ -109,13 +109,13 @@ export default {
                 // console.log('user name: ',name)
                 //console.log('email',{name:name,email:this.email,role:role})
                 this.$store.commit('currentUser',{name:name,email:this.email,role:role})
-                if (role == "user") {
-                  console.log("go to user");
-                  this.$router.replace("user/profile");
-                }else if (role == "admin") {
-                  console.log("go to admin");
-                  this.$router.replace("admin/overview");
-                }
+                // if (role == "user") {
+                //   console.log("go to user");
+                //   this.$router.replace("user/profile");
+                // }else if (role == "admin") {
+                //   console.log("go to admin");
+                  this.$router.replace("config");
+                //}
               }
             })
             .catch(err => {
@@ -132,41 +132,41 @@ export default {
         });
                
     },
-    register() {
-      fb.auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .then(user => {
-          $("#login").modal("hide");
-          //console.log(user.user.uid);
+    // register() {
+    //   fb.auth()
+    //     .createUserWithEmailAndPassword(this.email, this.password)
+    //     .then(user => {
+    //       $("#login").modal("hide");
+    //       //console.log(user.user.uid);
 
-          // Create our initial doc
-          db.collection("profiles")
-            .doc(user.user.uid)
-            .set({
-              name: this.name,
-              email:this.email,
-              role: "user"
-            })
-            .then(() => {
-              console.log(this.name + " writtent!");
-            })
-            .catch(error => {
-              console.error("Error eriting doc", error);
-            });
+    //       // Create our initial doc
+    //       db.collection("profiles")
+    //         .doc(user.user.uid)
+    //         .set({
+    //           name: this.name,
+    //           email:this.email,
+    //           role: "user"
+    //         })
+    //         .then(() => {
+    //           console.log(this.name + " writtent!");
+    //         })
+    //         .catch(error => {
+    //           console.error("Error eriting doc", error);
+    //         });
 
-         // this.$router.replace("admin");
-         this.$router.replace("user/profile");
-        })
-        .catch(function(error) {
-          let errorMSG = error.message;
-          if (error.code == "auth/weak-password") {
-            alert("Oops. Passwors is too weaak");
-          } else {
-            alert("Oops.  " + errorMSG);
-          }
-          //console.log("Error creating new user:", error);
-        });
-    }
+    //      // this.$router.replace("admin");
+    //      this.$router.replace("user/profile");
+    //     })
+    //     .catch(function(error) {
+    //       let errorMSG = error.message;
+    //       if (error.code == "auth/weak-password") {
+    //         alert("Oops. Passwors is too weaak");
+    //       } else {
+    //         alert("Oops.  " + errorMSG);
+    //       }
+    //       //console.log("Error creating new user:", error);
+    //     });
+    // }
   }
 };
 </script>
