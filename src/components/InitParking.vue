@@ -249,19 +249,20 @@ export default {
       //   });
 
       /* Delete Collection */
-      db.collection("floors")
-        .get()
-        .then((res) => {
-          res.forEach((element) => {
-            element.ref.delete();
-          });
-        })
-        .catch((err) => {
-          console.log("Error getting documents", err);
-        });
+      // db.collection("floors")
+      //   .get()
+      //   .then((res) => {
+      //     res.forEach((element) => {
+      //       element.ref.delete();
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     console.log("Error getting documents", err);
+      //   });
+     
     },
-    handleSubmit() {
-      this.resetCollection();
+    async handleSubmit() {
+      
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return;
@@ -273,11 +274,15 @@ export default {
       // console.log("zone", this.zone);
       // console.log("zoneHeight", this.zoneHeight);
       // console.log("zoneWidth", this.selected);
-
       let num = parseInt(this.floor);
       // var batch = db.batch();
 
       this.total = this.floor * this.zone * this.zoneHeight * this.selected;
+
+
+      /**reset before create */
+      console.log('initial')
+      let c = await this.resetCollection()
 
       let dataFloor = {
         height: (this.zoneHeight).toString(),
@@ -288,79 +293,41 @@ export default {
       let zoneData = { id1: "handicap" ,entrance:false};
       let idStatus = { status: "active" };
 
-      // let jsonData = [
-      //   {
-      //     floors: {
-      //       ".key": "1",
-      //       height: "5",
-      //       zone: "5",
-      //       whidth: "2",
-      //       timeStramp: 1588069179984
-      //     },
-      //     zoneDetail: [
-      //       { ".key": "zone1", id1: "handicap" },
-      //       { ".key": "zone2" }
-      //     ]
-      //   }, //{'zoneDetail':{klsd:ifjs}}
-      //   {
-      //     ".key": "2",
-      //     height: "5",
-      //     zone: "5",
-      //     whidth: "2",
-      //     timeStramp: 1588069179984
-      //   }
-      // ];
-
-      // let ex = {
-      //   lambeosaurus: {
-      //     dimensions: { height: 2.1, length: 12.5, weight: 5000 }
-      //   }
-      // };
-      // console.log(jsonData);
-      // console.log("ex =>", ex);
-      // console.log("Floors[]", this.floors);
-
-      // for (let floor = 0; floor < num; floor++) {
-      //   let setFloors = db
-      //     .collection("floors")
-      //     .doc((floor + 1).toString())
-      //     .set(jsonData);
-      // }
 
       let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
       /** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
-      for (let floor = 0; floor < num; floor++) {
-        let setFloors = db
-          .collection("floors")
-          .doc((floor + 1).toString())
-          .set(dataFloor);
-        if (parseInt(this.zone) != 0) {
-          for (let zone = 0; zone < parseInt(this.zone); zone++) {
-            let setZoneDetail = db
-              .collection("floors")
-              .doc((floor + 1).toString())
-              .collection("zoneDetail")
-              .doc("zone" + az.charAt(zone))
-              .set(zoneData);
-            for ( let slot = 0; slot < parseInt(this.zoneHeight * this.selected);slot++) {
-              let setSlotDetail = db
-                .collection("floors")
-                .doc((floor + 1).toString())
-                .collection("zoneDetail")
-                .doc("zone" + az.charAt(zone))
-                .collection("slotDetail")
-                .doc(
-                  (floor + 1).toString() +
-                    az.charAt(zone) +
-                    "-" +
-                    (slot + 1).toString()
-                )
-                .set(idStatus);
-            }
-          }
-        }
-      }
+      // for (let floor = 0; floor < num; floor++) {
+      //   let setFloors = db
+      //     .collection("floors")
+      //     .doc((floor + 1).toString())
+      //     .set(dataFloor);
+      //   if (parseInt(this.zone) != 0) {
+      //     for (let zone = 0; zone < parseInt(this.zone); zone++) {
+      //       let setZoneDetail = db
+      //         .collection("floors")
+      //         .doc((floor + 1).toString())
+      //         .collection("zoneDetail")
+      //         .doc("zone" + az.charAt(zone))
+      //         .set(zoneData);
+      //       for ( let slot = 0; slot < parseInt(this.zoneHeight * this.selected);slot++) {
+      //         let setSlotDetail = db
+      //           .collection("floors")
+      //           .doc((floor + 1).toString())
+      //           .collection("zoneDetail")
+      //           .doc("zone" + az.charAt(zone))
+      //           .collection("slotDetail")
+      //           .doc(
+      //             (floor + 1).toString() +
+      //               az.charAt(zone) +
+      //               "-" +
+      //               (slot + 1).toString()
+      //           )
+      //           .set(idStatus);
+      //       }
+      //     }
+      //   }
+      // }
 
       /*                 */
       // // Get a new write batch
@@ -383,7 +350,6 @@ export default {
       //   // ...
       // });
 
-      //let setDoc = db.collection('floors').doc('1').collection('zoneDetail').doc('zone3').set(dataFloor)
       // Hide the modal manually
       this.$nextTick(() => {
         this.$bvModal.hide("initParking");

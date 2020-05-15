@@ -9,11 +9,14 @@
         <div class="page-content p-4 p-md-5 pt-5">
           <Navbar />
 
+<button class="btn btn-success" @click="test">test config</button>
+
           <div class="bg-light">
+
             <!-- <h1 class="display-2">Config</h1> -->
             <page-number></page-number>
             <main class="page-content pt-2">
-              <router-view></router-view>
+              <router-view :key="$route.path"></router-view>
               <div>
                 <section>
                   <nav aria-label="Page navigation ">
@@ -28,7 +31,7 @@
                         ></b-pagination-nav>
                       </div>
                       <div>
-                        <b-form inline class="mx-2" >
+                        <b-form inline class="mx-2">
                           <b-row>
                             <b-col sm="2">
                               <b-form-input
@@ -42,10 +45,11 @@
                               ></b-form-input>
                             </b-col>
                           </b-row>
-                          <b-button type="submit" pill variant="info" >Go</b-button>
+                          <b-button type="submit" pill variant="info">Go</b-button>
                         </b-form>
                       </div>
                       <!-- <p class="mx-3">Current Page: {{ currentPage }}</p> -->
+                      
                     </div>
                   </nav>
                 </section>
@@ -101,8 +105,9 @@ import PageNavi from "@/components/PageNavi";
 import InitParking from "@/components/InitParking";
 import EditFloor from "@/components/EditFloor";
 import SlotModal from "@/components/SlotModal";
-
 import PageNumber from "@/components/PageNumberBackground.vue";
+
+import { db } from "../firebase";
 export default {
   components: {
     Navbar,
@@ -113,12 +118,20 @@ export default {
     SlotModal,
     PageNumber
   },
+
   data() {
     return {
-      rows: 100,
+      floors: [],
+      /** Change row pageNavi here */
+      rows: 55,
       perPage: 1,
       currentPage: this.$store.state.floor,
-      goFloor:null
+      goFloor: null
+    };
+  },
+  firestore() {
+    return {
+      floors: db.collection("floors"),
     };
   },
   // data() {
@@ -136,17 +149,19 @@ export default {
   //   };
   // }
   methods: {
+    test() {
+      console.log("floors page", this.floors.length);
+    },
     linkGen(pageNum) {
-      return pageNum === 1 ? "?" : `?floor=${pageNum}`;
-      //return pageNum === 1 ? "?" : `config/floor/${pageNum}`;
+      //return pageNum === 1 ? "?" : `?floor=${pageNum}`;
+      return `/floor/${pageNum}`;
     },
     changefloor() {}
   },
   updated() {
     this.$store.commit("changeFloor", this.currentPage);
     //alert('update Config',this.rows)
-    console.log(this.currentPage)
-    
+    console.log(this.currentPage);
   },
   onSubmit(e) {}
 };

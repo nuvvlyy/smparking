@@ -15,7 +15,7 @@
 export default {
   data() {
     return {
-      rows: 100,
+      rows: 94,
       perPage: 1,
       currentPage: 4
     };

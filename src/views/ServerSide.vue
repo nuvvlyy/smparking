@@ -1,5 +1,6 @@
 <template>
   <div class="page-wrapper d-flex align-items-stretch h-100">
+    <p>The destination is :{{this.$route.params.id}}</p>
     <div class="container-fluid">
       <!-- <div class="row">
         <div class="col-md-1" v-for="(i,index) in floor.zone" :key="index">
@@ -92,7 +93,7 @@
                   v-for="(current_array, parent_node_index) in arraySlot(i)"
                   :key="parent_node_index"
                 >
-                  <td 
+                  <td
                     v-for="(item,index) in current_array"
                     :key="index"
                     @click="infoSpot(item)"
@@ -113,18 +114,20 @@ import { db } from "../firebase";
 export default {
   data() {
     return {
+      destinationId:this.$route.params.id,
       currentFloor: this.$store.state.floor,
       counter: 0,
       floors: [],
       zones: [],
       slots: [],
+      evenSlot:[],
       floor: {
         height: null,
         width: null,
         zone: null
       },
       all_zones: [],
-      isShow : [],
+      isShow: []
     };
   },
   firestore() {
@@ -144,16 +147,15 @@ export default {
     };
   },
   beforeCreate() {
-     this.arraySlot();
+    this.arraySlot();
   },
   computed: {
     arraySlot() {
-      
-    return (zone) => {
-      this.isShow = false
-        console.log(zone)
-        let arrayzone =[]
-        let arrayChunked = []
+      return zone => {
+        this.isShow = false;
+        console.log(zone);
+        let arrayzone = [];
+        let arrayChunked = [];
         db.collection("floors")
           .doc(this.$store.state.floor.toString())
           .collection("zoneDetail")
@@ -162,21 +164,20 @@ export default {
           .get()
           .then(data => {
             data.forEach(doc => {
-              console.log(doc.id)
+              console.log('id >',doc.id);
               arrayzone.push(doc.id);
               if (arrayzone.length == 2) {
                 arrayChunked.push(arrayzone);
                 arrayzone = [];
-               
               }
-            })
-            this.isShow = true
-            console.log(arrayChunked)
+            });
+            this.isShow = true;
+            console.log('a',arrayChunked);
+            this.evenSlot = arrayChunked;
+            console.log('even',this.evenSlot)
             return arrayChunked;
-          })
-         
-        
-      }
+          });
+      };
     },
     FBSlots() {
       let allSlot = this.zones;
@@ -187,11 +188,10 @@ export default {
 
       return zone;
     }
-
   },
   methods: {
     readData() {},
-    
+
     test2() {
       let found = this.floors.find(
         floor => floor[".key"] == this.$store.state.floor
