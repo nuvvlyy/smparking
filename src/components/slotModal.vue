@@ -35,7 +35,7 @@
           >
             <b-form-select
               v-model="selectedFloor"
-              :state="widthZoneState"
+              :state="zoneWidthState"
               :options="optionsFloor"
               value-field="item"
               text-field="name"
@@ -121,7 +121,7 @@
             <b-form-radio-group
               id="zoneWidth"
               v-model="selected"
-              :state="widthZoneState"
+              :state="zoneWidthState"
               :options="options"
               value-field="item"
               text-field="name"

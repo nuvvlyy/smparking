@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper d-flex align-items-stretch h-100">
-    <p>The destination is :{{this.$route.params.id}}</p>
     <div class="container-fluid">
+      <p>The destination is :{{this.$route.params.id}}</p>
       <!-- <div class="row">
         <div class="col-md-1" v-for="(i,index) in floor.zone" :key="index">
           <table class="table table-light">
@@ -48,7 +48,7 @@
       </div>
 
       <button class="btn btn-info my-5" @click="test">test</button>
-      <button class="btn btn-danger my-5 mx-5" @click="test2">test5</button>
+      <button class="btn btn-danger my-5 mx-5" @click="arraySlot">Array Slot</button>
 
       <!-- <div class="border m-4">
         <div class="btn btn-primary m-2">primary</div>
@@ -89,10 +89,7 @@
                   </td>
                 </tr>-->
 
-                <tr
-                  v-for="(current_array, parent_node_index) in arraySlot(i)"
-                  :key="parent_node_index"
-                >
+                <tr v-for="(current_array, parent_node_index) in zoneSlot" :key="parent_node_index">
                   <td
                     v-for="(item,index) in current_array"
                     :key="index"
@@ -114,13 +111,14 @@ import { db } from "../firebase";
 export default {
   data() {
     return {
-      destinationId:this.$route.params.id,
+      destinationId: this.$route.params.id,
       currentFloor: this.$store.state.floor,
       counter: 0,
       floors: [],
       zones: [],
       slots: [],
-      evenSlot:[],
+      evenSlot: [],
+      zoneSlot: [],
       floor: {
         height: null,
         width: null,
@@ -147,10 +145,53 @@ export default {
     };
   },
   beforeCreate() {
-    this.arraySlot();
+    this.arraySlot;
   },
   computed: {
+    // arraySlot() {
+    //   return zone => {
+    //     this.isShow = false;
+    //     console.log(zone);
+    //     let arrayzone = [];
+    //     let arrayChunked = [];
+    //     db.collection("floors")
+    //       .doc(this.$store.state.floor.toString())
+    //       .collection("zoneDetail")
+    //       .doc(zone[".key"])
+    //       .collection("slotDetail")
+    //       .get()
+    //       .then(data => {
+    //         data.forEach(doc => {
+    //           console.log('id >',doc.id);
+    //           arrayzone.push(doc.id);
+    //           if (arrayzone.length == 2) {
+    //             arrayChunked.push(arrayzone);
+    //             arrayzone = [];
+    //           }
+    //         });
+    //         this.isShow = true;
+    //         console.log('a',arrayChunked);
+    //         this.evenSlot = arrayChunked;
+    //         console.log('even',this.evenSlot)
+    //         this.zoneSlot.push(this.evenSlot)
+    //         console.log('zoneSlot',this.zoneSlot)
+    //         return arrayChunked;
+    //       });
+    //   };
+    // },
+    FBSlots() {
+      let allSlot = this.zones;
+      let zone = [];
+      for (let i in allSlot) {
+        zone.push(allSlot[i][".key"]);
+      }
+
+      return zone;
+    }
+  },
+  methods: {
     arraySlot() {
+      console.log("arrayslot");
       return zone => {
         this.isShow = false;
         console.log(zone);
@@ -164,33 +205,23 @@ export default {
           .get()
           .then(data => {
             data.forEach(doc => {
-              console.log('id >',doc.id);
+              console.log("id >", doc.id);
               arrayzone.push(doc.id);
               if (arrayzone.length == 2) {
                 arrayChunked.push(arrayzone);
                 arrayzone = [];
               }
             });
-            this.isShow = true;
-            console.log('a',arrayChunked);
+            //this.isShow = true;
+            console.log("a", arrayChunked);
             this.evenSlot = arrayChunked;
-            console.log('even',this.evenSlot)
+            console.log("even", this.evenSlot);
+            this.zoneSlot.push(this.evenSlot);
+            console.log("zoneSlot", this.zoneSlot);
             return arrayChunked;
           });
       };
     },
-    FBSlots() {
-      let allSlot = this.zones;
-      let zone = [];
-      for (let i in allSlot) {
-        zone.push(allSlot[i][".key"]);
-      }
-
-      return zone;
-    }
-  },
-  methods: {
-    readData() {},
 
     test2() {
       let found = this.floors.find(

@@ -40,7 +40,7 @@
                                 class="mb-2 mr-sm-2 mb-sm-0 text-center"
                                 type="number"
                                 min="1"
-                                max="100"
+                                max="100"                                
                                 :placeholder="[[currentPage]]"
                               ></b-form-input>
                             </b-col>
@@ -119,7 +119,7 @@ export default {
     PageNumber
   },
 
-  data() {
+   data() {
     return {
       floors: [],
       /** Change row pageNavi here */

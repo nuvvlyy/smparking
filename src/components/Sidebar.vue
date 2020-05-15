@@ -16,7 +16,11 @@
           <li class="active">
             <h5 class="h6">Adjust per Zone</h5>
 
-            <b-form @submit.prevent="applyChange" @reset="onReset" class="form-row my-4 justify-content-center">
+            <b-form
+              @submit.prevent="applyChange"
+              @reset="onReset"
+              class="form-row my-4 justify-content-center"
+            >
               <b-form-group label="Zone">
                 <input
                   v-model="zoneChange"
@@ -25,6 +29,15 @@
                   placeholder="Zone"
                 />
               </b-form-group>
+              <b-form-group label="Set zone distance">
+                <input
+                  v-model="zoneDistance"
+                  type="text"
+                  class="form-control"
+                  placeholder="Ex. 100,50"
+                />
+              </b-form-group>
+             
 
               <b-form-group label="height" class="form-group col-md-5">
                 <input type="text" class="form-control" placeholder="Height" />
@@ -59,7 +72,11 @@
                 </div>
               </fieldset>
 
-              <b-button type="submit" @click="applyChange" class="btn btn-secondary d-blockmr-0 ml-auto">Apply Change</b-button>
+              <b-button
+                type="submit"
+                @click="applyChange"
+                class="btn btn-secondary d-blockmr-0 ml-auto"
+              >Apply Change</b-button>
             </b-form>
           </li>
 
@@ -100,6 +117,7 @@ export default {
   name: "Sidebar",
   data() {
     return {
+      zoneDistance:null,
       zoneSelect: null,
       selected: ""
       //checkEntrance: ""
@@ -110,22 +128,22 @@ export default {
       return (this.zoneSelect = this.$store.state.zoneSelect[".key"]);
     },
     checkEntrance() {
-      let check = this.$store.state.zoneSelect.entrance
+      let check = this.$store.state.zoneSelect.entrance;
       if (check == true) {
         return "accepted";
-      }else if (check == false){
-        return "not_accepted"
+      } else if (check == false) {
+        return "not_accepted";
       }
     }
   },
   methods: {
-     onReset(){
-      alert('Form reset')
+    onReset() {
+      alert("Form reset");
     },
- 
-    applyChange(){
-      console.log(this.zoneChange)
-      console.log(this.checkEntrance)
+
+    applyChange() {
+      console.log(this.zoneChange);
+      console.log(this.checkEntrance);
       //  db.collection('floors').doc((this.$store.state.floor).toString())
       //   .collection('zoneDetail').doc(this.zoneSelect)
       //   .set({entrance:false})
@@ -134,19 +152,22 @@ export default {
       //   else{
       //     this.checkEntrance = 'accepted'
       //   }
-      if(this.checkEntrance == 'accepted'){
-        this.entrance = 'accepted'
-        console.log('k',this.entrance)
-        db.collection('floors').doc((this.$store.state.floor).toString())
-        .collection('zoneDetail').doc(this.zoneSelect)
-        .set({entrance:true})
-      }
-      else if(this.checkEntrance == 'not_accepted'){
-        this.entrance = 'accepted'
-        console.log('f',this.entrance)
-        db.collection('floors').doc((this.$store.state.floor).toString())
-        .collection('zoneDetail').doc(this.zoneSelect)
-        .set({entrance:false})
+      if (this.checkEntrance == "accepted") {
+        this.entrance = "accepted";
+        console.log("k", this.entrance);
+        db.collection("floors")
+          .doc(this.$store.state.floor.toString())
+          .collection("zoneDetail")
+          .doc(this.zoneSelect)
+          .set({ entrance: true });
+      } else if (this.checkEntrance == "not_accepted") {
+        this.entrance = "accepted";
+        console.log("f", this.entrance);
+        db.collection("floors")
+          .doc(this.$store.state.floor.toString())
+          .collection("zoneDetail")
+          .doc(this.zoneSelect)
+          .set({ entrance: false });
       }
     },
     closeMenu() {
