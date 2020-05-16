@@ -15,13 +15,13 @@
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a href="#" class="nav-link">User Name</a>
+            <a href="#" class="nav-link">Admin</a>
           </li>
   
           <li class="nav-item">
             <!-- <a href="#" class="nav-link" @click="setting">Setting</a> -->
           <a
-            class="nav-link btn btn-info mx-3"
+            class="nav-link btn btn-info mx-2"
             style="color:white;"
             type="button"
             data-toggle="modal"
@@ -33,7 +33,7 @@
           <li class="nav-item">
             <!-- <a href="#" class="nav-link" @click="setting">Setting</a> -->
           <a
-            class="nav-link btn btn-success mx-3"
+            class="nav-link btn btn-success mx-2"
             style="color:white;"
             type="button"
             data-toggle="modal"

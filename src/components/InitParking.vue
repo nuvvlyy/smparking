@@ -39,9 +39,10 @@
               value-field="item"
               text-field="name"
               disabled-field="notEnabled"
+              invalid-feedback="Floor is required"
             ></b-form-select>
             <b-form-input
-              v-if="selectedFloor == '2'"
+              v-if="selectedFloor === '2'"
               id="selectFloor"
               v-model="customFloor"
               :state="customFloorState"
@@ -144,10 +145,19 @@
           >
             <b-form-input
               v-model="total"
-             :disabled="true"
+              :disabled="true"
               id="totalSlots"
               class="text-center"
               size="lg"
+              v-show="selectedFloor === '1'"
+            ></b-form-input>
+            <b-form-input
+              v-model="custom"
+              :disabled="true"
+              id="totalSlots"
+              class="text-center"
+              size="lg"
+              v-show="selectedFloor === '2'"
             ></b-form-input>
           </b-form-group>
         </b-form-group>
@@ -167,12 +177,12 @@ export default {
       selected: "2",
       options: [
         { item: "1", name: "1 Side" },
-        { item: "2", name: "2 Side" },
+        { item: "2", name: "2 Side" }
       ],
       selectedFloor: "1",
       optionsFloor: [
         { item: "1", name: "All" },
-        { item: "2", name: "Custom adjective" },
+        { item: "2", name: "Custom adjective" }
       ],
       name: "",
       nameState: null,
@@ -180,7 +190,7 @@ export default {
 
       customFloor: null,
       customFloorState: null,
-      customFloorCheck:false,
+      customFloorCheck: false,
       floor: null,
       floorState: null,
       zone: null,
@@ -190,12 +200,12 @@ export default {
       zoneWidth: null,
       zoneWidthState: null,
       //total: null,
-      totalState: null,
+      totalState: null
     };
   },
   firestore() {
     return {
-      floors: db.collection("floors"),
+      floors: db.collection("floors")
     };
   },
   computed: {
@@ -203,6 +213,46 @@ export default {
       let total = this.floor * this.zone * this.zoneHeight * this.selected;
       return total;
     },
+    custom: function() {
+      let target = [];
+      let targetOne = null;
+      let customFloor = this.customFloor;
+      let searchComma = ",";
+      let searchTo = "-";
+      let arrayTo = [];
+      let customTotal = 0;
+      if (customFloor !== null) {
+        let firstCheck = customFloor.indexOf(searchComma);
+        //console.log(firstCheck);
+        if (firstCheck > -1) {
+          target = customFloor.split(",");
+          console.log(target.length, target);
+          customTotal = this.zone * this.zoneHeight * this.selected;
+          // find all strings in array containing '-'
+          //let items = ['item 1', 'thing', 'id-3-text', 'class','1-3','60-0'];
+          let matches = target.filter(s => s.includes("-"));
+          //console.log('to',matches)
+          for (let i in matches) {
+            let to = matches[i].split("-");
+            //console.log('t',to)
+            arrayTo.push(to);
+          }
+          console.log("arrayTo", arrayTo);
+        } else {
+          /**ตัวเดียว */
+          let firstCheck = customFloor.indexOf(searchTo);
+          if (firstCheck > -1) {
+            //console.log("-", false);
+            targetOne = customFloor;
+            console.log("t", targetOne);
+          }else{
+
+          }
+          customTotal = this.zone * this.zoneHeight * this.selected;
+        }
+      }
+      return customTotal;
+    }
   },
   methods: {
     checkFormValidity() {
@@ -235,9 +285,7 @@ export default {
       // Trigger submit handler
       this.handleSubmit();
     },
-    customSetting(){
-
-    },
+    customSetting() {},
 
     resetCollection() {
       // let citiesRef = db.collection("floors");
@@ -255,7 +303,6 @@ export default {
       //   .catch(err => {
       //     console.log("Error getting documents", err);
       //   });
-
       /* Delete Collection */
       // db.collection("floors")
       //   .get()
@@ -267,14 +314,8 @@ export default {
       //   .catch((err) => {
       //     console.log("Error getting documents", err);
       //   });
-
-
-
-
-     
     },
     async handleSubmit() {
-      
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return;
@@ -291,27 +332,18 @@ export default {
 
       this.total = this.floor * this.zone * this.zoneHeight * this.selected;
 
-
-
-
-      console.log('custom',this.customFloor)
-    
-
-
-
       /**reset before create */
-      console.log('initial')
-      let c = await this.resetCollection()
+      console.log("initial");
+      let c = await this.resetCollection();
 
       let dataFloor = {
-        height: (this.zoneHeight).toString(),
-        width: (this.selected).toString(),
-        zone: (this.zone).toString(),
-        timeStramp: Date.now(),
+        height: this.zoneHeight.toString(),
+        width: this.selected.toString(),
+        zone: this.zone.toString(),
+        timeStramp: Date.now()
       };
-      let zoneData = { id1: "handicap" ,entrance:false};
+      let zoneData = { id1: "handicap", entrance: false };
       let idStatus = { status: "active" };
-
 
       let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -373,8 +405,8 @@ export default {
       this.$nextTick(() => {
         this.$bvModal.hide("initParking");
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss">

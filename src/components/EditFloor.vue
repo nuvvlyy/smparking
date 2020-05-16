@@ -148,8 +148,8 @@ export default {
       nameState: null,
       submittedNames: [],
 
-      customfloor: null,
-      customFloorState: null,
+      // customfloor: null,
+      // customFloorState: null,
       floor: this.$store.state.floor,
       floorState: null,
       zone: null,
@@ -189,8 +189,8 @@ export default {
       this.name = "";
       this.nameState = null;
 
-      this.selectedFloor = this.$store.state.floor;
-      this.selected = "2";
+      // this.selectedFloor = this.$store.state.floor;
+      // this.selected = "2";
       this.floor= this.$store.state.floor;
       this.zone = null;
       this.zoneHeight = null;
@@ -268,13 +268,13 @@ export default {
 
       let setFloors = db
         .collection("floors")
-        .doc(this.store.state.floor.toString())
+        .doc((this.$store.state.floor).toString())
         .set(dataFloor);
       if (parseInt(this.zone) != 0) {
         for (let zone = 0; zone < parseInt(this.zone); zone++) {
           let setZoneDetail = db
             .collection("floors")
-            .doc((floor + 1).toString())
+            .doc((this.$store.state.floor).toString())
             .collection("zoneDetail")
             .doc("zone" + az.charAt(zone))
             .set(zoneData);
@@ -285,12 +285,11 @@ export default {
           ) {
             let setSlotDetail = db
               .collection("floors")
-              .doc((floor + 1).toString())
+             .doc((this.$store.state.floor).toString())
               .collection("zoneDetail")
               .doc("zone" + az.charAt(zone))
               .collection("slotDetail")
-              .doc(
-                (floor + 1).toString() +
+              .doc((this.$store.state.floor).toString()+
                   az.charAt(zone) +
                   "-" +
                   (slot + 1).toString()
@@ -300,29 +299,7 @@ export default {
         }
       }
 
-      /*                 */
-      // // Get a new write batch
-      // let batch = db.batch();
-
-      // // Set the value of 'NYC'
-      // let nycRef = db.collection("cities").doc("NYC");
-      // batch.set(nycRef, { name: "New York City" });
-
-      // // // Update the population of 'SF'
-      // // let sfRef = db.collection('cities').doc('SF');
-      // // batch.update(sfRef, {population: 1000000});
-
-      // // // Delete the city 'LA'
-      // // let laRef = db.collection('cities').doc('LA');
-      // // batch.delete(laRef);
-
-      // // Commit the batch
-      // return batch.commit().then(function() {
-      //   // ...
-      // });
-
-      //let setDoc = db.collection('floors').doc('1').collection('zoneDetail').doc('zone3').set(dataFloor)
-      // Hide the modal manually
+     
       this.$nextTick(() => {
         this.$bvModal.hide("editFloor");
       });
