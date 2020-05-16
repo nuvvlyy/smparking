@@ -68,6 +68,7 @@
               max="100"
               required
               placeholder="Max: 100"
+              :disabled="selectedFloor === '2'"
             ></b-form-input>
           </b-form-group>
 
@@ -215,6 +216,9 @@ export default {
       this.name = "";
       this.nameState = null;
 
+      this.customFloor = null;
+      this.customFloorCheck = false;
+
       this.selectedFloor = "1";
       this.selected = "2";
       this.floor = null;
@@ -231,7 +235,10 @@ export default {
       // Trigger submit handler
       this.handleSubmit();
     },
-    toFirebase() {},
+    customSetting(){
+
+    },
+
     resetCollection() {
       // let citiesRef = db.collection("floors");
       // let allCities = citiesRef
@@ -285,6 +292,13 @@ export default {
       this.total = this.floor * this.zone * this.zoneHeight * this.selected;
 
 
+
+
+      console.log('custom',this.customFloor)
+    
+
+
+
       /**reset before create */
       console.log('initial')
       let c = await this.resetCollection()
@@ -302,37 +316,37 @@ export default {
       let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
       /** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
-      for (let floor = 0; floor < num; floor++) {
-        let setFloors = db
-          .collection("floors")
-          .doc((floor + 1).toString())
-          .set(dataFloor);
-        if (parseInt(this.zone) != 0) {
-          for (let zone = 0; zone < parseInt(this.zone); zone++) {
-            let setZoneDetail = db
-              .collection("floors")
-              .doc((floor + 1).toString())
-              .collection("zoneDetail")
-              .doc("zone" + az.charAt(zone))
-              .set(zoneData);
-            for ( let slot = 0; slot < parseInt(this.zoneHeight * this.selected);slot++) {
-              let setSlotDetail = db
-                .collection("floors")
-                .doc((floor + 1).toString())
-                .collection("zoneDetail")
-                .doc("zone" + az.charAt(zone))
-                .collection("slotDetail")
-                .doc(
-                  (floor + 1).toString() +
-                    az.charAt(zone) +
-                    "-" +
-                    (slot + 1).toString()
-                )
-                .set(idStatus);
-            }
-          }
-        }
-      }
+      // for (let floor = 0; floor < num; floor++) {
+      //   let setFloors = db
+      //     .collection("floors")
+      //     .doc((floor + 1).toString())
+      //     .set(dataFloor);
+      //   if (parseInt(this.zone) != 0) {
+      //     for (let zone = 0; zone < parseInt(this.zone); zone++) {
+      //       let setZoneDetail = db
+      //         .collection("floors")
+      //         .doc((floor + 1).toString())
+      //         .collection("zoneDetail")
+      //         .doc("zone" + az.charAt(zone))
+      //         .set(zoneData);
+      //       for ( let slot = 0; slot < parseInt(this.zoneHeight * this.selected);slot++) {
+      //         let setSlotDetail = db
+      //           .collection("floors")
+      //           .doc((floor + 1).toString())
+      //           .collection("zoneDetail")
+      //           .doc("zone" + az.charAt(zone))
+      //           .collection("slotDetail")
+      //           .doc(
+      //             (floor + 1).toString() +
+      //               az.charAt(zone) +
+      //               "-" +
+      //               (slot + 1).toString()
+      //           )
+      //           .set(idStatus);
+      //       }
+      //     }
+      //   }
+      // }
 
       /*                 */
       // // Get a new write batch
