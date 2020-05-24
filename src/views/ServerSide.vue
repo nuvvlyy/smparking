@@ -47,6 +47,16 @@
         </b-nav>
       </div>
 
+
+
+      <div>
+        <ul v-for="(index,keyy) in slotStatus.floor"  :key="keyy"  class="text-left">
+          <li v-for="(indexx,key) in index" :key="key">floor:{{keyy}} {{index}}</li>
+        </ul>
+        <hr>
+        <div v-for="(i,key) in slotStatus" :key="key">{{key}} > status: {{i}}</div>
+      </div>
+
       <button class="btn btn-info my-5" @click="test">test</button>
       <button class="btn btn-danger my-5 mx-5" @click="arraySlot">Array Slot</button>
 
@@ -117,8 +127,8 @@ import * as firebase from 'firebase'
 
 import EllipsisLoader from "@bit/joshk.vue-spinners-css.ellipsis-loader";
 
-var database = firebase.database();
-var slotStatusRef = database.ref("/sensor");
+//var database = firebase.database();
+var slotStatusRef = rdb.ref("/sensor");
 
 export default {
   components: {
@@ -142,6 +152,7 @@ export default {
       all_zones: new Map(),
       isShow: false,
       slotStatus: null,
+      slotStatusKey:null,
       slotStatusRef: null
     };
   },
@@ -176,8 +187,11 @@ export default {
   },
   mounted() {
     this.getZoneWithSlot();
+
+    /**ทำอยู่ */
     slotStatusRef.on("value", snapshot => {
       this.slotStatus = snapshot.val();
+      this.slotStatusKey = snapshot.key;
     });
  
   },
@@ -281,7 +295,8 @@ export default {
       }
     },
     test() {
-      console.log("slotStaaus", this.slotStatus);
+      console.log("slotStaus", this.slotStatus);
+      console.log("slotStausKey", this.slotStatusKey);
       console.log("arraySlots", this.arraySlot);
       //  for (let i in this.FBSlots) {
 
