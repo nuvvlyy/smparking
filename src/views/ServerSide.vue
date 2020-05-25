@@ -54,7 +54,9 @@
           <li v-for="(indexx,key) in index" :key="key">floor:{{keyy}} {{index}}</li>
         </ul>
         <hr>
+        /**กำลังทำ */
         <div v-for="(i,key) in slotStatus" :key="key">{{key}} > status: {{i}}</div>
+        <hr><h5>Process from RDB</h5><hr>
       </div>
 
       <button class="btn btn-info my-5" @click="test">test</button>
