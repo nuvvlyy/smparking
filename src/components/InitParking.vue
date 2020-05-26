@@ -349,6 +349,37 @@ export default {
 
       /** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
       
+      for (let floor = 0; floor < num; floor++) {
+        let setFloors = db
+          .collection("floors")
+          .doc((floor + 1).toString())
+          .set(dataFloor);
+        if (parseInt(this.zone) != 0) {
+          for (let zone = 0; zone < parseInt(this.zone); zone++) {
+            let setZoneDetail = db
+              .collection("floors")
+              .doc((floor + 1).toString())
+              .collection("zoneDetail")
+              .doc(az.charAt(zone))
+              .set(zoneData);
+            for ( let slot = 0; slot < parseInt(this.zoneHeight * this.selected);slot++) {
+              let setSlotDetail = db
+                .collection("floors")
+                .doc((floor + 1).toString())
+                .collection("zoneDetail")
+                .doc(az.charAt(zone))
+                .collection("slotDetail")
+                .doc(
+                  (floor + 1).toString() +
+                    az.charAt(zone) +
+                    "-" +
+                    (slot + 1).toString()
+                )
+                .set(idStatus);
+            }
+          }
+        }
+      }
 
       /*                 */
       // // Get a new write batch

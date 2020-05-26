@@ -105,7 +105,7 @@ import Sidebar from "@/components/Sidebar";
 import PageNavi from "@/components/PageNavi";
 import InitParking from "@/components/InitParking";
 import EditFloor from "@/components/EditFloor";
-
+import SlotModal from "@/components/SlotModal";
 import PageNumber from "@/components/PageNumberBackground.vue";
 
 import { db } from "../firebase";
@@ -116,7 +116,7 @@ export default {
     PageNavi,
     InitParking,
     EditFloor,
-
+    SlotModal,
     PageNumber
   },
 

@@ -28,15 +28,7 @@
                   class="form-control text-center"
                   placeholder="Zone"
                 />
-              </b-form-group>
-              <b-form-group label="Set zone distance">
-                <input
-                  v-model="zoneDistance"
-                  type="text"
-                  class="form-control"
-                  placeholder="Ex. 100,50"
-                />
-              </b-form-group>
+              </b-form-group>           
              
 
               <b-form-group label="height" class="form-group col-md-5">
@@ -58,17 +50,7 @@
                       <b-form-radio v-model="selected" name="some-radios" value="2">2 Side</b-form-radio>
                     </b-form-group>
                   </div>
-                  <b-form-checkbox
-                    id="markEntrance"
-                    v-model="checkEntrance"
-                    name="markEntrance"
-                    value="accepted"
-                    class="form-group col-md"
-                    unchecked-value="not_accepted"
-                  >
-                    Mark
-                    <strong>Entrance</strong> this zone
-                  </b-form-checkbox>
+              
                 </div>
               </fieldset>
 
@@ -117,7 +99,7 @@ export default {
   name: "Sidebar",
   data() {
     return {
-      zoneDistance:null,
+     
       zoneSelect: null,
       selected: ""
       //checkEntrance: ""
@@ -142,33 +124,33 @@ export default {
     },
 
     applyChange() {
-      console.log(this.zoneChange);
-      console.log(this.checkEntrance);
-      //  db.collection('floors').doc((this.$store.state.floor).toString())
-      //   .collection('zoneDetail').doc(this.zoneSelect)
-      //   .set({entrance:false})
-      // if(this.checkEntrance == 'accepted'){
-      //   this.checkEntrance = 'not_accepted'}
-      //   else{
-      //     this.checkEntrance = 'accepted'
-      //   }
-      if (this.checkEntrance == "accepted") {
-        this.entrance = "accepted";
-        console.log("k", this.entrance);
-        db.collection("floors")
-          .doc(this.$store.state.floor.toString())
-          .collection("zoneDetail")
-          .doc(this.zoneSelect)
-          .set({ entrance: true });
-      } else if (this.checkEntrance == "not_accepted") {
-        this.entrance = "accepted";
-        console.log("f", this.entrance);
-        db.collection("floors")
-          .doc(this.$store.state.floor.toString())
-          .collection("zoneDetail")
-          .doc(this.zoneSelect)
-          .set({ entrance: false });
-      }
+      // console.log(this.zoneChange);
+      // console.log(this.checkEntrance);
+      // //  db.collection('floors').doc((this.$store.state.floor).toString())
+      // //   .collection('zoneDetail').doc(this.zoneSelect)
+      // //   .set({entrance:false})
+      // // if(this.checkEntrance == 'accepted'){
+      // //   this.checkEntrance = 'not_accepted'}
+      // //   else{
+      // //     this.checkEntrance = 'accepted'
+      // //   }
+      // if (this.checkEntrance == "accepted") {
+      //   this.entrance = "accepted";
+      //   console.log("k", this.entrance);
+      //   db.collection("floors")
+      //     .doc(this.$store.state.floor.toString())
+      //     .collection("zoneDetail")
+      //     .doc(this.zoneSelect)
+      //     .set({ entrance: true });
+      // } else if (this.checkEntrance == "not_accepted") {
+      //   this.entrance = "accepted";
+      //   console.log("f", this.entrance);
+      //   db.collection("floors")
+      //     .doc(this.$store.state.floor.toString())
+      //     .collection("zoneDetail")
+      //     .doc(this.zoneSelect)
+      //     .set({ entrance: false });
+     // }
     },
     closeMenu() {
       if ($) {

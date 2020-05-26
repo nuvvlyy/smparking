@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper d-flex align-items-stretch h-100 mb-5">
     <div class="container-fluid">
-      <p>The destination is :{{this.$route.params.id}}</p>
+      <!-- <p>The destination is :{{this.$route.params.id}}</p> -->
       <!-- <div class="row">
               <div class="col-md-1" v-for="(i,index) in floor.zone" :key="index">
                 <table class="table table-light">
@@ -21,7 +21,7 @@
 
       <!-- <div class="display-1" v-if="notFound == true">Floor not found</div> -->
 
-      <div>
+      <!-- <div>
         <b-nav>
           <b-nav-item disabled>Symbol Color:</b-nav-item>
           <b-nav-item disabled>
@@ -45,18 +45,18 @@
             <div class="box yellow-striped"></div>
           </b-nav-item>
         </b-nav>
-      </div>
-
-
+      </div>-->
 
       <div>
-        <ul v-for="(index,keyy) in slotStatus.floor"  :key="keyy"  class="text-left">
+        <ul v-for="(index,keyy) in slotStatus.floor" :key="keyy" class="text-left">
           <li v-for="(indexx,key) in index" :key="key">floor:{{keyy}} {{index}}</li>
         </ul>
-        <hr>
-        /**กำลังทำ */
+        <hr />/**กำลังทำ */
         <div v-for="(i,key) in slotStatus" :key="key">{{key}} > status: {{i}}</div>
-        <hr><h5>Process from RDB</h5><hr>
+        <hr />
+        <h5>Process from RDB</h5>
+        <hr />
+        <div>{{fromRdb}}</div>
       </div>
 
       <button class="btn btn-info my-5" @click="test">test</button>
@@ -109,10 +109,15 @@
                   <td
                     v-for="(item,index) in current_array"
                     :key="index"
-                    @click="infoSpot(item)"
                     class="rectangle empty"
+                    data-toggle="modal"
+                    data-target="#slotModal"
+                    @click="$bvModal.show('slotModall'),infoSpot(item)"
+                    title="Slot setting"
                   >{{item[0]}}</td>
-                  <!--{{(parent_node_index*2+index+1)}} is {{item}} -->
+                  <!--
+                     @click="infoSpot(item)"
+                  {{(parent_node_index*2+index+1)}} is {{item}}-->
                 </tr>
               </tbody>
             </table>
@@ -125,7 +130,7 @@
 <script>
 import { db, rdb } from "../firebase";
 
-import * as firebase from 'firebase'
+import * as firebase from "firebase";
 
 import EllipsisLoader from "@bit/joshk.vue-spinners-css.ellipsis-loader";
 
@@ -154,7 +159,7 @@ export default {
       all_zones: new Map(),
       isShow: false,
       slotStatus: null,
-      slotStatusKey:null,
+      slotStatusKey: null,
       slotStatusRef: null
     };
   },
@@ -185,6 +190,22 @@ export default {
       }
 
       return zone;
+    },
+    fromRdb() {
+      let slot = Object.keys(this.slotStatus);
+      let target = [];
+      let floor, zone, slotNum;
+      for (let i in slot) {
+        target.push(slot[i].match(/[a-zA-Z]+|[0-9]+/g));
+      }
+      for (let i in target) {
+        floor = parseInt(target[i][0]);
+        zone = target[i][1];
+        slot = parseInt(target[i][2]);
+        console.log("rdb", floor, zone, slot);
+      }
+
+      return target;
     }
   },
   mounted() {
@@ -195,7 +216,6 @@ export default {
       this.slotStatus = snapshot.val();
       this.slotStatusKey = snapshot.key;
     });
- 
   },
   methods: {
     getZoneWithSlot() {
