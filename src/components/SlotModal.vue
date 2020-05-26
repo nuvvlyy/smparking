@@ -11,7 +11,6 @@
     </div>-->
 
     <b-modal
-    
       id="slotModall"
       ref="modal"
       :title="'Slot Setting '+[[$store.state.floor]]"
@@ -28,9 +27,26 @@
           label-class="font-weight-bold pt-1 logo-primary h1"
           class="mb-0"
         >
-    
-
-        
+          <b-form-group
+            label-cols-sm="4"
+            label="Best slot:"
+            label-align-sm="right"
+            :state="floorState"
+            label-for="numberFloor"
+            invalid-feedback="Floor is required"
+          >
+            <b-form-checkbox
+              id="markEntrance"
+              v-model="bestSlot"
+              name="markEntrance"
+              value="accepted"
+              class="form-group col-md"
+              unchecked-value="not_accepted"
+            >
+              This
+              <strong>. . .</strong> is best slot
+            </b-form-checkbox>
+          </b-form-group>
         </b-form-group>
       </form>
     </b-modal>
@@ -54,6 +70,8 @@ export default {
       name: "",
       nameState: null,
       submittedNames: [],
+
+      bestSlot: null,
 
       // customfloor: null,
       // customFloorState: null,
@@ -98,7 +116,7 @@ export default {
 
       // this.selectedFloor = this.$store.state.floor;
       // this.selected = "2";
-      this.floor= this.$store.state.floor;
+      this.floor = this.$store.state.floor;
       this.zone = null;
       this.zoneHeight = null;
       this.floorState = null;
@@ -175,13 +193,13 @@ export default {
 
       let setFloors = db
         .collection("floors")
-        .doc((this.$store.state.floor).toString())
+        .doc(this.$store.state.floor.toString())
         .set(dataFloor);
       if (parseInt(this.zone) != 0) {
         for (let zone = 0; zone < parseInt(this.zone); zone++) {
           let setZoneDetail = db
             .collection("floors")
-            .doc((this.$store.state.floor).toString())
+            .doc(this.$store.state.floor.toString())
             .collection("zoneDetail")
             .doc("zone" + az.charAt(zone))
             .set(zoneData);
@@ -192,11 +210,12 @@ export default {
           ) {
             let setSlotDetail = db
               .collection("floors")
-             .doc((this.$store.state.floor).toString())
+              .doc(this.$store.state.floor.toString())
               .collection("zoneDetail")
               .doc("zone" + az.charAt(zone))
               .collection("slotDetail")
-              .doc((this.$store.state.floor).toString()+
+              .doc(
+                this.$store.state.floor.toString() +
                   az.charAt(zone) +
                   "-" +
                   (slot + 1).toString()
@@ -206,7 +225,6 @@ export default {
         }
       }
 
-     
       this.$nextTick(() => {
         this.$bvModal.hide("editFloor");
       });

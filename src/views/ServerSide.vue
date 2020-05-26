@@ -89,7 +89,7 @@
               <tr>
                 <th :colspan="2" @click="zoneSelect(i)">
                   <div class="d-inline-flex align-items-center my-auto">
-                    <span @click="zoneSelect(i)">{{i[0]}}</span>
+                    <span @click="zoneSelect(i)">Zone {{i[0]}}</span>
                     <div class="box ml-2 yellow-striped" v-if="i.entrance == true"></div>
                   </div>
                 </th>
