@@ -22,23 +22,24 @@
               class="form-row my-4 justify-content-center"
             >
               <b-form-group label="Zone">
-                <input
+                <b-form-input
                   v-model="zoneChange"
                   type="text"
                   class="form-control text-center"
                   placeholder="Zone"
                 />
+                
               </b-form-group>           
              
 
               <b-form-group label="height" class="form-group col-md-5">
-                <input type="text" class="form-control" placeholder="Height" />
+                <b-form-input type="text" class="form-control" placeholder="Height" />
               </b-form-group>
               <span class="h6 align-self-center mx-1 pt-4">
                 <i class="fa fa-times" aria-hidden="true"></i>
               </span>
               <b-form-group label="widht" class="form-group col-md-5">
-                <input type="text" class="form-control" placeholder="Width" v-model="selected" />
+                <b-form-input type="text" class="form-control" placeholder="Width" v-model="selected" />
               </b-form-group>
 
               <fieldset class="form-group">
@@ -107,16 +108,11 @@ export default {
   },
   computed: {
     zoneChange() {
-      return (this.zoneSelect = this.$store.state.zoneSelect[".key"]);
+      
+      //console.log('zoneSelect >>',this.$store.state.zoneSelect[1].length)
+      return (this.zoneSelect = this.$store.state.zoneSelect[0]);
+
     },
-    checkEntrance() {
-      let check = this.$store.state.zoneSelect.entrance;
-      if (check == true) {
-        return "accepted";
-      } else if (check == false) {
-        return "not_accepted";
-      }
-    }
   },
   methods: {
     onReset() {

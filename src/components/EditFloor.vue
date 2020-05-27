@@ -276,7 +276,7 @@ export default {
             .collection("floors")
             .doc((this.$store.state.floor).toString())
             .collection("zoneDetail")
-            .doc("zone" + az.charAt(zone))
+            .doc(az.charAt(zone))
             .set(zoneData);
           for (
             let slot = 0;
@@ -287,14 +287,20 @@ export default {
               .collection("floors")
              .doc((this.$store.state.floor).toString())
               .collection("zoneDetail")
-              .doc("zone" + az.charAt(zone))
+              .doc(az.charAt(zone))
               .collection("slotDetail")
               .doc((this.$store.state.floor).toString()+
                   az.charAt(zone) +
                   "-" +
                   (slot + 1).toString()
               )
-              .set(idStatus);
+              .set(idStatus)
+               .then((docRef)=>{
+                 /**ดัก progress upload ยังไม่ได้ทำ*/
+                  console.log('Document written');
+                }).catch((error)=>{
+                  console.log('Error adding document: ',error)
+                })
           }
         }
       }

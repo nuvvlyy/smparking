@@ -1,14 +1,5 @@
 <template>
   <div class="slotModal">
-    <!-- <b-button v-b-modal.initParking>Open Modal</b-button> -->
-    <!-- 
-    <div class="mt-3">
-      Submitted Names:
-      <div v-if="submittedNames.length === 0">--</div>
-      <ul v-else class="mb-0 pl-3">
-        <li v-for="floor in submittedNames" :key="floor">{{ floor }}</li>
-      </ul>
-    </div>-->
 
     <b-modal
       id="slotModall"
@@ -42,10 +33,15 @@
               value="accepted"
               class="form-group col-md"
               unchecked-value="not_accepted"
+              
             >
               This
               <strong>. . .</strong> is best slot
             </b-form-checkbox>
+          </b-form-group>
+
+          <b-form-group>
+            <b-button variant="danger" class="float-right mr-auto" @click="deleteSlot">Remove slot</b-button>
           </b-form-group>
         </b-form-group>
       </form>
@@ -130,7 +126,29 @@ export default {
       // Trigger submit handler
       this.handleSubmit();
     },
-    toFirebase() {},
+    deleteSlot() {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(result => {
+        if (result.value) {
+
+          //this.$firestore.products.doc(doc[".key"]).delete();
+          // console.log(doc['.key']);
+
+          Swal.fire("Deleted!", "Deleted successfully.", "success");
+          // Toast.fire({           //***ดี */
+          // icon: 'success',
+          // title: 'Signed in successfully'
+          // });
+        }
+      });
+    },
     resetCollection() {
       // let citiesRef = db.collection("floors");
       // let allCities = citiesRef

@@ -46,8 +46,12 @@
           </b-nav-item>
         </b-nav>
       </div>-->
+      
 
       <div>
+
+
+
         <ul v-for="(index,keyy) in slotStatus.floor" :key="keyy" class="text-left">
           <li v-for="(indexx,key) in index" :key="key">floor:{{keyy}} {{index}}</li>
         </ul>
@@ -109,12 +113,16 @@
                   <td
                     v-for="(item,index) in current_array"
                     :key="index"
-                    class="rectangle empty"
+                    class="rectangle"
                     data-toggle="modal"
                     data-target="#slotModal"
                     @click="$bvModal.show('slotModall'),infoSpot(item)"
                     title="Slot setting"
-                  >{{item[0]}}</td>
+                  >
+                  <div v-if="item[1] === 'active'" class="empty">{{item[0]}}</div>
+                  <div v-else-if="item[1] === 'inactive'" class="full">{{item[0]}}</div>
+                   <div v-if="item[2] === false" class="handicap">{{item[0]}}</div>
+                  </td>
                   <!--
                      @click="infoSpot(item)"
                   {{(parent_node_index*2+index+1)}} is {{item}}-->
@@ -244,7 +252,14 @@ export default {
                   // console.log("id >", doc.id);
                   console.log(arrayzone);
                   console.log(doc.data().status);
-                  arrayzone.push([doc.id, doc.data().status]);
+
+                  if(doc.data().bestSlot === true){
+                    arrayzone.push([doc.id, doc.data().status,doc.data().bestSlot]);
+                  }else{
+                    
+                    arrayzone.push([doc.id, doc.data().status,false]);
+                  }
+                  
                   if (arrayzone.length === 2) {
                     arrayChunked.push(arrayzone);
                     arrayzone = [];
@@ -295,7 +310,7 @@ export default {
           });
       };
     },
-    getStatusInRdb() {},
+ 
 
     test2() {
       let found = this.floors.find(

@@ -375,7 +375,14 @@ export default {
                     "-" +
                     (slot + 1).toString()
                 )
-                .set(idStatus);
+                .set(idStatus)
+                .then((docRef)=>{
+                  /**ดัก progress upload ยังไม่ได้ทำ*/
+                  console.log('Document written');
+                }).catch((error)=>{
+                  console.log('Error adding document: ',error)
+                })
+                
             }
           }
         }
