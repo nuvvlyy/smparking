@@ -81,7 +81,7 @@
               </ul>
       </div>-->
       <div v-if="!isShow" class="row justify-content-center">
-        <EllipsisLoader :color="'#051232'" />
+        <EllipsisLoader :color="'#aebfbe'" />
       </div>
 
       <!-- border border-primary p-5 -->
@@ -205,6 +205,7 @@ export default {
       let floor, zone, slotNum;
       for (let i in slot) {
         target.push(slot[i].match(/[a-zA-Z]+|[0-9]+/g));
+        
       }
       for (let i in target) {
         floor = parseInt(target[i][0]);
@@ -399,6 +400,7 @@ export default {
     },
     infoSpot(i) {
       console.log(i[".key"], Object.values(i));
+      this.$store.commit("changeSlot", i);
     },
 
     updated() {

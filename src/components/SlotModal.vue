@@ -1,10 +1,9 @@
 <template>
   <div class="slotModal">
-
     <b-modal
       id="slotModall"
       ref="modal"
-      :title="'Slot Setting '+[[$store.state.floor]]"
+      :title="'Slot Setting '+[[$store.state.slotSelect[0]]]"
       @show="resetModal"
       @hidden="resetModal"
       @ok="handleOk"
@@ -12,11 +11,11 @@
     >
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
-          label-cols-lg="1"
+          label-cols-lg="2"
           label="SMparking"
           label-size="lg"
           label-class="font-weight-bold pt-1 logo-primary h1"
-          class="mb-0"
+          class="mb-0 ml-2"
         >
           <b-form-group
             label-cols-sm="4"
@@ -31,17 +30,16 @@
               v-model="bestSlot"
               name="markEntrance"
               value="accepted"
-              class="form-group col-md"
+              class="form-group col-md mt-2"
               unchecked-value="not_accepted"
-              
             >
               This
-              <strong>. . .</strong> is best slot
+              <strong>{{$store.state.slotSelect[0]}}</strong> is best slot
             </b-form-checkbox>
           </b-form-group>
 
           <b-form-group>
-            <b-button variant="danger" class="float-right mr-auto" @click="deleteSlot">Remove slot</b-button>
+            <b-button variant="danger" class="float-right mr-4" @click="deleteSlot">Remove slot</b-button>
           </b-form-group>
         </b-form-group>
       </form>
@@ -89,21 +87,22 @@ export default {
     };
   },
   computed: {
-    total: function() {
-      let total = this.zone * this.zoneHeight * this.selected;
-      return total;
-    }
+    // total: function() {
+    //   let total = this.zone * this.zoneHeight * this.selected;
+    //   return total;
+    // }
     // currentFloor:function(){
     //   let now =this.$store.state.floor
     //   return  now
     // }
   },
+  mounted() {},
   methods: {
     checkFormValidity() {
       const valid = this.$refs.form.checkValidity();
-      this.floorState = valid;
-      this.zoneState = valid;
-      this.zoneHeightState = valid;
+      // this.floorState = valid;
+      // this.zoneState = valid;
+      // this.zoneHeightState = valid;
       return valid;
     },
     resetModal() {
@@ -112,13 +111,13 @@ export default {
 
       // this.selectedFloor = this.$store.state.floor;
       // this.selected = "2";
-      this.floor = this.$store.state.floor;
-      this.zone = null;
-      this.zoneHeight = null;
-      this.floorState = null;
-      this.zoneState = null;
-      this.zoneHeightState = null;
-      this.total = null;
+      // this.floor = this.$store.state.floor;
+      // this.zone = null;
+      // this.zoneHeight = null;
+      // this.floorState = null;
+      // this.zoneState = null;
+      // this.zoneHeightState = null;
+      // this.total = null;
     },
     handleOk(bvModalEvt) {
       // Prevent modal from closing
@@ -137,11 +136,37 @@ export default {
         confirmButtonText: "Yes, delete it!"
       }).then(result => {
         if (result.value) {
-
           //this.$firestore.products.doc(doc[".key"]).delete();
           // console.log(doc['.key']);
 
+          let zone = this.$store.state.slotSelect[0].match(/[a-zA-Z]+/g);
+          zone = zone[0];
+
+          
+
+
+          console.log('dalete',this.$store.state.floor.toString(),zone,this.$store.state.slotSelect[0])
+
+          let setSlotDetail = db
+            .collection("floors")
+            .doc(this.$store.state.floor.toString()) /**floor */
+            .collection("zoneDetail")
+            .doc(zone) /**zone */
+            .collection("slotDetail")
+            .doc(this.$store.state.slotSelect[0]) /**slot */
+            .delete()
+            .then(docRef => {
+              /**ดัก progress upload ยังไม่ได้ทำ*/
+              console.log("Document deleted");
+            })
+            .catch(error => {
+              console.log("Error adding document: ", error);
+            });
+
           Swal.fire("Deleted!", "Deleted successfully.", "success");
+
+          this.$bvModal.hide("slotModall");
+
           // Toast.fire({           //***ดี */
           // icon: 'success',
           // title: 'Signed in successfully'
@@ -191,60 +216,60 @@ export default {
       // console.log("zoneHeight", this.zoneHeight);
       // console.log("zoneWidth", this.selected);
 
-      let num = parseInt(this.floor);
-      // var batch = db.batch();
+      // let num = parseInt(this.floor);
+      // // var batch = db.batch();
 
-      this.total = this.floor * this.zone * this.zoneHeight * this.selected;
+      // this.total = this.floor * this.zone * this.zoneHeight * this.selected;
 
-      let dataFloor = {
-        height: this.zoneHeight.toString(),
-        width: this.selected.toString(),
-        zone: this.zone.toString(),
-        timeStramp: Date.now()
-      };
-      let zoneData = { id1: "handicap", entrance: false };
-      let idStatus = { status: "active" };
+      // let dataFloor = {
+      //   height: this.zoneHeight.toString(),
+      //   width: this.selected.toString(),
+      //   zone: this.zone.toString(),
+      //   timeStramp: Date.now()
+      // };
+      // let zoneData = { id1: "handicap", entrance: false };
+      // let idStatus = { status: "active" };
 
-      let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      // let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
       /** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
 
-      let setFloors = db
-        .collection("floors")
-        .doc(this.$store.state.floor.toString())
-        .set(dataFloor);
-      if (parseInt(this.zone) != 0) {
-        for (let zone = 0; zone < parseInt(this.zone); zone++) {
-          let setZoneDetail = db
-            .collection("floors")
-            .doc(this.$store.state.floor.toString())
-            .collection("zoneDetail")
-            .doc("zone" + az.charAt(zone))
-            .set(zoneData);
-          for (
-            let slot = 0;
-            slot < parseInt(this.zoneHeight * this.selected);
-            slot++
-          ) {
-            let setSlotDetail = db
-              .collection("floors")
-              .doc(this.$store.state.floor.toString())
-              .collection("zoneDetail")
-              .doc("zone" + az.charAt(zone))
-              .collection("slotDetail")
-              .doc(
-                this.$store.state.floor.toString() +
-                  az.charAt(zone) +
-                  "-" +
-                  (slot + 1).toString()
-              )
-              .set(idStatus);
-          }
-        }
-      }
+      // let setFloors = db
+      //   .collection("floors")
+      //   .doc(this.$store.state.floor.toString())
+      //   .set(dataFloor);
+      // if (parseInt(this.zone) != 0) {
+      //   for (let zone = 0; zone < parseInt(this.zone); zone++) {
+      //     let setZoneDetail = db
+      //       .collection("floors")
+      //       .doc(this.$store.state.floor.toString())
+      //       .collection("zoneDetail")
+      //       .doc("zone" + az.charAt(zone))
+      //       .set(zoneData);
+      //     for (
+      //       let slot = 0;
+      //       slot < parseInt(this.zoneHeight * this.selected);
+      //       slot++
+      //     ) {
+      //       let setSlotDetail = db
+      //         .collection("floors")
+      //         .doc(this.$store.state.floor.toString())
+      //         .collection("zoneDetail")
+      //         .doc("zone" + az.charAt(zone))
+      //         .collection("slotDetail")
+      //         .doc(
+      //           this.$store.state.floor.toString() +
+      //             az.charAt(zone) +
+      //             "-" +
+      //             (slot + 1).toString()
+      //         )
+      //         .set(idStatus);
+      //     }
+      //   }
+      // }
 
       this.$nextTick(() => {
-        this.$bvModal.hide("editFloor");
+        this.$bvModal.hide("slotModall");
       });
     }
   }
