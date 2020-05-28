@@ -379,6 +379,8 @@ export default {
                 .then((docRef)=>{
                   /**ดัก progress upload ยังไม่ได้ทำ*/
                   console.log('Document written');
+                }).then(()=>{
+                  this.$bvModal.hide("initParkingg");
                 }).catch((error)=>{
                   console.log('Error adding document: ',error)
                 })
@@ -411,7 +413,7 @@ export default {
 
       // Hide the modal manually
       this.$nextTick(() => {
-        this.$bvModal.hide("initParking");
+        this.$bvModal.hide("initParkingg");
       });
     }
   }

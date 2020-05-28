@@ -46,12 +46,8 @@
           </b-nav-item>
         </b-nav>
       </div>-->
-      
 
       <div>
-
-
-
         <ul v-for="(index,keyy) in slotStatus.floor" :key="keyy" class="text-left">
           <li v-for="(indexx,key) in index" :key="key">floor:{{keyy}} {{index}}</li>
         </ul>
@@ -61,6 +57,10 @@
         <h5>Process from RDB</h5>
         <hr />
         <div>{{fromRdb}}</div>
+        <hr />
+        <div>
+          <p class="display-4">BEST: {{showBest}}</p>
+        </div>
       </div>
 
       <button class="btn btn-info my-5" @click="test">test</button>
@@ -119,9 +119,17 @@
                     @click="$bvModal.show('slotModall'),infoSpot(item)"
                     title="Slot setting"
                   >
-                  <div v-if="item[1] === 'active'" class="empty">{{item[0]}}</div>
-                  <div v-else-if="item[1] === 'inactive'" class="full">{{item[0]}}</div>
-                   <div v-if="item[2] === false" class="handicap">{{item[0]}}</div>
+                    <div v-if="item[1] === 'active'" class="empty">{{item[0]}}</div>
+
+                    <div v-else-if="item[1] === 'inactive'" class="full">{{item[0]}}</div>
+                    <div v-if="item[2] === false" class="handicap">{{item[0]}}</div>
+                    <b-spinner
+                      v-if="item[2] === true"
+                      class="m-1"
+                      variant="danger"
+                      type="grow"
+                      label="Spinning"
+                    ></b-spinner>
                   </td>
                   <!--
                      @click="infoSpot(item)"
@@ -190,14 +198,15 @@ export default {
   // },
 
   computed: {
-    FBSlots() {
-      let allSlot = this.zones;
-      let zone = [];
-      for (let i in allSlot) {
-        zone.push(allSlot[i][".key"]);
-      }
-
-      return zone;
+    showBest() {
+      /** ทำอยู่ */
+      let showMap = this.all_zones;
+      //console.log('getMap>>>',showMap.has('A'))
+      // for (let [key, value] of showMap.entries()) {
+      //   console.log("showMap", key + " = " + value);
+      // }
+      console.log('map ShowBset',showMap);
+      return this.$store.state.slotSelect[0];
     },
     fromRdb() {
       let slot = Object.keys(this.slotStatus);
@@ -205,7 +214,6 @@ export default {
       let floor, zone, slotNum;
       for (let i in slot) {
         target.push(slot[i].match(/[a-zA-Z]+|[0-9]+/g));
-        
       }
       for (let i in target) {
         floor = parseInt(target[i][0]);
@@ -254,13 +262,16 @@ export default {
                   console.log(arrayzone);
                   console.log(doc.data().status);
 
-                  if(doc.data().bestSlot === true){
-                    arrayzone.push([doc.id, doc.data().status,doc.data().bestSlot]);
-                  }else{
-                    
-                    arrayzone.push([doc.id, doc.data().status,false]);
+                  if (doc.data().bestSlot === true) {
+                    arrayzone.push([
+                      doc.id,
+                      doc.data().status,
+                      doc.data().bestSlot
+                    ]);
+                  } else {
+                    arrayzone.push([doc.id, doc.data().status, false]);
                   }
-                  
+
                   if (arrayzone.length === 2) {
                     arrayChunked.push(arrayzone);
                     arrayzone = [];
@@ -273,7 +284,7 @@ export default {
                 console.log(this.all_zones.size);
                 if (this.all_zones.size === size) {
                   this.isShow = true;
-                  console.log(this.all_zones);
+                  console.log("all_zones", this.all_zones);
                 }
               });
           });
@@ -311,7 +322,6 @@ export default {
           });
       };
     },
- 
 
     test2() {
       let found = this.floors.find(
@@ -334,7 +344,7 @@ export default {
     },
     test() {
       console.log("slotStaus", this.slotStatus);
-      console.log("slotStausKey", this.slotStatusKey);
+      console.log("getZoneWithSlot>>", this.all_zones);
       console.log("arraySlots", this.arraySlot);
       //  for (let i in this.FBSlots) {
 
@@ -456,7 +466,7 @@ td div {
 .rectangle {
   width: 30px;
   height: 20px;
-  background: #c2c2c2;
+  background: #e2e2e2ab;
 
   cursor: pointer;
 }

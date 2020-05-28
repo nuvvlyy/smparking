@@ -21,7 +21,7 @@
             label-cols-sm="4"
             label="Best slot:"
             label-align-sm="right"
-            :state="floorState"
+            :state="slotState"
             label-for="numberFloor"
             invalid-feedback="Floor is required"
           >
@@ -65,7 +65,8 @@ export default {
       nameState: null,
       submittedNames: [],
 
-      bestSlot: null,
+      slotState: null,
+      bestSlot: "not_accepted",
 
       // customfloor: null,
       // customFloorState: null,
@@ -109,6 +110,7 @@ export default {
       this.name = "";
       this.nameState = null;
 
+      this.bestSlot = "not_accepted";
       // this.selectedFloor = this.$store.state.floor;
       // this.selected = "2";
       // this.floor = this.$store.state.floor;
@@ -136,17 +138,11 @@ export default {
         confirmButtonText: "Yes, delete it!"
       }).then(result => {
         if (result.value) {
-          //this.$firestore.products.doc(doc[".key"]).delete();
-          // console.log(doc['.key']);
-
           let zone = this.$store.state.slotSelect[0].match(/[a-zA-Z]+/g);
           zone = zone[0];
+          //console.log('dalete',this.$store.state.floor.toString(),zone,this.$store.state.slotSelect[0])
 
-          
-
-
-          console.log('dalete',this.$store.state.floor.toString(),zone,this.$store.state.slotSelect[0])
-
+          /** delete slot เสร็จแลัววว */
           let setSlotDetail = db
             .collection("floors")
             .doc(this.$store.state.floor.toString()) /**floor */
@@ -174,43 +170,51 @@ export default {
         }
       });
     },
-    resetCollection() {
-      // let citiesRef = db.collection("floors");
-      // let allCities = citiesRef
-      //   .get()
-      //   .then(snapshot => {
-      //     snapshot.forEach(doc => {
-      //       if (!doc.exists) {
-      //         console.log("No such document!");
-      //       } else {
-      //         console.log("Document data:", doc.id, "=>", doc.data());
-      //       }
-      //     });
-      //   })
-      //   .catch(err => {
-      //     console.log("Error getting documents", err);
-      //   });
-      /* Delete Collection */
-      // db.collection("floors")
-      //   .get()
-      //   .then(res => {
-      //     res.forEach(element => {
-      //       element.ref.delete();
-      //     });
-      //   })
-      //   .catch(err => {
-      //     console.log("Error getting documents", err);
-      //   });
+    markBestSlot() {
+      let setBestSlot = null;
+      if (this.bestSlot === "accepted") {
+        setBestSlot = { bestSlot: true };
+        console.log("bestSlot", setBestSlot);
+      } else if (this.bestSlot === "not_accepted"){
+        setBestSlot = { bestSlot: false };
+        console.log("bestSlot", setBestSlot);
+      }
+
+      let zone = this.$store.state.slotSelect[0].match(/[a-zA-Z]+/g);
+      zone = zone[0];
+      //console.log('dalete',this.$store.state.floor.toString(),zone,this.$store.state.slotSelect[0])
+      let bestSlot = null;
+      /** delete slot เสร็จแลัววว */
+      let setSlotDetail = db
+        .collection("floors")
+        .doc(this.$store.state.floor.toString()) /**floor */
+        .collection("zoneDetail")
+        .doc(zone) /**zone */
+        .collection("slotDetail")
+        .doc(this.$store.state.slotSelect[0]) /**slot */
+        .update(setBestSlot)
+        .then(docRef => {
+          /**ดัก progress upload ยังไม่ได้ทำ*/
+          console.log("Added document with ID: ", docRef);
+        })
+        .then(() => {
+          this.$bvModal.hide("slotModall");
+        })
+        .catch(error => {
+          console.log("Error adding document: ", error);
+        });
     },
+  
     handleSubmit() {
-      this.resetCollection();
+      this.markBestSlot();
+  
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return;
       }
       // Push the name to submitted names
       ////this.submittedNames.push(this.name);
-      this.submittedNames.push(this.floor);
+      //this.submittedNames.push(this.floor);
       // console.log("floor", this.floor);
       // console.log("zone", this.zone);
       // console.log("zoneHeight", this.zoneHeight);

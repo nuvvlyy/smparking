@@ -283,6 +283,7 @@ export default {
             slot < parseInt(this.zoneHeight * this.selected);
             slot++
           ) {
+            
             let setSlotDetail = db
               .collection("floors")
              .doc((this.$store.state.floor).toString())
@@ -297,7 +298,11 @@ export default {
               .set(idStatus)
                .then((docRef)=>{
                  /**ดัก progress upload ยังไม่ได้ทำ*/
+                 
                   console.log('Document written');
+                  
+                }).then(()=>{
+                  this.$bvModal.hide("editFloorr");
                 }).catch((error)=>{
                   console.log('Error adding document: ',error)
                 })
