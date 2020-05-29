@@ -60,6 +60,10 @@
         <hr />
         <div>
           <p class="display-4">BEST: {{showBest}}</p>
+          <hr>
+          <ul><h4>Best list</h4>
+            <li v-for="i in arrBestSlot" :key="i">{{i}}</li>
+          </ul>
         </div>
       </div>
 
@@ -176,7 +180,8 @@ export default {
       isShow: false,
       slotStatus: null,
       slotStatusKey: null,
-      slotStatusRef: null
+      slotStatusRef: null,
+      arrBestSlot:[]
     };
   },
   // firestore() {
@@ -268,11 +273,16 @@ export default {
                       doc.data().status,
                       doc.data().bestSlot
                     ]);
+                    this.arrBestSlot.push([
+                      doc.id,
+                      doc.data().status,
+                      doc.data().bestSlot
+                    ]);
                   } else {
                     arrayzone.push([doc.id, doc.data().status, false]);
                   }
 
-                  if (arrayzone.length === 2) {
+                  if (arrayzone.length === 2 /**new */ ) {
                     arrayChunked.push(arrayzone);
                     arrayzone = [];
                   }

@@ -199,6 +199,7 @@ export default {
         })
         .then(() => {
           this.$bvModal.hide("slotModall");
+          //this.$refs.
         })
         .catch(error => {
           console.log("Error adding document: ", error);
