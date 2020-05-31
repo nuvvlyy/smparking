@@ -373,7 +373,9 @@ export default {
                   (floor + 1).toString() +
                     az.charAt(zone) +
                     "-" +
-                    (slot + 1).toString()
+                    ('0'+(slot + 1)).slice(-2) /**add '0' ,if slot less then 10 */
+
+                   
                 )
                 .set(idStatus)
                 .then((docRef)=>{

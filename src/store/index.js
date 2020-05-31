@@ -7,11 +7,14 @@ let currentFloor = window.localStorage.getItem('floor');
 let zoneSelect = window.localStorage.getItem('zoneSelect');
 let slotSelect = window.localStorage.getItem('slotSelect');
 
+let recommendSlot = window.localStorage.getItem('slotSelect');
+
 export default new Vuex.Store({
   state: {
     floor: currentFloor,
     zoneSelect : zoneSelect,
-    slotSelect:slotSelect
+    slotSelect:slotSelect,
+    recommendSlot:'1A-01' //recommendSlot
   },
   mutations: {
     changeFloor(state, floor) {
@@ -29,10 +32,15 @@ export default new Vuex.Store({
       //console.log('function changeFloor')
       this.commit('saveData');
     },
+    recommendSlot(state,recommend){
+      state.recommendSlot = recommend
+      this.commit('saveData')
+    },
     saveData(state){
       window.localStorage.setItem("floor",JSON.stringify(state.floor));
       window.localStorage.setItem("zoneSelect",JSON.stringify(state.zoneSelect));
       window.localStorage.setItem("slotSelect",JSON.stringify(state.slotSelect));
+      window.localStorage.setItem("recommendSlot",JSON.stringify(state.slotSelect));
     }
   }, getters: {
     current: state => {

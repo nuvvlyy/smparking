@@ -54,14 +54,12 @@
         <hr />/**กำลังทำ */
         <div v-for="(i,key) in slotStatus" :key="key">{{key}} > status: {{i}}</div>
         <hr />
-        <h5>Process from RDB</h5>
-        <hr />
-        <div>{{fromRdb}}</div>
-        <hr />
+   
         <div>
-          <p class="display-4">BEST: {{showBest}}</p>
-          <hr>
-          <ul><h4>Best list</h4>
+          <p class="display-4">BEST: {{arrBestSlot[0][0]}}</p>
+          <hr />
+          <ul>
+            <h4>Best list</h4>
             <li v-for="i in arrBestSlot" :key="i">{{i}}</li>
           </ul>
         </div>
@@ -123,17 +121,19 @@
                     @click="$bvModal.show('slotModall'),infoSpot(item)"
                     title="Slot setting"
                   >
-                    <div v-if="item[1] === 'active'" class="empty">{{item[0]}}</div>
-
-                    <div v-else-if="item[1] === 'inactive'" class="full">{{item[0]}}</div>
-                    <div v-if="item[2] === false" class="handicap">{{item[0]}}</div>
+                    <div v-if="item[3] === 'ready'" class="empty">{{item[0]}}</div>
+                    <div v-else-if="item[3] === 'busy'" class="full" style="color:white">{{item[0]}}</div>
+                  
+                    <!-- <div v-if="item[1] === 'inactive'" class="full">{{item[0]}}</div> -->
+                    <!-- <div v-if="item[2] === false" class="handicap">{{item[0]}}</div> -->
                     <b-spinner
                       v-if="item[2] === true"
                       class="m-1"
-                      variant="danger"
+                      variant="success"
                       type="grow"
                       label="Spinning"
                     ></b-spinner>
+                    
                   </td>
                   <!--
                      @click="infoSpot(item)"
@@ -181,7 +181,7 @@ export default {
       slotStatus: null,
       slotStatusKey: null,
       slotStatusRef: null,
-      arrBestSlot:[]
+      arrBestSlot: []
     };
   },
   // firestore() {
@@ -192,12 +192,7 @@ export default {
   //             .doc(this.$store.state.floor.toString())
   //             .collection("zoneDetail"),
   //
-  //         slots: db
-  //             .collection("floors")
-  //             .doc(this.$store.state.floor.toString())
-  //             .collection("zoneDetail")
-  //             .doc("zoneA")
-  //             .collection("slotDetail")
+ 
   //
   //     };
   // },
@@ -210,7 +205,7 @@ export default {
       // for (let [key, value] of showMap.entries()) {
       //   console.log("showMap", key + " = " + value);
       // }
-      console.log('map ShowBset',showMap);
+      console.log("map ShowBset", showMap);
       return this.$store.state.slotSelect[0];
     },
     fromRdb() {
@@ -241,6 +236,10 @@ export default {
   },
   methods: {
     getZoneWithSlot() {
+
+      let marticSlot = [];
+
+
       console.log("getzone");
       let arr = this.zones;
       console.log(this.zones);
@@ -264,25 +263,40 @@ export default {
               .then(data => {
                 data.forEach(doc => {
                   // console.log("id >", doc.id);
-                  console.log(arrayzone);
-                  console.log(doc.data().status);
+                  console.log('arrayzone',arrayzone);
+                  //console.log(doc.data().status);
 
-                  if (doc.data().bestSlot === true) {
-                    arrayzone.push([
-                      doc.id,
-                      doc.data().status,
-                      doc.data().bestSlot
-                    ]);
-                    this.arrBestSlot.push([
-                      doc.id,
-                      doc.data().status,
-                      doc.data().bestSlot
-                    ]);
-                  } else {
-                    arrayzone.push([doc.id, doc.data().status, false]);
-                  }
+                  let found = Object.keys(this.slotStatus).find(
+                    slot => slot == doc.id
+                  );
+                  // if (found) {
+                  //   console.log("found", found);
+                  // } else {
+                  //   console.log("not_found");
+                  // }
 
-                  if (arrayzone.length === 2 /**new */ ) {
+                  let ready = 'ready'
+                  let busy = "busy";
+
+                  if (doc.data().bestSlot === true ) {
+                  this.arrBestSlot.push([doc.id,doc.data().status,doc.data().bestSlot]);
+                      }
+                   // arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
+                    if(found){
+                      arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
+                      }else{
+                      arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,ready])
+                      }
+                    
+                  // } else {
+                  //   arrayzone.push([doc.id, doc.data().status, false]);
+                    // if (found) {
+                    //   //console.log("found", found);
+                    //   arrayzone.push([busy])
+                    // }
+                
+
+                  if (arrayzone.length === 2 /**new */) {
                     arrayChunked.push(arrayzone);
                     arrayzone = [];
                   }
@@ -291,7 +305,7 @@ export default {
                 arrayChunked = [];
                 console.log(this.all_zones);
 
-                console.log(this.all_zones.size);
+                console.log('this.allzone,302',this.all_zones.size);
                 if (this.all_zones.size === size) {
                   this.isShow = true;
                   console.log("all_zones", this.all_zones);
@@ -353,7 +367,7 @@ export default {
       }
     },
     test() {
-      console.log("slotStaus", this.slotStatus);
+      console.log("slotStaus", Object.keys(this.slotStatus));
       console.log("getZoneWithSlot>>", this.all_zones);
       console.log("arraySlots", this.arraySlot);
       //  for (let i in this.FBSlots) {
@@ -427,6 +441,7 @@ export default {
       this.floor = this.$store.state.floor;
       // currentFloor: this.$store.state.floor
       console.log(this.floor);
+      this.getZoneWithSlot();
     }
   }
 };
@@ -529,7 +544,7 @@ td {
   --mat-light-gray: #e0e0e0;
   --mat-dark-teal: #00796b;
   --mat-blue: #5d99c6;
-  --mat-red: #f44336;
+  --mat-red: #e57373;
   --mat-yellow: #ffb74d;
   --mat-dark-yellow: #f57c00;
   --mat-pink: #fce4ec;

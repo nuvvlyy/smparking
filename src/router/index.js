@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Config from '../views/Config.vue'
 import ServerSide from '../views/ServerSide.vue'
+import Recommend from '../views/ShowRecommend.vue'
 
 // import { fb } from "..firebase";
 //require("firebase/auth");
@@ -46,7 +47,13 @@ const routes = [
       props: true
     },
     ]
-  }
+  },
+  {
+    path: "/recommend",
+    name: "Recommend",
+    component: Recommend
+  },
+
 ];
 
 const router = new VueRouter({
