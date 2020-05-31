@@ -54,7 +54,7 @@
         <hr />/**กำลังทำ */
         <div v-for="(i,key) in slotStatus" :key="key">{{key}} > status: {{i}}</div>
         <hr />
-   
+
         <div>
           <p class="display-4">BEST: {{arrBestSlot[0][0]}}</p>
           <hr />
@@ -123,7 +123,7 @@
                   >
                     <div v-if="item[3] === 'ready'" class="empty">{{item[0]}}</div>
                     <div v-else-if="item[3] === 'busy'" class="full" style="color:white">{{item[0]}}</div>
-                  
+
                     <!-- <div v-if="item[1] === 'inactive'" class="full">{{item[0]}}</div> -->
                     <!-- <div v-if="item[2] === false" class="handicap">{{item[0]}}</div> -->
                     <b-spinner
@@ -133,7 +133,6 @@
                       type="grow"
                       label="Spinning"
                     ></b-spinner>
-                    
                   </td>
                   <!--
                      @click="infoSpot(item)"
@@ -192,7 +191,7 @@ export default {
   //             .doc(this.$store.state.floor.toString())
   //             .collection("zoneDetail"),
   //
- 
+
   //
   //     };
   // },
@@ -236,9 +235,7 @@ export default {
   },
   methods: {
     getZoneWithSlot() {
-
       let marticSlot = [];
-
 
       console.log("getzone");
       let arr = this.zones;
@@ -263,7 +260,7 @@ export default {
               .then(data => {
                 data.forEach(doc => {
                   // console.log("id >", doc.id);
-                  console.log('arrayzone',arrayzone);
+                  console.log("arrayzone", arrayzone);
                   //console.log(doc.data().status);
 
                   let found = Object.keys(this.slotStatus).find(
@@ -275,26 +272,46 @@ export default {
                   //   console.log("not_found");
                   // }
 
-                  let ready = 'ready'
+                  /**Transform map to array */ 
+                  /**
+                     let myMap = new Map().set('GFG', 1).set('Geeks', 2);
+                     let arr =[...myMap.values()]
+                        console.log(arr);
+                   */
+
+                  let ready = "ready";
                   let busy = "busy";
 
-                  if (doc.data().bestSlot === true ) {
-                  this.arrBestSlot.push([doc.id,doc.data().status,doc.data().bestSlot]);
-                      }
-                   // arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
-                    if(found){
-                      arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
-                      }else{
-                      arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,ready])
-                      }
-                    
+                  if (doc.data().bestSlot === true) {
+                    this.arrBestSlot.push([
+                      doc.id,
+                      doc.data().status,
+                      doc.data().bestSlot
+                    ]);
+                  }
+                  // arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
+                  if (found) {
+                    arrayzone.push([
+                      doc.id,
+                      doc.data().status,
+                      doc.data().bestSlot,
+                      busy
+                    ]);
+                  } else {
+                    arrayzone.push([
+                      doc.id,
+                      doc.data().status,
+                      doc.data().bestSlot,
+                      ready
+                    ]);
+                  }
+
                   // } else {
                   //   arrayzone.push([doc.id, doc.data().status, false]);
-                    // if (found) {
-                    //   //console.log("found", found);
-                    //   arrayzone.push([busy])
-                    // }
-                
+                  // if (found) {
+                  //   //console.log("found", found);
+                  //   arrayzone.push([busy])
+                  // }
 
                   if (arrayzone.length === 2 /**new */) {
                     arrayChunked.push(arrayzone);
@@ -305,7 +322,7 @@ export default {
                 arrayChunked = [];
                 console.log(this.all_zones);
 
-                console.log('this.allzone,302',this.all_zones.size);
+                console.log("this.allzone,302", this.all_zones.size);
                 if (this.all_zones.size === size) {
                   this.isShow = true;
                   console.log("all_zones", this.all_zones);
