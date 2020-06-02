@@ -315,6 +315,7 @@ export default {
 
                   if (arrayzone.length === 2 /**new */) {
                     arrayChunked.push(arrayzone);
+                    
                     arrayzone = [];
                   }
                 });
