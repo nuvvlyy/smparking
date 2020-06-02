@@ -56,7 +56,7 @@
         <hr />
 
         <div>
-          <p class="display-4">BEST: {{arrBestSlot[0][0]}}</p>
+          <!-- <p class="display-4">BEST: {{arrBestSlot[0][0]}}</p> -->
           <hr />
           <ul>
             <h4>Best list</h4>
@@ -323,10 +323,10 @@ export default {
                 arrayChunked = [];
                 console.log(this.all_zones);
 
-                console.log("this.allzone,302", this.all_zones.size);
+                console.log("this.allzone.size", this.all_zones.size);
                 if (this.all_zones.size === size) {
                   this.isShow = true;
-                  console.log("all_zones", this.all_zones);
+                  console.log(this.all_zones);
                 }
               });
           });

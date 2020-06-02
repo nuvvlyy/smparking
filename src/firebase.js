@@ -3,6 +3,8 @@ import 'firebase/firebase-firestore'
 import 'firebase/firebase-auth'
 import 'firebase/firebase-storage'
 import 'firebase/firebase-database'
+// import * as admin from 'firebase-admin';
+// require('firebase-admin');
 
 var firebaseConfig = {
     apiKey: "AIzaSyCOFJJSFJSHMeuDDI04W-jOrvqV3vClmtA",
@@ -19,5 +21,6 @@ var firebaseConfig = {
 const fb = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const rdb = firebase.database();
+// const admin = firebase.admin();
 firebase.analytics();
 export { fb, db, rdb };

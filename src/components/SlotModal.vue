@@ -50,6 +50,8 @@
 <script>
 import { db } from "../firebase";
 import { firestore } from "firebase";
+
+
 export default {
   name: "EditFloor",
   data() {
@@ -171,14 +173,25 @@ export default {
       });
     },
     markBestSlot() {
+      // let g=  db.collection("floors").doc(this.$store.state.floor.toString()) /**floor */
+      // .get().then(doc =>{
+
+      // })
+      let bestArr = this.floors[(this.$store.state.floor - 1).toString()]
+        .bestSlot;
+
       let setBestSlot = null;
       if (this.bestSlot === "accepted") {
         setBestSlot = { bestSlot: true };
         console.log("bestSlot", setBestSlot);
-      } else if (this.bestSlot === "not_accepted"){
+      } else if (this.bestSlot === "not_accepted") {
         setBestSlot = { bestSlot: false };
         console.log("bestSlot", setBestSlot);
       }
+
+let besBest = {'bestSlot':[this.$store.state.slotSelect[0]]}
+
+
 
       let zone = this.$store.state.slotSelect[0].match(/[a-zA-Z]+/g);
       zone = zone[0];
@@ -188,11 +201,12 @@ export default {
       let setSlotDetail = db
         .collection("floors")
         .doc(this.$store.state.floor.toString()) /**floor */
-        .collection("zoneDetail")
-        .doc(zone) /**zone */
-        .collection("slotDetail")
-        .doc(this.$store.state.slotSelect[0]) /**slot */
-        .update(setBestSlot)
+        // .collection("zoneDetail")
+        // .doc(zone) /**zone */
+        // .collection("slotDetail")
+        // .doc(this.$store.state.slotSelect[0]) /**slot */
+      /** =======>>>>>> */  .update(bestSlot /**https://www.youtube.com/watch?v=4t2eHrFW_0M */)
+       // .update({ bestSlot: admin.firestore.FieldValue.arrayUnion([this.$store.state.slotSelect[0]])})
         .then(docRef => {
           /**ดัก progress upload ยังไม่ได้ทำ*/
           console.log("Added document with ID: ", docRef);
@@ -205,10 +219,10 @@ export default {
           console.log("Error adding document: ", error);
         });
     },
-  
+
     handleSubmit() {
       this.markBestSlot();
-  
+
       // Exit when the form isn't valid
       if (!this.checkFormValidity()) {
         return;
