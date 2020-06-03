@@ -298,6 +298,7 @@ export default {
                   let busy = "busy";
                   let bestSlot = true;
 
+
                   pos = "[" + posX + "," + posY++ + "]";
                   marticSlot.push([doc.id,pos])
                   // if (doc.data().bestSlot === true) {
@@ -363,6 +364,7 @@ export default {
                     arrayChunked = [];
                 console.log(this.all_zones);
                 /** */
+                
                 if (this.all_zones.size > countZone) {
                   //marticSlot.push(countZone);
                   posZoneChange +=2
