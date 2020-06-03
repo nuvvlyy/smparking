@@ -139,8 +139,15 @@
                       variant="primary"
                       
                       label="Spinning"
-                    ></b-spinner> -->
-                    <b-progress v-if="item[5] === true" :value="50" variant="primary" striped :animated="true" class="mt-3"></b-progress>
+                    ></b-spinner>-->
+                    <b-progress
+                      v-if="item[5] === true"
+                      :value="50"
+                      variant="primary"
+                      striped
+                      :animated="true"
+                      class="mt-3"
+                    ></b-progress>
                   </td>
                   <!--
                      @click="infoSpot(item)"
@@ -249,10 +256,10 @@ export default {
       let marticSlot = [];
       let countZone = 0;
       let pos;
-      let posX =0
+      let posX = 0;
       let posY = 0;
-      let posZoneChange =0;
-      let arrClosest = []
+      let posZoneChange = 0;
+      let arrClosest = [];
 
       console.log("getzone");
       let arr = this.zones;
@@ -281,15 +288,15 @@ export default {
                   console.log("arrayzone", arrayzone);
                   //console.log(doc.data().status);
 
+                  /**found busy status */
                   let foundStatus = Object.keys(this.slotStatus).find(
                     slot => slot == doc.id
                   );
+                  /**found best slot */
                   let foundBest = Object.keys(this.bestStatus).find(
                     slot => slot == doc.id
                   );
-                  let foundClosestSpot = Object.keys(arrClosest).find(
-                    slot => slot == doc.id
-                  );
+
                   // if (foundStatus) {
                   //   console.log("foundStatus", foundStatus);
                   // } else {
@@ -309,15 +316,33 @@ export default {
                   let ready = "ready";
                   let busy = "busy";
                   let bestSlot = true;
-                  let closest = true
+                  let closest = true;
 
+                  pos = [posX, posY]; //'['+posX+','+ posY+']';
+                  posY++; //"[" + posX + "," + posY++ + "]";
+                  marticSlot.push([doc.id, pos]);
 
-                  pos = "[" + posX + "," + posY++ + "]";
-                  marticSlot.push([doc.id,pos])
-
-                  if(posX >0 && posY>0){
-
+                  if (foundBest) {
+                    arrClosest.push([doc.id, pos]);
                   }
+
+                  /**work */
+                  //arrClosest.forEach((element)=>console.log('testForEach',element[0],'X=', element[1][0],'Y=', element[1][1]))
+
+                  //console.log("arrClosest", arrClosest[i][0]);
+
+                  if (posX > 0) {
+                  } else if (posY > 0) {
+                  } else if (posX > 0 && posY > 0) {
+                    // let demo = '1A-12'
+                    // let result = foundBest.filter(closer => closer == demo);
+                    // console.log('result',result)
+                    // const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
+                    // const result = words.filter(word => word.length > 6);
+                  }
+                  let foundClosestSpot = Object.keys(arrClosest).find(
+                    slot => slot == doc.id
+                  );
                   // if (doc.data().bestSlot === true) {
                   //   this.arrBestSlot.push([
                   //     doc.id,
@@ -350,25 +375,55 @@ export default {
                       busy,
                       pos
                     ]);
-                  }else if(foundClosestSpot){
-                    arrayzone.push([
-                      doc.id,
-                      doc.data().status,
-                      doc.data().bestSlot,
-                      ready,
-                      pos,
-                      closest
-                    ]);
                   } else {
-                    arrayzone.push([
-                      doc.id,
-                      doc.data().status,
-                      doc.data().bestSlot,
-                      ready,
-                      pos
-                      
-                    ]);
+                    if (posX === 0 && posY === 0) {
+                      arrayzone.push([
+                        doc.id,
+                        doc.data().status,
+                        doc.data().bestSlot,
+                        ready,
+                        pos,
+                        closest
+                      ]);
+                    } else if (posX === 0) {
+                      arrayzone.push([
+                        doc.id,
+                        doc.data().status,
+                        doc.data().bestSlot,
+                        ready,
+                        pos,
+                        closest
+                      ]);
+                    } else if (posY === 0) {
+                      arrayzone.push([
+                        doc.id,
+                        doc.data().status,
+                        doc.data().bestSlot,
+                        ready,
+                        pos,
+                        closest
+                      ]);
+                    } else
+                      arrayzone.push([
+                        doc.id,
+                        doc.data().status,
+                        doc.data().bestSlot,
+                        ready,
+                        pos
+                      ]);
                   }
+
+                  /** */
+                  // if (foundClosestSpot) {
+                  //   arrayzone.push([
+                  //     doc.id,
+                  //     doc.data().status,
+                  //     doc.data().bestSlot,
+                  //     ready,
+                  //     pos,
+                  //     closest
+                  //   ]);
+                  // }
 
                   // } else {
                   //   arrayzone.push([doc.id, doc.data().status, false]);
@@ -378,30 +433,28 @@ export default {
                   // }
 
                   if (arrayzone.length === 2 /**new */) {
+                    posX++;
+                    posY = posZoneChange;
                     arrayChunked.push(arrayzone);
 
                     arrayzone = [];
-
-                    posX++
-                    posY = posZoneChange;
                   }
                 });
 
                 this.all_zones.set(doc.id, arrayChunked);
-                    arrayChunked = [];
+                arrayChunked = [];
                 console.log(this.all_zones);
                 /** */
-                
+
                 if (this.all_zones.size > countZone) {
                   //marticSlot.push(countZone);
-                  posZoneChange +=2
-                  posX =0
+                  posZoneChange += 2;
+                  posX = 0;
                 }
                 countZone = this.all_zones.size;
-                console.log("marticSlot", this.all_zones.size,marticSlot);
+                console.log("marticSlot", this.all_zones.size, marticSlot);
 
                 /** */
-            
 
                 console.log("this.allzone.size", this.all_zones.size);
                 if (this.all_zones.size === size) {
