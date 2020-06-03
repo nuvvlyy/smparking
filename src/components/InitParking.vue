@@ -345,6 +345,8 @@ export default {
       let zoneData = { id1: "handicap", entrance: false };
       let idStatus = { status: "active" };
 
+      //let pos;
+
       let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
       /** ได้แล้ว แต่สร้างนาน กิน Bandwidth */

@@ -19,7 +19,7 @@
               </div>
       </div>-->
 
-      <!-- <div class="display-1" v-if="notFound == true">Floor not found</div> -->
+      <!-- <div class="display-1" v-if="notfoundStatus == true">Floor not foundStatus</div> -->
 
       <!-- <div>
         <b-nav>
@@ -52,16 +52,16 @@
           <li v-for="(indexx,key) in index" :key="key">floor:{{keyy}} {{index}}</li>
         </ul>
         <hr />/**กำลังทำ */
+        <p>Busy Slot</p>
         <div v-for="(i,key) in slotStatus" :key="key">{{key}} > status: {{i}}</div>
         <hr />
 
         <div>
-          <!-- <p class="display-4">BEST: {{arrBestSlot[0][0]}}</p> -->
-          <hr />
-          <ul>
-            <h4>Best list</h4>
-            <li v-for="i in arrBestSlot" :key="i">{{i}}</li>
+          <ul style="list-style: none;">
+            <p>Best list</p>
+            <li v-for="(i,key) in  bestStatus" :key="key">{{key}} > status: {{i}}</li>
           </ul>
+          <hr />
         </div>
       </div>
 
@@ -154,7 +154,8 @@ import * as firebase from "firebase";
 import EllipsisLoader from "@bit/joshk.vue-spinners-css.ellipsis-loader";
 
 //var database = firebase.database();
-var slotStatusRef = rdb.ref("/sensor");
+let slotStatusRef = rdb.ref("/sensor");
+let bestFromRdbRef = rdb.ref("/bestSlot");
 
 export default {
   components: {
@@ -180,7 +181,9 @@ export default {
       slotStatus: null,
       slotStatusKey: null,
       slotStatusRef: null,
-      arrBestSlot: []
+      arrBestSlot: [],
+      bestStatus: null,
+      bestStatusKey: null
     };
   },
   // firestore() {
@@ -199,13 +202,8 @@ export default {
   computed: {
     showBest() {
       /** ทำอยู่ */
-      let showMap = this.all_zones;
-      //console.log('getMap>>>',showMap.has('A'))
-      // for (let [key, value] of showMap.entries()) {
-      //   console.log("showMap", key + " = " + value);
-      // }
-      console.log("map ShowBset", showMap);
-      return this.$store.state.slotSelect[0];
+
+      return this.bestStatus;
     },
     fromRdb() {
       let slot = Object.keys(this.slotStatus);
@@ -232,10 +230,20 @@ export default {
       this.slotStatus = snapshot.val();
       this.slotStatusKey = snapshot.key;
     });
+
+    bestFromRdbRef.on("value", snapshot => {
+      this.bestStatus = snapshot.val();
+      this.bestStatusKey = snapshot.key;
+    });
   },
   methods: {
     getZoneWithSlot() {
       let marticSlot = [];
+      let countZone = 0;
+      let pos;
+      let posX =0
+      let posY = 0;
+      let posZoneChange =0;
 
       console.log("getzone");
       let arr = this.zones;
@@ -250,6 +258,7 @@ export default {
         .then(data => {
           data.forEach(doc => {
             let size = data.size;
+            let currentDataSize = 0;
             // console.log(data.size)
             db.collection("floors")
               .doc(this.$store.state.floor.toString())
@@ -263,65 +272,107 @@ export default {
                   console.log("arrayzone", arrayzone);
                   //console.log(doc.data().status);
 
-                  let found = Object.keys(this.slotStatus).find(
+                  let foundStatus = Object.keys(this.slotStatus).find(
                     slot => slot == doc.id
                   );
-                  // if (found) {
-                  //   console.log("found", found);
+                  let foundBest = Object.keys(this.bestStatus).find(
+                    slot => slot == doc.id
+                  );
+                  // if (foundStatus) {
+                  //   console.log("foundStatus", foundStatus);
                   // } else {
-                  //   console.log("not_found");
+                  //   console.log("not_foundStatus");
                   // }
 
-                  /**Transform map to array */ 
+                  /**Transform map to array */
+
                   /**
                      let myMap = new Map().set('GFG', 1).set('Geeks', 2);
                      let arr =[...myMap.values()]
                         console.log(arr);
                    */
 
+                  // console.log('sizeCHANGE',currentDataSize)
+
                   let ready = "ready";
                   let busy = "busy";
+                  let bestSlot = true;
 
-                  if (doc.data().bestSlot === true) {
-                    this.arrBestSlot.push([
+                  pos = "[" + posX + "," + posY++ + "]";
+                  marticSlot.push([doc.id,pos])
+                  // if (doc.data().bestSlot === true) {
+                  //   this.arrBestSlot.push([
+                  //     doc.id,
+                  //     doc.data().status,
+                  //     doc.data().bestSlot
+                  //   ]);
+                  // }
+                  // arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
+                  if (foundBest && foundStatus) {
+                    arrayzone.push([
                       doc.id,
                       doc.data().status,
-                      doc.data().bestSlot
+                      bestSlot,
+                      busy,
+                      pos
                     ]);
-                  }
-                  // arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
-                  if (found) {
+                  } else if (foundBest) {
+                    arrayzone.push([
+                      doc.id,
+                      doc.data().status,
+                      bestSlot,
+                      ready,
+                      pos
+                    ]);
+                  } else if (foundStatus) {
                     arrayzone.push([
                       doc.id,
                       doc.data().status,
                       doc.data().bestSlot,
-                      busy
+                      busy,
+                      pos
                     ]);
                   } else {
                     arrayzone.push([
                       doc.id,
                       doc.data().status,
                       doc.data().bestSlot,
-                      ready
+                      ready,
+                      pos
                     ]);
                   }
 
                   // } else {
                   //   arrayzone.push([doc.id, doc.data().status, false]);
-                  // if (found) {
-                  //   //console.log("found", found);
+                  // if (foundStatus) {
+                  //   //console.log("foundStatus", foundStatus);
                   //   arrayzone.push([busy])
                   // }
 
                   if (arrayzone.length === 2 /**new */) {
                     arrayChunked.push(arrayzone);
-                    
+
                     arrayzone = [];
+
+                    posX++
+                    posY = posZoneChange;
                   }
                 });
+
                 this.all_zones.set(doc.id, arrayChunked);
-                arrayChunked = [];
+                    arrayChunked = [];
                 console.log(this.all_zones);
+                /** */
+                if (this.all_zones.size > countZone) {
+                  //marticSlot.push(countZone);
+                  posZoneChange +=2
+                  posX =0
+                }
+                countZone = this.all_zones.size;
+                console.log("marticSlot", this.all_zones.size,marticSlot);
+
+                /** */
+            
 
                 console.log("this.allzone.size", this.all_zones.size);
                 if (this.all_zones.size === size) {
@@ -366,22 +417,22 @@ export default {
     },
 
     test2() {
-      let found = this.floors.find(
+      let foundStatus = this.floors.find(
         floor => floor[".key"] == this.$store.state.floor
       );
-      if (found) {
-        console.log("found =>", found);
+      if (foundStatus) {
+        console.log("foundStatus =>", foundStatus);
         return {
           floor: {
-            height: parseInt(found.height),
-            width: parseInt(found.width),
-            zone: parseInt(found.zone)
+            height: parseInt(foundStatus.height),
+            width: parseInt(foundStatus.width),
+            zone: parseInt(foundStatus.zone)
           }
         };
         console.log("floor =>", this.floor);
       } else {
-        this.notFound = true;
-        console.log("Not Found Floor Data");
+        this.notfoundStatus = true;
+        console.log("Not foundStatus Floor Data");
       }
     },
     test() {
