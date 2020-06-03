@@ -133,6 +133,14 @@
                       type="grow"
                       label="Spinning"
                     ></b-spinner>
+                    <!-- <b-spinner
+                      
+                      class="m-1"
+                      variant="primary"
+                      
+                      label="Spinning"
+                    ></b-spinner> -->
+                    <b-progress v-if="item[5] === true" :value="50" variant="primary" striped :animated="true" class="mt-3"></b-progress>
                   </td>
                   <!--
                      @click="infoSpot(item)"
@@ -244,6 +252,7 @@ export default {
       let posX =0
       let posY = 0;
       let posZoneChange =0;
+      let arrClosest = []
 
       console.log("getzone");
       let arr = this.zones;
@@ -278,6 +287,9 @@ export default {
                   let foundBest = Object.keys(this.bestStatus).find(
                     slot => slot == doc.id
                   );
+                  let foundClosestSpot = Object.keys(arrClosest).find(
+                    slot => slot == doc.id
+                  );
                   // if (foundStatus) {
                   //   console.log("foundStatus", foundStatus);
                   // } else {
@@ -297,10 +309,15 @@ export default {
                   let ready = "ready";
                   let busy = "busy";
                   let bestSlot = true;
+                  let closest = true
 
 
                   pos = "[" + posX + "," + posY++ + "]";
                   marticSlot.push([doc.id,pos])
+
+                  if(posX >0 && posY>0){
+
+                  }
                   // if (doc.data().bestSlot === true) {
                   //   this.arrBestSlot.push([
                   //     doc.id,
@@ -333,6 +350,15 @@ export default {
                       busy,
                       pos
                     ]);
+                  }else if(foundClosestSpot){
+                    arrayzone.push([
+                      doc.id,
+                      doc.data().status,
+                      doc.data().bestSlot,
+                      ready,
+                      pos,
+                      closest
+                    ]);
                   } else {
                     arrayzone.push([
                       doc.id,
@@ -340,6 +366,7 @@ export default {
                       doc.data().bestSlot,
                       ready,
                       pos
+                      
                     ]);
                   }
 
