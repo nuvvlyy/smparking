@@ -257,10 +257,11 @@ export default {
       let countZone = 0;
       let pos;
       let posX = 0;
+      let postiX =0
       let posY = 0;
+      let positY = 0;
       let posZoneChange = 0;
       let arrClosest = [];
-
       console.log("getzone");
       let arr = this.zones;
       console.log(this.zones);
@@ -286,8 +287,14 @@ export default {
                 data.forEach(doc => {
                   // console.log("id >", doc.id);
                   console.log("arrayzone", arrayzone);
+                  let z = doc.id
+                  let zoneTop = z.toString().split(/\d|\-/)[1].charCodeAt(0)-65;
+                  let numSlot = Number(z.split("-")[1]);
+                  postiX =(Math.floor(zoneTop/4)*6)+Math.floor(((numSlot-1)/2));
                   //console.log(doc.data().status);
-
+                  positY = (numSlot-1)%2+(zoneTop%4*2)
+                  console.log(doc.id,"->[", postiX,",",positY,"]");
+                  // console.log("posty", positY);
                   /**found busy status */
                   let foundStatus = Object.keys(this.slotStatus).find(
                     slot => slot == doc.id
@@ -318,8 +325,7 @@ export default {
                   let bestSlot = true;
                   let closest = true;
 
-                  pos = [posX, posY]; //'['+posX+','+ posY+']';
-                  posY++; //"[" + posX + "," + posY++ + "]";
+                  pos = [postiX, positY]; //'['+posX+','+ posY+']';
                   marticSlot.push([doc.id, pos]);
 
                   if (foundBest) {
