@@ -193,12 +193,13 @@ export default {
       },
       all_zones: new Map(),
       isShow: false,
-      slotStatus: null,
+      slotStatus: {},
       slotStatusKey: null,
       slotStatusRef: null,
       arrBestSlot: [],
-      bestStatus: null,
-      bestStatusKey: null
+      bestStatus: {},
+      bestStatusKey: null,
+      allSlot: new Map()
     };
   },
   // firestore() {
@@ -252,6 +253,7 @@ export default {
     });
   },
   methods: {
+
     getZoneWithSlot() {
       let marticSlot = [];
       let countZone = 0;
@@ -286,23 +288,47 @@ export default {
               .then(data => {
                 data.forEach(doc => {
                   // console.log("id >", doc.id);
-                  console.log("arrayzone", arrayzone);
+                  // console.log("arrayzone", arrayzone);
                   let z = doc.id
                   let zoneTop = z.toString().split(/\d|\-/)[1].charCodeAt(0)-65;
                   let numSlot = Number(z.split("-")[1]);
                   postiX =(Math.floor(zoneTop/4)*6)+Math.floor(((numSlot-1)/2));
                   //console.log(doc.data().status);
                   positY = (numSlot-1)%2+(zoneTop%4*2)
-                  console.log(doc.id,"->[", postiX,",",positY,"]");
+                  console.log("--------",doc.id,"->[", postiX,",",positY,"]");
+
                   // console.log("posty", positY);
                   /**found busy status */
-                  let foundStatus = Object.keys(this.slotStatus).find(
-                    slot => slot == doc.id
-                  );
+
+                  let foundStatus = false
                   /**found best slot */
-                  let foundBest = Object.keys(this.bestStatus).find(
-                    slot => slot == doc.id
-                  );
+                  let foundBest = false
+                  let disAll =[]
+                  for (let [key, value] of Object.entries(this.bestStatus)) {
+                    let keyZone = key.toString().split(/\d|\-/)[1].charCodeAt(0)-65;
+                    let keySlot = Number(key.split("-")[1]);
+                    let keyPosiX =(Math.floor(keyZone/4)*6)+Math.floor(((keySlot-1)/2));
+                    //console.log(doc.data().status);
+                    let keyPosiY =(keySlot-1)%2+(keyZone%4*2)
+                    let dis = Math.sqrt(Math.pow(Math.abs(keyPosiX-postiX),2) + Math.pow(Math.abs(keyPosiY-positY),2))
+                    console.log(key,"->[", keyPosiX,",",keyPosiY,"]");
+                    disAll.push(dis)
+                    console.log(dis);
+                    // console.log(key);
+                  }
+                  let min =Math.min(...disAll)
+                  console.log("minnnnn",Math.min(...disAll))
+                  // console.log(this.bestStatus)
+                  this.allSlot.set(doc.id,min)
+                  this.allSlot[Symbol.iterator] = function* () {
+                    yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
+                  }
+
+                  // (...this.allSlot).map(e =>{ return e[1];}).slice().sort(function(a, b) {
+                  //   return a - b;
+                  // });
+                  console.log([...this.allSlot])
+
 
                   // if (foundStatus) {
                   //   console.log("foundStatus", foundStatus);
@@ -449,7 +475,7 @@ export default {
 
                 this.all_zones.set(doc.id, arrayChunked);
                 arrayChunked = [];
-                console.log(this.all_zones);
+                // console.log(this.all_zones);
                 /** */
 
                 if (this.all_zones.size > countZone) {
@@ -458,14 +484,14 @@ export default {
                   posX = 0;
                 }
                 countZone = this.all_zones.size;
-                console.log("marticSlot", this.all_zones.size, marticSlot);
+                // console.log("marticSlot", this.all_zones.size, marticSlot);
 
                 /** */
 
                 console.log("this.allzone.size", this.all_zones.size);
                 if (this.all_zones.size === size) {
                   this.isShow = true;
-                  console.log(this.all_zones);
+                  // console.log(this.all_zones);
                 }
               });
           });
