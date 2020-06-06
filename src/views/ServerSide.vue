@@ -163,15 +163,11 @@
 </template>
 <script>
 import { db, rdb } from "../firebase";
-
 import * as firebase from "firebase";
-
 import EllipsisLoader from "@bit/joshk.vue-spinners-css.ellipsis-loader";
-
 //var database = firebase.database();
 let slotStatusRef = rdb.ref("/sensor");
 let bestFromRdbRef = rdb.ref("/bestSlot");
-
 export default {
   components: {
     EllipsisLoader
@@ -210,15 +206,12 @@ export default {
   //             .doc(this.$store.state.floor.toString())
   //             .collection("zoneDetail"),
   //
-
   //
   //     };
   // },
-
   computed: {
     showBest() {
       /** ทำอยู่ */
-
       return this.bestStatus;
     },
     fromRdb() {
@@ -234,32 +227,28 @@ export default {
         slot = parseInt(target[i][2]);
         console.log("rdb", floor, zone, slot);
       }
-
       return target;
     }
   },
   mounted() {
     this.getZoneWithSlot();
-
     /**ทำอยู่ */
     slotStatusRef.on("value", snapshot => {
       this.slotStatus = snapshot.val();
       this.slotStatusKey = snapshot.key;
     });
-
     bestFromRdbRef.on("value", snapshot => {
       this.bestStatus = snapshot.val();
       this.bestStatusKey = snapshot.key;
     });
   },
   methods: {
-
     getZoneWithSlot() {
       let marticSlot = [];
       let countZone = 0;
       let pos;
       let posX = 0;
-      let postiX =0
+      let postiX = 0;
       let posY = 0;
       let positY = 0;
       let posZoneChange = 0;
@@ -289,80 +278,88 @@ export default {
                 data.forEach(doc => {
                   // console.log("id >", doc.id);
                   // console.log("arrayzone", arrayzone);
-                  let z = doc.id
-                  let zoneTop = z.toString().split(/\d|\-/)[1].charCodeAt(0)-65;
+                  let z = doc.id;
+                  let zoneTop =
+                    z
+                      .toString()
+                      .split(/\d|\-/)[1]
+                      .charCodeAt(0) - 65;
                   let numSlot = Number(z.split("-")[1]);
-                  postiX =(Math.floor(zoneTop/4)*6)+Math.floor(((numSlot-1)/2));
+                  postiX =
+                    Math.floor(zoneTop / 4) * 6 + Math.floor((numSlot - 1) / 2);
                   //console.log(doc.data().status);
-                  positY = (numSlot-1)%2+(zoneTop%4*2)
-                  console.log("--------",doc.id,"->[", postiX,",",positY,"]");
-
+                  positY = ((numSlot - 1) % 2) + (zoneTop % 4) * 2;
+                  console.log(
+                    "--------",
+                    doc.id,
+                    "->[",
+                    postiX,
+                    ",",
+                    positY,
+                    "]"
+                  );
                   // console.log("posty", positY);
                   /**found busy status */
-
-                  let foundStatus = false
+                  let foundStatus = false;
                   /**found best slot */
-                  let foundBest = false
-                  let disAll =[]
+                  let foundBest = false;
+                  let disAll = [];
                   for (let [key, value] of Object.entries(this.bestStatus)) {
-                    let keyZone = key.toString().split(/\d|\-/)[1].charCodeAt(0)-65;
+                    let keyZone =
+                      key
+                        .toString()
+                        .split(/\d|\-/)[1]
+                        .charCodeAt(0) - 65;
                     let keySlot = Number(key.split("-")[1]);
-                    let keyPosiX =(Math.floor(keyZone/4)*6)+Math.floor(((keySlot-1)/2));
+                    let keyPosiX =
+                      Math.floor(keyZone / 4) * 6 +
+                      Math.floor((keySlot - 1) / 2);
                     //console.log(doc.data().status);
-                    let keyPosiY =(keySlot-1)%2+(keyZone%4*2)
-                    let dis = Math.sqrt(Math.pow(Math.abs(keyPosiX-postiX),2) + Math.pow(Math.abs(keyPosiY-positY),2))
-                    console.log(key,"->[", keyPosiX,",",keyPosiY,"]");
-                    disAll.push(dis)
+                    let keyPosiY = ((keySlot - 1) % 2) + (keyZone % 4) * 2;
+                    let dis = Math.sqrt(
+                      Math.pow(Math.abs(keyPosiX - postiX), 2) +
+                        Math.pow(Math.abs(keyPosiY - positY), 2)
+                    );
+                    console.log(key, "->[", keyPosiX, ",", keyPosiY, "]");
+                    disAll.push(dis);
                     console.log(dis);
                     // console.log(key);
                   }
-                  let min =Math.min(...disAll)
-                  console.log("minnnnn",Math.min(...disAll))
+                  let min = Math.min(...disAll);
+                  console.log("minnnnn", Math.min(...disAll));
                   // console.log(this.bestStatus)
-                  this.allSlot.set(doc.id,min)
-                  this.allSlot[Symbol.iterator] = function* () {
+                  this.allSlot.set(doc.id, min);
+                  this.allSlot[Symbol.iterator] = function*() {
                     yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
-                  }
-
+                  };
                   // (...this.allSlot).map(e =>{ return e[1];}).slice().sort(function(a, b) {
                   //   return a - b;
                   // });
-                  console.log([...this.allSlot])
-
-
+                  console.log([...this.allSlot]);
                   // if (foundStatus) {
                   //   console.log("foundStatus", foundStatus);
                   // } else {
                   //   console.log("not_foundStatus");
                   // }
-
                   /**Transform map to array */
-
                   /**
                      let myMap = new Map().set('GFG', 1).set('Geeks', 2);
                      let arr =[...myMap.values()]
                         console.log(arr);
                    */
-
                   // console.log('sizeCHANGE',currentDataSize)
-
                   let ready = "ready";
                   let busy = "busy";
                   let bestSlot = true;
                   let closest = true;
-
                   pos = [postiX, positY]; //'['+posX+','+ posY+']';
                   marticSlot.push([doc.id, pos]);
-
                   if (foundBest) {
                     arrClosest.push([doc.id, pos]);
                   }
-
                   /**work */
                   //arrClosest.forEach((element)=>console.log('testForEach',element[0],'X=', element[1][0],'Y=', element[1][1]))
-
                   //console.log("arrClosest", arrClosest[i][0]);
-
                   if (posX > 0) {
                   } else if (posY > 0) {
                   } else if (posX > 0 && posY > 0) {
@@ -383,6 +380,11 @@ export default {
                   //   ]);
                   // }
                   // arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
+
+                  foundBest = Object.keys(this.bestStatus).find(
+                    slot => slot == doc.id
+                  );
+
                   if (foundBest && foundStatus) {
                     arrayzone.push([
                       doc.id,
@@ -392,13 +394,7 @@ export default {
                       pos
                     ]);
                   } else if (foundBest) {
-                    arrayzone.push([
-                      doc.id,
-                      doc.data().status,
-                      bestSlot,
-                      ready,
-                      pos
-                    ]);
+                    arrayzone.push([doc.id, true, bestSlot, ready, pos]);
                   } else if (foundStatus) {
                     arrayzone.push([
                       doc.id,
@@ -444,7 +440,6 @@ export default {
                         pos
                       ]);
                   }
-
                   /** */
                   // if (foundClosestSpot) {
                   //   arrayzone.push([
@@ -456,28 +451,23 @@ export default {
                   //     closest
                   //   ]);
                   // }
-
                   // } else {
                   //   arrayzone.push([doc.id, doc.data().status, false]);
                   // if (foundStatus) {
                   //   //console.log("foundStatus", foundStatus);
                   //   arrayzone.push([busy])
                   // }
-
-                  if (arrayzone.length === 2 /**new */) {
+                  if (arrayzone.length === 2) {
                     posX++;
                     posY = posZoneChange;
                     arrayChunked.push(arrayzone);
-
                     arrayzone = [];
                   }
                 });
-
                 this.all_zones.set(doc.id, arrayChunked);
                 arrayChunked = [];
                 // console.log(this.all_zones);
                 /** */
-
                 if (this.all_zones.size > countZone) {
                   //marticSlot.push(countZone);
                   posZoneChange += 2;
@@ -485,9 +475,7 @@ export default {
                 }
                 countZone = this.all_zones.size;
                 // console.log("marticSlot", this.all_zones.size, marticSlot);
-
                 /** */
-
                 console.log("this.allzone.size", this.all_zones.size);
                 if (this.all_zones.size === size) {
                   this.isShow = true;
@@ -529,7 +517,6 @@ export default {
           });
       };
     },
-
     test2() {
       let foundStatus = this.floors.find(
         floor => floor[".key"] == this.$store.state.floor
@@ -554,7 +541,6 @@ export default {
       console.log("getZoneWithSlot>>", this.all_zones);
       console.log("arraySlots", this.arraySlot);
       //  for (let i in this.FBSlots) {
-
       //  }
       console.log("FBSlots", this.FBSlots);
       console.log("floors", this.floors);
@@ -602,7 +588,6 @@ export default {
       this.counter++;
       // console.log(this.$refs.text.baseURI);
       // console.log(this.$route.params.id)
-
       // fetch("http://localhost:8080/config").then(res =>
       //   console.log(res)
       // );
@@ -619,7 +604,6 @@ export default {
       console.log(i[".key"], Object.values(i));
       this.$store.commit("changeSlot", i);
     },
-
     updated() {
       this.floor = this.$store.state.floor;
       // currentFloor: this.$store.state.floor
@@ -637,20 +621,16 @@ td div {
   text-align: center;
   vertical-align: middle;
 }
-
 .spot-list {
   //list-style-type: none;
   //margin: 0 auto;
-
   float: unset;
   position: relative;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
-
 .spot-list td {
   //padding: 15px;
-
   //float: left;
   width: 2.5em;
   height: 1em;
@@ -658,10 +638,8 @@ td div {
   margin-right: 0.2em;
   margin-left: 0.2em;
   background-color: rgb(163, 163, 163);
-
   display: block;
 }
-
 // .spot-list-vertical {
 //   transform: rotate(-90deg);
 //}
@@ -670,26 +648,21 @@ td div {
   height: 30px;
   background: gray;
 }
-
 .rectangle {
   width: 30px;
   height: 20px;
   background: #e2e2e2ab;
-
   cursor: pointer;
 }
-
 // .box a:hover{
 //   cursor: pointer;
 // }
 th {
   cursor: pointer;
 }
-
 td {
   margin: 0;
 }
-
 .yellow-striped {
   background-color: var(--mat-yellow);
   background-image: repeating-linear-gradient(
@@ -701,23 +674,18 @@ td {
   );
   box-shadow: inset 0 0 0 4px #ffb74d;
 }
-
 .handicap {
   background-color: var(--mat-blue);
 }
-
 .empty {
   background-color: var(--mat-green);
 }
-
 .full {
   background-color: var(--mat-red);
 }
-
 .lady {
   background-color: var(--mat-pink);
 }
-
 :root {
   --mat-green: #c8e6c9;
   --mat-dark-green: #97b498;
@@ -732,12 +700,10 @@ td {
   --mat-dark-yellow: #f57c00;
   --mat-pink: #fce4ec;
 }
-
 .parking {
   min-width: 100%;
   min-height: 100%;
 }
-
 .nobr {
   white-space: nowrap;
 }
