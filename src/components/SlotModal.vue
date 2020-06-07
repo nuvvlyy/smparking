@@ -183,16 +183,18 @@ export default {
       });
     },
     markBestSlot() {
-      let posXY = () => 3 + 1;
-      console.log(posXY());
+      // let posXY = () => 3 + 1;
+      // console.log(posXY());
 
       let slotSelect = [this.$store.state.slotSelect[0]].toString();
       if (slotSelect !== null) {
+        if(this.bestSlot === "accepted"){
         let setBsetToFirebase = rdb
           .ref("/bestSlot")
           .child(slotSelect)
           .set("true")
           .then(() => console.log("set best Success"));
+      }
       }
       //       let bestArr = this.floors[(this.$store.state.floor - 1).toString()]
       //         .bestSlot;
@@ -286,41 +288,7 @@ export default {
 
       // let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-      /** ได้แล้ว แต่สร้างนาน กิน Bandwidth */
-
-      // let setFloors = db
-      //   .collection("floors")
-      //   .doc(this.$store.state.floor.toString())
-      //   .set(dataFloor);
-      // if (parseInt(this.zone) != 0) {
-      //   for (let zone = 0; zone < parseInt(this.zone); zone++) {
-      //     let setZoneDetail = db
-      //       .collection("floors")
-      //       .doc(this.$store.state.floor.toString())
-      //       .collection("zoneDetail")
-      //       .doc("zone" + az.charAt(zone))
-      //       .set(zoneData);
-      //     for (
-      //       let slot = 0;
-      //       slot < parseInt(this.zoneHeight * this.selected);
-      //       slot++
-      //     ) {
-      //       let setSlotDetail = db
-      //         .collection("floors")
-      //         .doc(this.$store.state.floor.toString())
-      //         .collection("zoneDetail")
-      //         .doc("zone" + az.charAt(zone))
-      //         .collection("slotDetail")
-      //         .doc(
-      //           this.$store.state.floor.toString() +
-      //             az.charAt(zone) +
-      //             "-" +
-      //             (slot + 1).toString()
-      //         )
-      //         .set(idStatus);
-      //     }
-      //   }
-      // }
+     
 
       this.$nextTick(() => {
         this.$bvModal.hide("slotModall");
