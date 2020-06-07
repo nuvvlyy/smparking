@@ -355,7 +355,7 @@ export default {
                   }
                   if(foundBest){
                     status = 'best'
-                  }if(min ==1){
+                  }if(min ===1){
                     status = 'near'
                   }
                   arrayzone.push([doc.id, min,status]);
