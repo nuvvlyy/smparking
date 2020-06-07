@@ -1,7 +1,7 @@
 <template>
   <div class="config">
     <div class="page-wrapper d-flex align-items-stretch">
-      <Sidebar />
+
 
       <div class="container-fluid">
         <!-- <initParking></initParking> -->
@@ -101,7 +101,7 @@
 </template>
 <script>
 import Navbar from "@/components/Navbar";
-import Sidebar from "@/components/Sidebar";
+
 import PageNavi from "@/components/PageNavi";
 import InitParking from "@/components/InitParking";
 import EditFloor from "@/components/EditFloor";
@@ -112,7 +112,7 @@ import { db } from "../firebase";
 export default {
   components: {
     Navbar,
-    Sidebar,
+ 
     PageNavi,
     InitParking,
     EditFloor,

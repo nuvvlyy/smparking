@@ -2,9 +2,9 @@
   
     <div class="containner">
         <div class="center">
-
             <h2 class="my-5">Recommend Slot</h2>
             <p class="display-1" style="color:black">{{recommendSlot}}</p>
+            <button class="btn btn-warning " @click="getTicket">Get Ticket</button>
         </div>
 
    
@@ -19,6 +19,10 @@ export default {
      recommendSlot(){
          return this.$store.state.recommendSlot
      }
+ },methods:{
+     getTicket(){
+         alert(this.recommendSlot)
+     }
  }
 }
 </script>
@@ -26,7 +30,7 @@ export default {
     
 .center {
   position: fixed;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
