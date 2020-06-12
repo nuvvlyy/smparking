@@ -4,17 +4,17 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 let currentFloor = window.localStorage.getItem('floor');
-let zoneSelect = window.localStorage.getItem('zoneSelect');
+
 let slotSelect = window.localStorage.getItem('slotSelect');
 
-let recommendSlot = window.localStorage.getItem('slotSelect');
+let showRecommendSlot = window.localStorage.getItem('showRecommendSlot');
 
 export default new Vuex.Store({
   state: {
     floor: currentFloor,
-    zoneSelect : zoneSelect,
+   
     slotSelect:slotSelect,
-    recommendSlot:'1A-01' //recommendSlot
+    showRecommendSlot:showRecommendSlot//['1A-01','1D-04'] 
   },
   mutations: {
     changeFloor(state, floor) {
@@ -22,31 +22,34 @@ export default new Vuex.Store({
       //console.log('function changeFloor')
       this.commit('saveData');
     },
-    changeZone(state, zone) {
-      state.zoneSelect = zone
-      //console.log('function changeFloor')
-      this.commit('saveData');
-    },
+ 
     changeSlot(state, slot) {
       state.slotSelect = slot
       //console.log('function changeFloor')
       this.commit('saveData');
     },
-    recommendSlot(state,recommend){
-      state.recommendSlot = recommend
+    showRecommendSlot(state,recommend){
+      state.showRecommendSlot = recommend
       this.commit('saveData')
     },
     saveData(state){
-      window.localStorage.setItem("floor",JSON.stringify(state.floor));
-      window.localStorage.setItem("zoneSelect",JSON.stringify(state.zoneSelect));
+      window.localStorage.setItem("floor",JSON.stringify(state.floor));     
       window.localStorage.setItem("slotSelect",JSON.stringify(state.slotSelect));
-      window.localStorage.setItem("recommendSlot",JSON.stringify(state.slotSelect));
+      window.localStorage.setItem("showRecommendSlot",JSON.stringify(state.showRecommendSlot));
     }
   }, getters: {
     current: state => {
       let now = 1
       now = state.floor
       return now;
+    },
+    firstSlotOut:state =>{
+      // if(state.recommendSlot.length !=0){
+     let first = state.showRecommendSlot
+      // return first}else{
+      //   return "Parking Full"
+      // }
+      return first
     }
   },
   actions: {},
