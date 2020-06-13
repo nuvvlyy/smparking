@@ -365,8 +365,8 @@ export default {
                   //   return a - b;
                   // });
                   console.log([...this.allSlot]);
-                  this.$store.commit("showRecommendSlot", stateBestArr);
-                  console.log("stateBestArr", stateBestArr);
+                  //this.$store.commit("showRecommendSlot", stateBestArr);
+                  //console.log("stateBestArr", stateBestArr);
                   // let a = ['1A-00','2A-00']
                   //this.$store.commit("recommendSlot", a); //stateBestArr
 
