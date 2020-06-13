@@ -339,6 +339,8 @@ export default {
                   );
                   if (foundStatus) {
                     status = "busy";
+                  } else {
+                    stateBestArr.push({ id: doc.id, value: min });
                   }
                   if (foundBest) {
                     status = "best";
@@ -346,21 +348,25 @@ export default {
                   if (min === 1) {
                     status = "near";
                   }
-                  if (!foundStatus) {
-                    stateBestArr.push(doc.id);
-                  }
+
                   arrayzone.push([doc.id, min, status]);
                   //arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
                   /** */
                   this.allSlot[Symbol.iterator] = function*() {
                     yield* [...this.entries()].sort((a, b) => a[1] - b[1]);
                   };
+               
+                  // sort by value
+                  stateBestArr.sort(function(a, b) {
+                    return a.value - b.value;
+                  });
+
                   // (...this.allSlot).map(e =>{ return e[1];}).slice().sort(function(a, b) {
                   //   return a - b;
                   // });
                   console.log([...this.allSlot]);
                   this.$store.commit("showRecommendSlot", stateBestArr);
-                  //console.log('stateBestArr',stateBestArr)
+                  console.log("stateBestArr", stateBestArr);
                   // let a = ['1A-00','2A-00']
                   //this.$store.commit("recommendSlot", a); //stateBestArr
 
@@ -383,53 +389,6 @@ export default {
                   /**work */
                   //arrClosest.forEach((element)=>console.log('testForEach',element[0],'X=', element[1][0],'Y=', element[1][1]))
                   //console.log("arrClosest", arrClosest[i][0]);
-
-                  // let demo = '1A-12'
-                  // let result = foundBest.filter(closer => closer == demo);
-                  // console.log('result',result)
-                  // const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
-                  // const result = words.filter(word => word.length > 6);
-
-                  // if (doc.data().bestSlot === true) {
-                  //   this.arrBestSlot.push([
-                  //     doc.id,
-                  //     doc.data().status,
-                  //     doc.data().bestSlot
-                  //   ]);
-                  // }
-                  // arrayzone.push([doc.id,doc.data().status,doc.data().bestSlot,busy])
-
-                  //   if (foundBest && foundStatus) {
-                  //     arrayzone.push([
-                  //       doc.id,
-                  //       doc.data().status,
-                  //       bestSlot,
-                  //       busy,
-                  //       dis,
-                  //       pos
-                  //     ]);
-                  //   } else if (foundBest) {
-                  //     arrayzone.push([doc.id, true, bestSlot, ready, dis, pos]);
-                  //   } else if (foundStatus) {
-                  //     arrayzone.push([
-                  //       doc.id,
-                  //       doc.data().status,
-                  //       doc.data().bestSlot,
-                  //       busy,
-                  //       dis,
-                  //       pos
-                  //     ]);
-                  //   } else {
-                  //     arrayzone.push([
-                  //       doc.id,
-                  //       doc.data().status,
-                  //       doc.data().bestSlot,
-                  //       ready,
-                  //       dis,
-                  //       pos
-                  //     ]);
-                  //   }
-
                   if (arrayzone.length === 2) {
                     posX++;
                     posY = posZoneChange;
@@ -459,7 +418,7 @@ export default {
               });
           });
         });
-      // this.$store.commit("showRecommendSlot", stateBestArr);
+
     },
 
     test2() {

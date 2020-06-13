@@ -31,7 +31,7 @@
                         ></b-pagination-nav>
                       </div>
                       <div>
-                        <b-form inline class="mx-2">
+                        <!-- <b-form inline class="mx-2">
                           <b-row>
                             <b-col sm="2">
                               <b-form-input
@@ -46,7 +46,7 @@
                             </b-col>
                           </b-row>
                           <b-button type="submit" pill variant="info">Go</b-button>
-                        </b-form>
+                        </b-form> -->
                       <!-- <p class="mx-3">Current Page: {{ currentPage }}</p> -->
                       
                     </div>

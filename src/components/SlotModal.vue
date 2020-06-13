@@ -84,8 +84,8 @@ export default {
       //total: null,
       totalState: null,
 
-      bestStatus:null,
-      bestStatusKey:null
+      bestStatus: null,
+      bestStatusKey: null
     };
   },
   firestore() {
@@ -188,13 +188,13 @@ export default {
 
       let slotSelect = [this.$store.state.slotSelect[0]].toString();
       if (slotSelect !== null) {
-        if(this.bestSlot === "accepted"){
-        let setBsetToFirebase = rdb
-          .ref("/bestSlot")
-          .child(slotSelect)
-          .set("true")
-          .then(() => console.log("set best Success"));
-      }
+        if (this.bestSlot === "accepted") {
+          let setBsetToFirebase = rdb
+            .ref("/bestSlot")
+            .child(slotSelect)
+            .set("true")
+            .then(() => console.log("set best Success"));
+        }
       }
       //       let bestArr = this.floors[(this.$store.state.floor - 1).toString()]
       //         .bestSlot;
@@ -287,8 +287,6 @@ export default {
       // let idStatus = { status: "active" };
 
       // let az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-     
 
       this.$nextTick(() => {
         this.$bvModal.hide("slotModall");

@@ -1,13 +1,14 @@
 <template>
   <div class="containner">
     <div class="center">
-      <h2 class="my-5">Recommend Slot</h2>
-      <p class="display-1" style="color:black">{{recommendSlot}}</p>
-      <button class="btn btn-warning" @click="getTicket">Get Ticket</button>
+      <h2 class="my-5">Assigned Slot</h2>
+      <p class="display-1" style="color:black">{{recommendSlot.id}}</p>
+      <button class="btn btn-warning" >Get Ticket</button>
     </div>
   </div>
 </template>
 <script>
+//import { rdb } from "../firebase";
 export default {
   data() {
     return {
@@ -27,9 +28,23 @@ export default {
     }
   },
   methods: {
-    getTicket() {
-      alert(this.recommendSlot.shift());
-    }
+    // getTicket() {
+    //   alert(this.recommendSlot);
+    // }
+    /**
+     *  
+     *  let slotSelect = [this.$store.state.slotSelect[0]].toString();
+      if (slotSelect !== null) {
+        if (this.bestSlot === "accepted") {
+          let setBsetToFirebase = rdb
+            .ref("/bestSlot")
+            .child(slotSelect)
+            .set("true")
+            .then(() => console.log("set best Success"));
+        }
+      }
+     * 
+     */
   }
 };
 </script>
@@ -47,3 +62,4 @@ body {
   background-color: #aebfbe;
 }
 </style>
+
